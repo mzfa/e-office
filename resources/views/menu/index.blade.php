@@ -97,7 +97,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
 
-                            
+
 
                             <table class="table" style="width: 100%">
                                 <thead>
@@ -121,13 +121,10 @@
                                             </td>
                                             <td>{{ $item['url_menu'] }}</td>
                                             <td>
-                                                <a onclick="return edit({{ $item['menu_id'] }})"
-                                                    class="btn text-white btn-warning"><i class="fa fa-pen"></i></a>
-                                                <a onclick="return tambahsubmenu({{ $item['menu_id'] }})"
-                                                    class="btn text-white btn-primary"><i class="fa fa-plus"></i></a>
+                                                <a onclick="return edit({{ $item['menu_id'] }})" class="btn text-white btn-warning"><i class="fa fa-pen"></i></a>
+                                                <a onclick="return tambahsubmenu({{ $item['menu_id'] }})" class="btn text-white btn-primary"><i class="fa fa-plus"></i></a>
                                                 @if (empty($item['submenu']))
-                                                    <a href="{{ url('menu/delete/' . Crypt::encrypt($item['menu_id'])) }}"
-                                                        class="btn text-white btn-danger"><i class="fa fa-trash"></i></a>
+                                                    <a href="{{ url('menu/delete/' . Crypt::encrypt($item['menu_id'])) }}" class="btn text-white btn-danger"><i class="fa fa-trash"></i></a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -140,10 +137,8 @@
                                                 </td>
                                                 <td>{{ $submenu['url_menu'] }}</td>
                                                 <td>
-                                                    <a onclick="return edit({{ $submenu['menu_id'] }})"
-                                                        class="btn text-white btn-info"><i class="fa fa-pen"></i></a>
-                                                    <a href="{{ url('menu/delete/' . Crypt::encrypt($submenu['menu_id'])) }}"
-                                                        class="btn text-white btn-danger"><i class="fa fa-trash"></i></a>
+                                                    <a onclick="return edit({{ $submenu['menu_id'] }})" class="btn text-white btn-info"><i class="fa fa-pen"></i></a>
+                                                    <a href="{{ url('menu/delete/' . Crypt::encrypt($submenu['menu_id'])) }}" class="btn text-white btn-danger"><i class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -160,38 +155,38 @@
             <div class="modal-dialog modal-lg">
                 <form action="{{ url('menu/store') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Tambah Data</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3 row">
-                            <label for="staticEmail" class="col-sm-2 col-form-label">Nama Menu</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nama_menu" name="nama_menu" required>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Tambah Data</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3 row">
+                                <label for="staticEmail" class="col-sm-2 col-form-label">Nama Menu</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nama_menu" name="nama_menu" required>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Url</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="url_menu" name="url_menu">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Icon</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="icon_menu" name="icon_menu">
+                                </div>
                             </div>
                         </div>
-                        <div class="mb-3 row">
-                            <label for="inputPassword" class="col-sm-2 col-form-label">Url</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="url_menu" name="url_menu">
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label for="inputPassword" class="col-sm-2 col-form-label">Icon</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="icon_menu" name="icon_menu">
-                            </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
                 </form>
                 <!-- /.modal-content -->
             </div>
@@ -221,7 +216,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="subMenuModal" >
+        <div class="modal fade" id="subMenuModal">
             <div class="modal-dialog modal-lg">
                 <form action="{{ url('menu/store') }}" method="post">
                     @csrf
@@ -261,37 +256,28 @@
                 </form>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
 
-    @push('scripts')
-        <script>
-            function edit(id) {
-                $.ajax({
-                    type: 'get',
-                    url: "{{ url('menu/edit') }}/" + id,
-                    // data:{'id':id}, 
-                    success: function(tampil) {
+@push('scripts')
+    <script>
+        function edit(id) {
+            $.ajax({
+                type: 'get',
+                url: "{{ url('menu/edit') }}/" + id,
+                // data:{'id':id}, 
+                success: function(tampil) {
 
-                        // console.log(tampil); 
-                        $('#tampildata').html(tampil);
-                        $('#editModal').modal('show');
-                    }
-                })
-            }
+                    // console.log(tampil); 
+                    $('#tampildata').html(tampil);
+                    $('#editModal').modal('show');
+                }
+            })
+        }
 
-            function tambahsubmenu(id) {
-                $('#parent_id').val(id);
-                $('#subMenuModal').modal('show');
-            }
-        </script>
-        @if (Session::has('success'))
-            <script>
-                $(document).Toasts('create', {
-                    class: 'bg-success',
-                    title: 'Berhasil',
-                    subtitle: 'Subtitle',
-                    body: "Selamat, {{ Session::get('success') }}"
-                })
-            </script>
-        @endif
-    @endpush
+        function tambahsubmenu(id) {
+            $('#parent_id').val(id);
+            $('#subMenuModal').modal('show');
+        }
+    </script>
+@endpush

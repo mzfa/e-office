@@ -45,6 +45,7 @@ class LoginController extends Controller
                     foreach($menu_akses as $item)
                     {
                         $data = DB::table('menu')->where(['menu_id' => $item])->whereNull('deleted_at')->get();
+                        // dump($data);
                         if(isset($data[0])){
                             if($data[0]->parent_id == 0){
                                 $menu[$data[0]->menu_id] = [
@@ -66,9 +67,9 @@ class LoginController extends Controller
                                 ];
                             }
                         }
-                        // dump($data);
                     }
                 }
+                // dd($data_hakakses);
                 $user_data = DB::table('pegawai_detail')->where(['pegawai_id' => $check_password->pegawai_id])->get();
                 $image = "";
                 if(isset($user_data[0]->foto_profile))

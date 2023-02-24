@@ -16,6 +16,7 @@ use App\Http\Controllers\JenisPelatihanController;
 use App\Http\Controllers\KompetensiController;
 use App\Http\Controllers\PekerjaanController;
 use App\Http\Controllers\PelatihanController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -135,6 +136,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/pendidikan/update', 'update');
         Route::get('/pendidikan/edit/{id}', 'edit');
         Route::get('/pendidikan/delete/{id}', 'delete');
+    });
+
+    Route::controller(MessageController::class)->middleware('cek_login:message.index')->group(function () {
+        Route::get('/message', 'index')->name('message.index');;
+        Route::get('/message/tulis', 'tulis');
+        Route::get('/message/sync', 'sync');
     });
 
 

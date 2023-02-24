@@ -45,6 +45,7 @@ class PegawaiController extends Controller
         ])
         ->orderBy('pegawai_id')
         ->get();
+        // dd($list_pegawai_phis);
 
         foreach ($list_pegawai_phis as $pegawai) {
             if ($pegawai->status_batal) {
