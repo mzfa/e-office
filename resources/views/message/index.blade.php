@@ -20,28 +20,22 @@
                     <div class="card-body p-0">
                         <ul class="nav nav-pills flex-column">
                             <li class="nav-item active">
-                                <a onclick="" class="nav-link">
+                                <a onclick="inboxOpen()" class="nav-link">
                                     <i class="fas fa-inbox"></i> Inbox
                                     <span class="badge bg-primary float-right">12</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li onclick="sentOpen()" class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="far fa-envelope"></i> Sent
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li onclick="draftOpen()" class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="far fa-file-alt"></i> Drafts
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="fas fa-filter"></i> Junk
-                                    <span class="badge bg-warning float-right">65</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
+                            <li onclick="trashOpen()" class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="far fa-trash-alt"></i> Trash
                                 </a>
@@ -90,11 +84,7 @@
             <div class="col-md-9">
                 <!-- Preloader -->
                 {{-- <span class="loader"></span> --}}
-                <div id="loading-image" style="display:none;position:absolute;z-index: 1000px;margin-left: auto;margin-right: auto;width: 50%;justify-content: center;">
-                    <center>
-                        <img src="{{ asset('assets/dist/img/Loading_2.gif') }}">
-                    </center>
-                </div>
+                
                 <div id="message-content">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
@@ -416,6 +406,19 @@
 
 @push('scripts')
     <script>
+        $.ajax({
+            type: 'get',
+            url: "{{ url('message/inbox') }}/",
+            // data:{'id':id}, 
+            beforeSend: function() {
+                var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                $('#message-content').html('<center><img src="'+url+'"></center>');
+            },
+            success: function(tampil) {
+                $('#message-content').html(tampil);
+                // $("#loading-image").hide();
+            }
+        })
         function edit(id) {
             $.ajax({
                 type: 'get',
@@ -431,22 +434,72 @@
         }
 
         function tulis() {
-            // const xhttp = new XMLHttpRequest();
-            // xhttp.open("GET", "{{ url('message/tulis') }}");
-            // xhttp.send();
-            // xhttp.onload = function() {
-            //     document.getElementById("message-content").innerHTML = this.responseText;
-            // }
             $.ajax({
                 type: 'get',
                 url: "{{ url('message/tulis') }}/",
                 // data:{'id':id}, 
                 beforeSend: function() {
-                    $("#loading-image").show();
+                    var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                    $('#message-content').html('<center><img src="'+url+'"></center>');
                 },
                 success: function(tampil) {
                     $('#message-content').html(tampil);
-                    $("#loading-image").hide();
+                }
+            })
+        }
+        function inboxOpen() {
+            $.ajax({
+                type: 'get',
+                url: "{{ url('message/inbox') }}/",
+                // data:{'id':id}, 
+                beforeSend: function() {
+                    var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                    $('#message-content').html('<center><img src="'+url+'"></center>');
+                },
+                success: function(tampil) {
+                    $('#message-content').html(tampil);
+                }
+            })
+        }
+        function sentOpen() {
+            $.ajax({
+                type: 'get',
+                url: "{{ url('message/sent') }}/",
+                // data:{'id':id}, 
+                beforeSend: function() {
+                    var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                    $('#message-content').html('<center><img src="'+url+'"></center>');
+                },
+                success: function(tampil) {
+                    $('#message-content').html(tampil);
+                }
+            })
+        }
+        function trashOpen() {
+            $.ajax({
+                type: 'get',
+                url: "{{ url('message/trash') }}/",
+                // data:{'id':id}, 
+                beforeSend: function() {
+                    var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                    $('#message-content').html('<center><img src="'+url+'"></center>');
+                },
+                success: function(tampil) {
+                    $('#message-content').html(tampil);
+                }
+            })
+        }
+        function draftOpen() {
+            $.ajax({
+                type: 'get',
+                url: "{{ url('message/draft') }}/",
+                // data:{'id':id}, 
+                beforeSend: function() {
+                    var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                    $('#message-content').html('<center><img src="'+url+'"></center>');
+                },
+                success: function(tampil) {
+                    $('#message-content').html(tampil);
                 }
             })
         }

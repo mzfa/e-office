@@ -37,38 +37,44 @@ class LoginController extends Controller
                 // Auth::attempt($credentials);
                 // dd($check_password);
                 $menu = [];
-                $id = $check_password->hakakses_id;
-                $data_hakakses = DB::table('hakakses')->where(['hakakses_id' => $id])->get();
-                if(isset($data_hakakses[0]->menu_id)){
-                    $menu_akses = explode ("|", $data_hakakses[0]->menu_id);
-                    // dd($menu_akses);
-                    foreach($menu_akses as $item)
-                    {
-                        $data = DB::table('menu')->where(['menu_id' => $item])->whereNull('deleted_at')->get();
-                        // dump($data);
-                        if(isset($data[0])){
-                            if($data[0]->parent_id == 0){
-                                $menu[$data[0]->menu_id] = [
-                                    'menu_id' => $data[0]->menu_id,
-                                    'nama_menu' => $data[0]->nama_menu,
-                                    'url_menu' => $data[0]->url_menu,
-                                    'icon_menu' => $data[0]->icon_menu,
-                                    'parent_id' => $data[0]->parent_id,
-                                    'submenu' => [],
-                                ];
-                            }
-                            else{
-                                $menu[$data[0]->parent_id]['submenu'][] = [
-                                    'menu_id' => $data[0]->menu_id,
-                                    'nama_menu' => $data[0]->nama_menu,
-                                    'url_menu' => $data[0]->url_menu,
-                                    'icon_menu' => $data[0]->icon_menu,
-                                    'parent_id' => $data[0]->parent_id,
-                                ];
+                $id = $check_password->id;
+                $user_akses = DB::table('user_akses')->where(['user_id' => $id])->first();
+                // dd($user_akses);
+                if(isset($user_akses->hakakses_id)){
+
+                    $data_hakakses = DB::table('hakakses')->where(['hakakses_id' => $user_akses->hakakses_id])->get();
+                    if(isset($data_hakakses[0]->menu_id)){
+                        $menu_akses = explode ("|", $data_hakakses[0]->menu_id);
+                        // dd($menu_akses);
+                        foreach($menu_akses as $item)
+                        {
+                            $data = DB::table('menu')->where(['menu_id' => $item])->whereNull('deleted_at')->get();
+                            // dump($data);
+                            if(isset($data[0])){
+                                if($data[0]->parent_id == 0){
+                                    $menu[$data[0]->menu_id] = [
+                                        'menu_id' => $data[0]->menu_id,
+                                        'nama_menu' => $data[0]->nama_menu,
+                                        'url_menu' => $data[0]->url_menu,
+                                        'icon_menu' => $data[0]->icon_menu,
+                                        'parent_id' => $data[0]->parent_id,
+                                        'submenu' => [],
+                                    ];
+                                }
+                                else{
+                                    $menu[$data[0]->parent_id]['submenu'][] = [
+                                        'menu_id' => $data[0]->menu_id,
+                                        'nama_menu' => $data[0]->nama_menu,
+                                        'url_menu' => $data[0]->url_menu,
+                                        'icon_menu' => $data[0]->icon_menu,
+                                        'parent_id' => $data[0]->parent_id,
+                                    ];
+                                }
                             }
                         }
                     }
                 }
+                
                 // dd($data_hakakses);
                 $user_data = DB::table('pegawai_detail')->where(['pegawai_id' => $check_password->pegawai_id])->get();
                 $image = "";

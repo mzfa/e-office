@@ -7,9 +7,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Data Menu &nbsp;
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">
-                                Tambah
-                            </button>
                         </h3>
                     </div>
                     <div class="card-body">

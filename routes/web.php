@@ -141,7 +141,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::controller(MessageController::class)->middleware('cek_login:message.index')->group(function () {
         Route::get('/message', 'index')->name('message.index');;
         Route::get('/message/tulis', 'tulis');
-        Route::get('/message/sync', 'sync');
+        Route::get('/message/inbox', 'inbox');
+        Route::get('/message/sent', 'sent');
+        Route::get('/message/draft', 'draft');
+        Route::get('/message/trash', 'trash');
+        Route::post('/message/store', 'store');
+        Route::get('/message/read/{id}', 'read');
+        Route::get('/message/pencarian/{jenis}/{text}', 'pencarian');
     });
 
 

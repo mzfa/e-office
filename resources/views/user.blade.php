@@ -42,7 +42,7 @@
 
         <div class="modal fade" id="editModal">
             <div class="modal-dialog modal-lg">
-                <form action="{{ url('menu/update') }}" method="post">
+                <form action="{{ url('user/update') }}" method="post">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
@@ -66,13 +66,9 @@
 @endsection
 
 
-@section('scripts')
+@push('scripts')
     <script>
         function akses(id) {
-            // let filter = $(this).attr('id'); 
-            // filter = filter.split("-");
-            // var tfilter = $(this).attr('id');
-            // console.log(id);
             $.ajax({
                 type: 'get',
                 url: "{{ url('user/edit') }}/" + id,
@@ -86,4 +82,4 @@
             })
         }
     </script>
-@endsection
+@endpush

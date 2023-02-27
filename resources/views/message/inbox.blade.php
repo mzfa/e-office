@@ -1,0 +1,72 @@
+@extends('layouts.tamplate')
+
+@section('content')
+    <div id="message-content">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Inbox</h3>
+
+                <div class="card-tools">
+                    <div class="input-group input-group-sm">
+                        <input type="text" onkeyup="cariData(this)" id="pencarian" class="form-control" placeholder="Search Mail">
+                        <div class="input-group-append">
+                            {{-- <div class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </div> --}}
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+                <div class="table-responsive mailbox-messages">
+                    <table id="example2" class="table table-hover table-striped">
+                        <tbody>
+                            <div id="tableData">
+                                @foreach($listInbox as $inbox)
+                                <tr>
+                                    {{-- <td>
+                                        <div class="icheck-primary">
+                                            <input type="checkbox" value="" id="check1">
+                                            <label for="check1"></label>
+                                        </div>
+                                    </td> --}}
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this
+                                        problem...
+                                    </td>
+                                    <td class="mailbox-attachment"></td>
+                                    <td class="mailbox-date">5 mins ago</td>
+                                </tr>
+                                @endforeach
+                            </div>
+                        </tbody>
+                    </table>
+                    <!-- /.table -->
+                </div>
+                <!-- /.mail-box-messages -->
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+    <script>
+        function cariData(text){
+            // var pencarian = document.getElementById('pencarian').value;
+            if (event.keyCode === 13) {
+                console.log(text.value);
+                $.ajax({
+                type: 'get',
+                url: "{{ url('message/pencarian') }}/inbox/" + text.value,
+                // data:{'id':id}, 
+                success: function(tampil) {
+                    $('#tableData').html(tampil);
+                }
+            })
+            }
+        }
+    </script>
+
+@endpush

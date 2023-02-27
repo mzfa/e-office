@@ -13,9 +13,12 @@ class UserController extends Controller
 {
     public function index()
     {
-        $data = DB::table('users')->leftJoin('hakakses', 'users.hakakses_id', '=', 'hakakses.hakakses_id')
+        $data = DB::table('users')
+        ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
+        ->leftJoin('hakakses', 'user_akses.hakakses_id', '=', 'hakakses.hakakses_id')
         ->select([
             'users.*',
+            'user_akses.jenis_akses',
             'hakakses.nama_hakakses',
         ])->whereNull('users.deleted_at')->get();
         return view('user', compact('data'));
@@ -71,35 +74,53 @@ class UserController extends Controller
         // dd($data);
         $text = "Data tidak ditemukan";
         $hakakses = DB::table('hakakses')->get();
-        if($data = DB::table('users')->where(['hakakses_id' => $id])->get()){
+        if($data = DB::table('users')->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')->where(['users.id' => $id])->first()){
             // dd($data);
             $text = '<div class="mb-3 row">'.
-                    '<input type="hidden" name="id" value="'.Crypt::encrypt($id).'">'.
-                    '<label for="staticEmail" class="col-sm-12 col-form-label">Hak Akses</label>'.
-                    '<div class="col-sm-12">'.
-                    '<select class="form-control" name="hakakses_id">'. 
-                    '<option></option>';
-                    foreach ($hakakses as $value) {
-                        $text .= '<option value="'.$value->hakakses_id.'">'.$value->nama_hakakses.'</option>';
-                    }
-                    $text .= '</select>'.
-                    '</div>'.
-                '</div>';
+                        '<input type="hidden" name="user_id" value="'.Crypt::encrypt($id).'">'.
+                        '<input type="hidden" name="user_akses_id" value="'.Crypt::encrypt($data->user_akses_id).'">'.
+                        '<label for="staticEmail" class="col-sm-12 col-form-label">Hak Akses</label>'.
+                        '<div class="col-sm-12">'.
+                        '<select class="form-control" name="hakakses_id">'. 
+                        '<option></option>';
+                        foreach ($hakakses as $value) {
+                            $text .= '<option value="'.$value->hakakses_id.'">'.$value->nama_hakakses.'</option>';
+                        }
+                        $text .= '</select>'.
+                        '</div>'.
+                    '</div>'
+                    // '<div class="mb-3 row">'.
+                    //     '<label for="staticEmail" class="col-sm-12 col-form-label">Jenis Akses</label>'.
+                    //     '<div class="col-sm-12">'.
+                    //     '<select class="form-control" name="jenis_akses">'. 
+                    //         '<option></option>'.
+                    //     '</select>'.
+                    //     '</div>'.
+                    // '</div>'
+                    ;
         }
         return $text;
         // return view('admin.hakakses.edit');
     }
     public function update(Request $request){
         $request->validate([
-            'hakakses_id' => ['required', 'string'],
+            'user_id' => ['required'],
+            'hakakses_id' => ['required'],
+            // 'jenis_akses' => ['required', 'string'],
         ]);
+        $user_id = Crypt::decrypt($request->user_id);
         $data = [
-            'updated_by' => Auth::user()->id,
-            'updated_at' => now(),
+            'user_id' => $user_id,
             'hakakses_id' => $request->hakakses_id,
+            // 'jenis_akses' => $request->jenis_akses,
         ];
-        $id = Crypt::decrypt($request->id);
-        DB::table('users')->where(['id' => $id])->update($data);
+        $user_akses_id = Crypt::decrypt($request->user_akses_id);
+        if(isset($user_akses_id)){
+            // dd($request);
+            DB::table('user_akses')->where(['user_akses_id' => $user_akses_id])->update($data);
+        }else{
+            DB::table('user_akses')->insert($data);
+        }
         return Redirect::back()->with(['success' => 'Data Berhasil Di Ubah!']);
     }
 }
