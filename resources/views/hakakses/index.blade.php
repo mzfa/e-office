@@ -58,6 +58,22 @@
                                     <input type="text" class="form-control" id="nama_hakakses" name="nama_hakakses" required>
                                 </div>
                             </div>
+                            <div class="mb-3 row">
+                                <label for="staticEmail" class="col-sm-2 col-form-label">Akses Bagian</label>
+                                <div class="col-sm-10">
+                                    <div class="form-group">
+                                        <div class="select2-purple">
+                                            <select class="select2" name="akses_bagian[]" multiple="multiple" data-placeholder="Akses Bagian"
+                                                data-dropdown-css-class="select2-purple" style="width: 100%;" required>
+                                                @foreach ($data as $hakakses)
+                                                    <option value="{{ $hakakses->hakakses_id }}">{{ $hakakses->nama_hakakses }}</option>
+                                                @endforeach
+            
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -98,6 +114,11 @@
 
 @push('scripts')
     <script>
+        $('.select2').select2()
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
         function edit(id) {
             // let filter = $(this).attr('id'); 
             // filter = filter.split("-");

@@ -78,11 +78,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/profesi/sync', 'sync');
     });
     Route::controller(PegawaiController::class)->middleware('cek_login:pegawai.index')->group(function () {
-        Route::get('/pegawai', 'index')->name('pegawai.index');;
+        Route::get('/pegawai', 'index')->name('pegawai.index');
         Route::get('/pegawai/sync', 'sync');
     });
     Route::controller(JenisPendidikanController::class)->middleware('cek_login:jenis_pendidikan.index')->group(function () {
-        Route::get('/jenis_pendidikan', 'index')->name('jenis_pendidikan.index');;
+        Route::get('/jenis_pendidikan', 'index')->name('jenis_pendidikan.index');
         Route::get('/jenis_pendidikan/sync', 'sync');
         Route::post('/jenis_pendidikan/store', 'store');
         Route::post('/jenis_pendidikan/update', 'update');
@@ -90,7 +90,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/jenis_pendidikan/delete/{id}', 'delete');
     });
     Route::controller(JenisPelatihanController::class)->middleware('cek_login:jenis_pelatihan.index')->group(function () {
-        Route::get('/jenis_pelatihan', 'index')->name('jenis_pelatihan.index');;
+        Route::get('/jenis_pelatihan', 'index')->name('jenis_pelatihan.index');
         Route::get('/jenis_pelatihan/sync', 'sync');
         Route::post('/jenis_pelatihan/store', 'store');
         Route::post('/jenis_pelatihan/update', 'update');
@@ -99,14 +99,14 @@ Route::group(['middleware' => ['auth']], function () {
     });
     
     Route::controller(ProfileController::class)->middleware('cek_login:profile.index')->group(function () {
-        Route::get('/profile', 'index')->name('profile.index');;
+        Route::get('/profile', 'index')->name('profile.index');
         Route::get('/profile/sync', 'sync');
         Route::post('/profile/alamat', 'alamat');
         Route::post('/profile/kontak', 'kontak');
         Route::post('/profile/updateProfile', 'updateProfile');
     });
     Route::controller(PekerjaanController::class)->middleware('cek_login:pekerjaan.index')->group(function () {
-        Route::get('/pekerjaan', 'index')->name('pekerjaan.index');;
+        Route::get('/pekerjaan', 'index')->name('pekerjaan.index');
         Route::get('/pekerjaan/sync', 'sync');
         Route::post('/pekerjaan/store', 'store');
         Route::post('/pekerjaan/update', 'update');
@@ -114,7 +114,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/pekerjaan/delete/{id}', 'delete');
     });
     Route::controller(KompetensiController::class)->middleware('cek_login:kompetensi.index')->group(function () {
-        Route::get('/kompetensi', 'index')->name('kompetensi.index');;
+        Route::get('/kompetensi', 'index')->name('kompetensi.index');
         Route::get('/kompetensi/sync', 'sync');
         Route::post('/kompetensi/store', 'store');
         Route::post('/kompetensi/update', 'update');
@@ -122,7 +122,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/kompetensi/delete/{id}', 'delete');
     });
     Route::controller(PelatihanController::class)->middleware('cek_login:pelatihan.index')->group(function () {
-        Route::get('/pelatihan', 'index')->name('pelatihan.index');;
+        Route::get('/pelatihan', 'index')->name('pelatihan.index');
         Route::get('/pelatihan/sync', 'sync');
         Route::post('/pelatihan/store', 'store');
         Route::post('/pelatihan/update', 'update');
@@ -130,7 +130,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/pelatihan/delete/{id}', 'delete');
     });
     Route::controller(PendidikanController::class)->middleware('cek_login:pendidikan.index')->group(function () {
-        Route::get('/pendidikan', 'index')->name('pendidikan.index');;
+        Route::get('/pendidikan', 'index')->name('pendidikan.index');
         Route::get('/pendidikan/sync', 'sync');
         Route::post('/pendidikan/store', 'store');
         Route::post('/pendidikan/update', 'update');
@@ -139,14 +139,17 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::controller(MessageController::class)->middleware('cek_login:message.index')->group(function () {
-        Route::get('/message', 'index')->name('message.index');;
+        Route::get('/message', 'index')->name('message.index');
         Route::get('/message/tulis', 'tulis');
         Route::get('/message/inbox', 'inbox');
         Route::get('/message/sent', 'sent');
         Route::get('/message/draft', 'draft');
         Route::get('/message/trash', 'trash');
         Route::post('/message/store', 'store');
+        Route::post('/message/update', 'update');
+        Route::get('/message/edit/{id}', 'edit');
         Route::get('/message/read/{id}', 'read');
+        Route::post('/message/reply', 'reply');
         Route::get('/message/pencarian/{jenis}/{text}', 'pencarian');
     });
 

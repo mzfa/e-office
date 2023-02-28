@@ -10,35 +10,46 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="form-group">
+                    <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required>
+                        @foreach ($list_penerima as $penerima)
+                            @if($penerima->id != Auth::user()->id)
+                                <option value="{{ $penerima->id }}">{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                  </div>
+                <div class="form-group">
+                    <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="profesi" required>
+                        @foreach ($list_profesi as $profesi)
+                            <option value="{{ $profesi->nama_profesi }}">{{ $profesi->nama_profesi }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+                {{-- <div class="form-group">
                     <div class="select2-purple">
                         <select class="select2" name="penerima_id[]" multiple="multiple" data-placeholder="Penerima"
-                            data-dropdown-css-class="select2-purple" style="width: 100%;">
+                            data-dropdown-css-class="select2-purple" style="width: 100%;" required>
                             @foreach ($list_penerima as $penerima)
                                 @if($penerima->id != Auth::user()->id)
-                                    <option value="{{ $penerima->id }}">{{ $penerima->name }}</option>
+                                    <option value="{{ $penerima->id }}">{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
                                 @endif
                             @endforeach
 
                         </select>
                     </div>
-                </div>
+                </div> --}}
                 <div class="form-group">
-                    <input class="form-control" type="text" name="judul" placeholder="Judul Surat">
+                    <input class="form-control" type="text" name="judul" required placeholder="Judul Surat">
                 </div>
-                <div class="form-group">
-                    <input class="form-control" type="text" name="no_surat" placeholder="Nomor Surat">
-                </div>
+                {{-- <div class="form-group">
+                    <input class="form-control" type="text" name="no_surat" required placeholder="Nomor Surat">
+                </div> --}}
                 <div class="form-group">
                     <input class="form-control" type="file" multiple name="file" placeholder="File">
                 </div>
                 <div class="form-group">
-                    <textarea id="compose-textarea" name="pesan" class="form-control" style="height: 300px">
-                        <center>
-                            <u><h3>NOTA DINAS</h3></u>
-                            <h6>No. </h6>
-                        </center>
-                        <br>
-                        <p>Isi Surat</p>
+                    <textarea id="compose-textarea" name="pesan" required class="form-control" style="height: 300px">
+                        
                     </textarea>
                 </div>
             </div>
@@ -64,48 +75,48 @@
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
-        Dropzone.options.dropzoneFrom = {
-            autoProcessQueue: false,
-            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
-            init: function() {
-                var submitButton = document.querySelector('#submit-all');
-                myDropzone = this;
-                submitButton.addEventListener("click", function() {
-                    myDropzone.processQueue();
-                });
-                this.on("complete", function() {
-                    if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
-                        var _this = this;
-                        _this.removeAllFiles();
-                    }
-                    list_image();
-                });
-            },
-        };
+        // Dropzone.options.dropzoneFrom = {
+        //     autoProcessQueue: false,
+        //     acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
+        //     init: function() {
+        //         var submitButton = document.querySelector('#submit-all');
+        //         myDropzone = this;
+        //         submitButton.addEventListener("click", function() {
+        //             myDropzone.processQueue();
+        //         });
+        //         this.on("complete", function() {
+        //             if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
+        //                 var _this = this;
+        //                 _this.removeAllFiles();
+        //             }
+        //             list_image();
+        //         });
+        //     },
+        // };
 
-        list_image();
+        // list_image();
 
-        function list_image() {
-            $.ajax({
-                url: "upload.php",
-                success: function(data) {
-                    $('#preview').html(data);
-                }
-            });
-        }
+        // function list_image() {
+        //     $.ajax({
+        //         url: "upload.php",
+        //         success: function(data) {
+        //             $('#preview').html(data);
+        //         }
+        //     });
+        // }
 
-        $(document).on('click', '.remove_image', function() {
-            var name = $(this).attr('id');
-            $.ajax({
-                url: "upload.php",
-                method: "POST",
-                data: {
-                    name: name
-                },
-                success: function(data) {
-                    list_image();
-                }
-            })
-        });
+        // $(document).on('click', '.remove_image', function() {
+        //     var name = $(this).attr('id');
+        //     $.ajax({
+        //         url: "upload.php",
+        //         method: "POST",
+        //         data: {
+        //             name: name
+        //         },
+        //         success: function(data) {
+        //             list_image();
+        //         }
+        //     })
+        // });
     </script>
 @endpush

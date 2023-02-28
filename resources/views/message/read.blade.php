@@ -5,28 +5,27 @@
         <div class="card-header">
             <h3 class="card-title">Read Mail</h3>
 
-            <div class="card-tools">
-                <a href="#" class="btn btn-tool" title="Previous"><i class="fas fa-chevron-left"></i></a>
-                <a href="#" class="btn btn-tool" title="Next"><i class="fas fa-chevron-right"></i></a>
-            </div>
         </div>
         <!-- /.card-header -->
         <div class="card-body p-0">
             <div class="mailbox-read-info">
                 <h5>{{ $surat->judul_surat }}</h5>
-                <h6>From: {{ $surat->nama_pegawai }}
+                <h6 class="mt-2">From: <b>{{ $surat->nama_pegawai }}</b>
                     <span class="mailbox-read-time float-right">{{ date('d-M-Y H:i:s', strtotime($surat->created_at)) }}</span>
                 </h6>
-                <h6>To : 
+                <h6>To : <b>
                     @php
                         $penerima_id = explode('|',$surat->penerima_id);
-                        dump($penerima_id);
+                        // dump($penerima_id);
                         for ( $i = 0; $i < count( $penerima_id ); $i++ ) {
                             $id = $penerima_id[$i];
-                            $user = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->where(['users.id' => $id])->first();
-                            echo $user->nama_pegawai . "<br />";
+                            if($penerima_id[$i] > 0){
+                                $user = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->where(['users.id' => $id])->first();
+                                echo $user->nama_pegawai . " , ";
+                            }
                         }
                     @endphp
+                    </b>
                 </h6>
             </div>
             <!-- /.mailbox-read-info -->
@@ -51,6 +50,20 @@
             <div class="mailbox-read-message">
                 {!! $surat->isi_surat !!}
             </div>
+            @php
+            $datapenerima = explode('|',$surat->penerima_id);
+            $hitung = count($datapenerima)-2;
+            // dump($datapenerima[$hitung]);
+            @endphp
+            @foreach($surat_balasan as $balas)
+                <hr>
+                <div class="mailbox-read-message text-right">
+                    <u><h5>Dijawab : {{ $balas->nama_pegawai }}</h5></u>
+                    {{-- <u><h5>Diteruskan : {{ $balas->nama_pegawai }}</h5></u> --}}
+                    <em>{{ \Carbon\Carbon::parse($balas->created_at)->diffForHumans() }}</em><br><br>
+                    {!! $balas->isi_balasan !!}
+                </div>
+            @endforeach
             <!-- /.mailbox-read-message -->
         </div>
         <!-- /.card-body -->
@@ -114,13 +127,72 @@
         <div class="card-footer">
             <div class="float-right">
                 {{-- <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> Reply</button> --}}
-                <button type="button" class="btn btn-default"><i class="fas fa-share"></i> Forward</button>
+                @if($datapenerima[$hitung] == Auth::user()->id)
+                    <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i class="fas fa-share"></i> Balas</button>
+                @endif
             </div>
             {{-- <button type="button" class="btn btn-default"><i class="far fa-trash-alt"></i> Delete</button> --}}
             <button type="button" class="btn btn-default"><i class="fas fa-print"></i> Print</button>
         </div>
         <!-- /.card-footer -->
+        <div class="modal fade" id="reply-surat">
+            <div class="modal-dialog modal-lg">
+                <form action="{{ url('message/reply') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Balas Surat</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
+                            <input type="hidden" required name="penerima_sebelumnya" value="{{ Crypt::encrypt($surat->penerima_id) }}">
+                            {{-- <div class="form-group">
+                                <div class="select2-purple">
+                                    <select class="select2" name="penerima_id[]" multiple="multiple" data-placeholder="Penerima"
+                                        data-dropdown-css-class="select2-purple" style="width: 100%;" required>
+                                        @foreach ($list_penerima as $penerima)
+                                            @if($penerima->id != Auth::user()->id && $penerima->id != $surat->user_id && $penerima->id != 0)
+                                                @php $id_penerima = explode('|',$surat->penerima_id); @endphp
+                                                @if(array_search($penerima->id,$id_penerima))
+
+                                                @else
+                                                    <option value="{{ $penerima->id }}" >{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div> --}}
+                            <div class="form-group">
+                                <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required>
+                                    @foreach ($list_penerima as $penerima)
+                                        @if($penerima->id != Auth::user()->id)
+                                            <option value="{{ $penerima->id }}">{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                              </div>
+                            <div class="form-group">
+                                <textarea id="compose-textarea" name="pesan" class="form-control" style="height: 300px">
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Reply</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
     </div>
+
+    
 @endsection
 
 @push('scripts')
@@ -130,48 +202,15 @@
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
-        Dropzone.options.dropzoneFrom = {
-            autoProcessQueue: false,
-            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
-            init: function() {
-                var submitButton = document.querySelector('#submit-all');
-                myDropzone = this;
-                submitButton.addEventListener("click", function() {
-                    myDropzone.processQueue();
-                });
-                this.on("complete", function() {
-                    if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
-                        var _this = this;
-                        _this.removeAllFiles();
-                    }
-                    list_image();
-                });
-            },
-        };
-
-        list_image();
-
-        function list_image() {
-            $.ajax({
-                url: "upload.php",
-                success: function(data) {
-                    $('#preview').html(data);
-                }
-            });
-        }
-
-        $(document).on('click', '.remove_image', function() {
-            var name = $(this).attr('id');
-            $.ajax({
-                url: "upload.php",
-                method: "POST",
-                data: {
-                    name: name
-                },
-                success: function(data) {
-                    list_image();
-                }
-            })
-        });
+        // $.ajax({
+        //     type: 'get',
+        //     url: "{{ url('message/tambah_balasan') }}/" + id,
+        //     // data:{'id':id}, 
+        //     success: function(tampil) {
+        //         // console.log(tampil); 
+        //         $('#tampildata').html(tampil);
+        //         $('#editModal').modal('show');
+        //     }
+        // })
     </script>
 @endpush

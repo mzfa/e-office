@@ -24,7 +24,7 @@
                     <table id="example2" class="table table-hover table-striped">
                         <tbody>
                             <div id="tableData">
-                                @foreach($listInbox as $inbox)
+                                @foreach($list_surat as $surat)
                                 <tr>
                                     {{-- <td>
                                         <div class="icheck-primary">
@@ -32,12 +32,14 @@
                                             <label for="check1"></label>
                                         </div>
                                     </td> --}}
-                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                    <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this
-                                        problem...
+                                    <td class="mailbox-name"><a onclick="lihatSurat('{{ $surat->surat_id }}')">{{ $surat->no_surat }}</a></td>
+                                    <td class="mailbox-subject"><b>{{ $surat->judul_surat }}</b></td>
+                                    <td class="mailbox-attachment">
+                                        @php
+                                            
+                                        @endphp
                                     </td>
-                                    <td class="mailbox-attachment"></td>
-                                    <td class="mailbox-date">5 mins ago</td>
+                                    <td class="mailbox-date">{{ \Carbon\Carbon::parse($surat->created_at)->diffForHumans() }}</td>
                                 </tr>
                                 @endforeach
                             </div>
@@ -67,6 +69,21 @@
             })
             }
         }
+        
+        function lihatSurat(id) {
+            $.ajax({
+                type: 'get',
+                url: "{{ url('message/read') }}/"+id,
+                // data:{'id':id}, 
+                beforeSend: function() {
+                    var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                    $('#message-content').html('<center><img src="'+url+'"></center>');
+                },
+                success: function(tampil) {
+                    $('#message-content').html(tampil);
+                }
+            })
+        }
     </script>
-
 @endpush
+

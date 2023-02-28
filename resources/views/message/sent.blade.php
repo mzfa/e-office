@@ -71,7 +71,7 @@
                                             <label for="check1"></label>
                                         </div>
                                     </td> --}}
-                                    <td class="mailbox-name"><a onclick="lihatSurat('{{ $surat->surat_id }}')">No. {{ $surat->no_surat }}</a></td>
+                                    <td class="mailbox-name"><a onclick="lihatSurat('{{ $surat->surat_id }}')">{{ $surat->no_surat }}</a></td>
                                     <td class="mailbox-subject"><b>{{ $surat->judul_surat }}</b></td>
                                     <td class="mailbox-attachment">
                                         @php

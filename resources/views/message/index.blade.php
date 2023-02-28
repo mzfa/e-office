@@ -22,7 +22,7 @@
                             <li class="nav-item active">
                                 <a onclick="inboxOpen()" class="nav-link">
                                     <i class="fas fa-inbox"></i> Inbox
-                                    <span class="badge bg-primary float-right">12</span>
+                                    {{-- <span class="badge bg-primary float-right">12</span> --}}
                                 </a>
                             </li>
                             <li onclick="sentOpen()" class="nav-item">

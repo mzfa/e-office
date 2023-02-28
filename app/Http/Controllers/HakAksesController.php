@@ -15,7 +15,8 @@ class HakAksesController extends Controller
     public function index()
     {
         $data = DB::table('hakakses')->whereNull('deleted_at')->get();
-        return view('hakakses.index', compact('data'));
+        $list_profesi = DB::table('profesi')->whereNull('profesi.deleted_at')->get();
+        return view('hakakses.index', compact('data','list_profesi'));
     }
     public function modul_akses($id)
     {
@@ -65,8 +66,13 @@ class HakAksesController extends Controller
         $request->validate([
             'nama_hakakses' => ['required', 'string'],
         ]);
+        $akses_bagian = "|";
+        foreach($request->akses_bagian as $akses_bagian_id){
+            $akses_bagian .= $akses_bagian_id.'|';
+        }
         $data = [
             'nama_hakakses' => $request->nama_hakakses,
+            'akses_bagian' => $akses_bagian,
             'created_by' => Auth::user()->id,
             'created_at' => now(),
         ];
