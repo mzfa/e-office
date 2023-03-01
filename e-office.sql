@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 20, 2023 at 03:38 AM
+-- Generation Time: Mar 01, 2023 at 01:45 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `keperawatan`
+-- Database: `e-office`
 --
 
 -- --------------------------------------------------------
@@ -139,6 +139,27 @@ INSERT INTO `bagian` (`bagian_id`, `created_by`, `created_at`, `updated_by`, `up
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `file`
+--
+
+CREATE TABLE `file` (
+  `file_id` int(11) NOT NULL,
+  `nama_file` varchar(255) DEFAULT NULL,
+  `surat_id` int(10) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `file`
+--
+
+INSERT INTO `file` (`file_id`, `nama_file`, `surat_id`) VALUES
+(1, '1677574671848-Bukti-Kegiatan.pdf', 18),
+(2, '1677574671849-Bukti-Piagam:Penghargaan:Medali.pdf', 18),
+(3, '1677574671849-Bukti-Sertifikat.pdf', 18);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `hakakses`
 --
 
@@ -151,16 +172,24 @@ CREATE TABLE `hakakses` (
   `deleted_by` bigint(20) UNSIGNED DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `nama_hakakses` varchar(255) DEFAULT NULL,
-  `menu_id` varchar(255) DEFAULT NULL
+  `menu_id` varchar(255) DEFAULT NULL,
+  `akses_bagian` varchar(2000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `hakakses`
 --
 
-INSERT INTO `hakakses` (`hakakses_id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `nama_hakakses`, `menu_id`) VALUES
-(1, 0, '2023-02-16 00:33:32', 0, '2023-02-16 00:37:51', NULL, NULL, 'Administrator', '6|7|8|9|11|13|14|15|16|17|'),
-(2, 306, '2023-02-16 04:37:19', NULL, NULL, NULL, NULL, 'User', '18|19|20|21|22|23|24|');
+INSERT INTO `hakakses` (`hakakses_id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `nama_hakakses`, `menu_id`, `akses_bagian`) VALUES
+(1, 0, '2023-02-16 00:33:32', 0, '2023-02-28 02:07:57', NULL, NULL, 'Administrator', '6|7|8|9|11|13|14|15|25|', '|1|2|3|4|5|6|7|8|9|'),
+(2, 306, '2023-02-16 04:37:19', NULL, NULL, 0, '2023-02-25 04:21:17', 'User', '25|', NULL),
+(3, 0, '2023-02-25 04:20:49', NULL, NULL, NULL, NULL, 'Kepala Bagian', '25|', NULL),
+(4, 0, '2023-02-25 04:21:02', 0, '2023-02-28 02:57:35', NULL, NULL, 'Kepala Unit', '25|', '|3|4|'),
+(5, 0, '2023-02-25 04:21:14', 0, '2023-02-28 02:10:45', NULL, NULL, 'Kepala RS', '25|', '|3|4|5|6|7|8|'),
+(6, 0, '2023-02-27 07:27:43', NULL, NULL, NULL, NULL, 'Kordinator Pengadaan', '25|', NULL),
+(7, 0, '2023-02-27 07:28:46', NULL, NULL, NULL, NULL, 'Wakars', '25|', NULL),
+(8, 0, '2023-02-27 07:30:24', NULL, NULL, NULL, NULL, 'Direktur PT KGM', NULL, NULL),
+(9, 0, '2023-02-28 01:36:52', NULL, NULL, NULL, NULL, 'Kepala', NULL, '|3|4|5|7|');
 
 -- --------------------------------------------------------
 
@@ -271,8 +300,8 @@ CREATE TABLE `menu` (
 
 INSERT INTO `menu` (`menu_id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `nama_menu`, `icon_menu`, `url_menu`, `parent_id`) VALUES
 (6, 306, '2023-02-16 04:39:05', NULL, NULL, NULL, NULL, 'Konfigurasi', 'bi bi-gear-fill', NULL, 0),
-(7, 306, '2023-02-16 04:39:43', NULL, NULL, NULL, NULL, 'Hak Akses', NULL, 'hakakses.index', 6),
-(8, 306, '2023-02-16 04:40:53', NULL, NULL, NULL, NULL, 'Menu', NULL, 'menu.index', 6),
+(7, 306, '2023-02-16 04:39:43', 0, '2023-02-23 14:42:07', NULL, NULL, 'Hak Akses', NULL, 'hakakses.index', 6),
+(8, 306, '2023-02-16 04:40:53', 0, '2023-02-23 14:41:42', NULL, NULL, 'Menu', NULL, 'menu.index', 6),
 (9, 306, '2023-02-16 04:41:28', NULL, NULL, NULL, NULL, 'Master Data', 'bi bi-archive', NULL, 0),
 (10, 306, '2023-02-16 04:54:06', NULL, NULL, 306, '2023-02-16 04:54:32', 'Bagian', NULL, 'bagian.index', 9),
 (11, 306, '2023-02-16 04:54:26', NULL, NULL, NULL, NULL, 'User', NULL, 'user.index', 9),
@@ -280,15 +309,16 @@ INSERT INTO `menu` (`menu_id`, `created_by`, `created_at`, `updated_by`, `update
 (13, 306, '2023-02-16 04:55:06', NULL, NULL, NULL, NULL, 'Bagian', NULL, 'bagian.index', 9),
 (14, 306, '2023-02-16 04:55:32', NULL, NULL, NULL, NULL, 'Profesi', NULL, 'profesi.index', 9),
 (15, 306, '2023-02-16 04:56:09', NULL, NULL, NULL, NULL, 'Pegawai', NULL, 'pegawai.index', 9),
-(16, 306, '2023-02-16 04:56:44', NULL, NULL, NULL, NULL, 'Jenis Pendidikan', NULL, 'jenis_pendidikan.index', 9),
-(17, 306, '2023-02-16 04:57:40', NULL, NULL, NULL, NULL, 'Jenis Pelatihan', NULL, 'jenis_pelatihan.index', 9),
-(18, 0, '2023-02-16 14:02:37', NULL, NULL, NULL, NULL, 'PROFILE', 'bi bi-person', 'profile.index', 0),
-(19, 0, '2023-02-16 14:03:28', 0, '2023-02-16 14:05:38', NULL, NULL, 'PEKERJAAN', 'bi bi-certificate', 'pekerjaan.index', 0),
-(20, 0, '2023-02-16 14:06:06', NULL, NULL, NULL, NULL, 'PELATIHAN', 'bi bi-certificate', 'pelatihan.index', 0),
-(21, 0, '2023-02-16 14:06:43', NULL, NULL, NULL, NULL, 'Kinerja', 'bi bi-indicator', 'kinerja.index', 0),
-(22, 0, '2023-02-16 14:07:16', NULL, NULL, NULL, NULL, 'Kompetensi', 'bi bi-certificate', 'kompetensi.index', 0),
-(23, 0, '2023-02-18 15:03:37', NULL, NULL, NULL, NULL, 'PENDIDIKAN', 'bi bi-school', 'pendidikan.index', 0),
-(24, 0, '2023-02-20 02:25:48', NULL, NULL, NULL, NULL, 'LAPORAN', 'bi bi-paper', NULL, 0);
+(16, 306, '2023-02-16 04:56:44', NULL, NULL, 0, '2023-02-23 14:32:42', 'Jenis Pendidikan', NULL, 'jenis_pendidikan.index', 9),
+(17, 306, '2023-02-16 04:57:40', NULL, NULL, 0, '2023-02-23 14:32:47', 'Jenis Pelatihan', NULL, 'jenis_pelatihan.index', 9),
+(18, 0, '2023-02-16 14:02:37', NULL, NULL, 0, '2023-02-23 14:32:52', 'PROFILE', 'bi bi-person', 'profile.index', 0),
+(19, 0, '2023-02-16 14:03:28', 0, '2023-02-16 14:05:38', 0, '2023-02-23 14:32:55', 'PEKERJAAN', 'bi bi-certificate', 'pekerjaan.index', 0),
+(20, 0, '2023-02-16 14:06:06', NULL, NULL, 0, '2023-02-23 14:32:58', 'PELATIHAN', 'bi bi-certificate', 'pelatihan.index', 0),
+(21, 0, '2023-02-16 14:06:43', NULL, NULL, 0, '2023-02-23 14:33:01', 'Kinerja', 'bi bi-indicator', 'kinerja.index', 0),
+(22, 0, '2023-02-16 14:07:16', NULL, NULL, 0, '2023-02-23 14:33:03', 'Kompetensi', 'bi bi-certificate', 'kompetensi.index', 0),
+(23, 0, '2023-02-18 15:03:37', NULL, NULL, 0, '2023-02-23 14:33:05', 'PENDIDIKAN', 'bi bi-school', 'pendidikan.index', 0),
+(24, 0, '2023-02-20 02:25:48', NULL, NULL, 0, '2023-02-23 14:33:07', 'LAPORAN', 'bi bi-paper', NULL, 0),
+(25, 0, '2023-02-24 12:04:13', 0, '2023-02-24 12:04:31', NULL, NULL, 'Surat Menyurat', 'fa fa-email', 'message.index', 0);
 
 -- --------------------------------------------------------
 
@@ -908,6 +938,63 @@ INSERT INTO `profesi` (`profesi_id`, `created_by`, `created_at`, `updated_by`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `surat`
+--
+
+CREATE TABLE `surat` (
+  `surat_id` int(11) NOT NULL,
+  `created_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `penerima_id` varchar(2000) NOT NULL,
+  `judul_surat` varchar(255) DEFAULT NULL,
+  `no_surat` varchar(255) DEFAULT NULL,
+  `no` int(11) DEFAULT NULL,
+  `bagian` varchar(255) DEFAULT NULL,
+  `isi_surat` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `surat`
+--
+
+INSERT INTO `surat` (`surat_id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `user_id`, `penerima_id`, `judul_surat`, `no_surat`, `no`, `bagian`, `isi_surat`) VALUES
+(18, 306, '2023-02-28 08:57:51', NULL, NULL, NULL, NULL, 306, '|108|37|', 'Judul', '1/MEMO/IT/02/2023', 1, 'IT', '<div>(function (root, factory) {</div><div>&nbsp; if (typeof define === \'function\' &amp;&amp; define.amd) {</div><div>&nbsp; &nbsp; // AMD. Register as an anonymous module.</div><div>&nbsp; &nbsp; define(factory);</div><div>&nbsp; } else if (typeof exports === \'object\') {</div><div>&nbsp; &nbsp; // Node. Does not work with strict CommonJS, but</div><div>&nbsp; &nbsp; // only CommonJS-like enviroments that support module.exports,</div><div>&nbsp; &nbsp; // like Node.</div><div>&nbsp; &nbsp; module.exports = factory();</div><div>&nbsp; } else {</div><div>&nbsp; &nbsp; // Browser globals (root is window)</div><div>&nbsp; &nbsp; root.Sparkline = factory();</div><div>&nbsp; }</div><div>}(window, function () {</div><div>&nbsp; function extend(specific, general) {</div><div>&nbsp; &nbsp; var obj = {};</div><div>&nbsp; &nbsp; for (var key in general) {</div><div>&nbsp; &nbsp; &nbsp; obj[key] = key in specific ? specific[key] : general[key];</div><div>&nbsp; &nbsp; }</div><div>&nbsp; &nbsp; return obj;</div><div>&nbsp; }</div><div><br></div><div>&nbsp; function Sparkline(element, options) {</div><div>&nbsp; &nbsp; this.element = element;</div><div>&nbsp; &nbsp; this.options = extend(options || {}, Sparkline.options);</div><div><br></div><div>&nbsp; &nbsp; init: {</div><div>&nbsp; &nbsp; &nbsp; this.element.innerHTML = \"&lt;canvas&gt;&lt;/canvas&gt;\";</div><div>&nbsp; &nbsp; &nbsp; this.canvas = this.element.firstChild;</div><div>&nbsp; &nbsp; &nbsp; this.context = this.canvas.getContext(\"2d\");</div><div>&nbsp; &nbsp; &nbsp; this.ratio = window.devicePixelRatio || 1;</div><div><br></div><div>&nbsp; &nbsp; &nbsp; if (this.options.tooltip) {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; this.canvas.style.position = \"relative\";</div><div>&nbsp; &nbsp; &nbsp; &nbsp; this.canvas.onmousemove = showTooltip.bind(this);</div><div>&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; }</div><div>&nbsp; }</div>');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `surat_balasan`
+--
+
+CREATE TABLE `surat_balasan` (
+  `surat_balasan_id` int(11) NOT NULL,
+  `created_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `surat_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `isi_balasan` text DEFAULT NULL,
+  `penerima_balasan_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `surat_balasan`
+--
+
+INSERT INTO `surat_balasan` (`surat_balasan_id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `surat_id`, `user_id`, `isi_balasan`, `penerima_balasan_id`) VALUES
+(10, 108, '2023-02-28 09:45:39', NULL, NULL, NULL, NULL, 18, 108, '<p>Yth. Kepala Bagian Pengadaan</p><p>Berdasarkan permintaan yang disampaikan Kepala Unit IT dimohon untuk segera di proses permintaanya</p><p><br></p>', 37);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -924,7 +1011,6 @@ CREATE TABLE `users` (
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `hakakses_id` bigint(20) UNSIGNED DEFAULT NULL,
   `pegawai_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -932,370 +1018,401 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `name`, `username`, `email_verified_at`, `password`, `remember_token`, `hakakses_id`, `pegawai_id`) VALUES
-(0, 0, '2023-02-16 04:14:12', 306, '2023-02-16 07:02:42', NULL, NULL, 'mzfa', 'mzfa', NULL, 'mzfa', 'lsyzt96gHnfs3AEZfnzqKuv9skCXTrHq0P1o2vZvNVgwRwCdvr1GagfZmcax', 1, 0),
-(1, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ADMINISTRATOR', 'admin', NULL, 'qwerty123', NULL, NULL, 1),
-(2, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST DOKTER I', 'TEST DOKTER', NULL, '121212', NULL, NULL, 120),
-(3, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST REGISTRASI', 'TEST REGISTRASI', NULL, '1234567', NULL, NULL, 121),
-(4, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST PERAWAT', 'audit perawat', NULL, '123456', NULL, NULL, 122),
-(6, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST FARMASI', 'TEST FARMASI', NULL, '123456', NULL, NULL, 124),
-(7, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST GUDANG OBAT', 'TEST GUDANG OBAT', NULL, '123456', NULL, NULL, 125),
-(8, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST KASIR', 'TEST KASIR', NULL, '123456', NULL, NULL, 126),
-(9, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'MUSTARI', 'MUSTARI', NULL, 'fedora', NULL, NULL, 25),
-(10, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Aldityas Eko, dr., Sp.THT-KL', 'aldi', NULL, '161922', NULL, NULL, 33),
-(11, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Vriyanka', 'Vriyanka', NULL, '654321', NULL, NULL, 49),
-(12, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST FISIOTERAPI', 'TEST FISIOTERAPI', NULL, '123456', NULL, NULL, 128),
-(13, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Achmad Agus Sudarwin Haryanto, Sp.B', 'darwin', NULL, '123456', NULL, NULL, 12),
-(14, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'drg. Arum Nurdiana Sari, MM', 'Arum', NULL, '123456', NULL, NULL, 23),
-(15, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Herdiana Elizabeth, Sp.A', 'Herdiana', NULL, '123456', NULL, NULL, 24),
-(16, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Mira Fauziah, Sp.A, Mked.', '0720380', NULL, '123456', NULL, NULL, 26),
-(17, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Irwan Amin, Sp. AN-K', 'Irwan', NULL, '123456', NULL, NULL, 27),
-(18, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Gina Adriana Nainggolan, Sp.An', 'Gina', NULL, '123456', NULL, NULL, 28),
-(19, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Vincent Chrisnata, Sp.AN', 'Vincent', NULL, '123456', NULL, NULL, 29),
-(20, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Andri Suhandi, dr., Sp. B', 'Andri', NULL, '123456', NULL, NULL, 30),
-(21, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Afria Arista, Sp. KK', 'Afria', NULL, '123456', NULL, NULL, 31),
-(22, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Hanekung Titisari, Sp.THT', 'Hanekung', NULL, '123456', NULL, NULL, 32),
-(23, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Muhammad Andi Yassiin, Sp. JP', 'Andi Yassiin', NULL, '123456789', NULL, NULL, 34),
-(24, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Martua Silalahi, dr., Sp.JP', 'Martua', NULL, '123456', NULL, NULL, 35),
-(25, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nadia Prawitra, dr., Sp.S', 'Nadia', NULL, 'Neuro1', NULL, NULL, 36),
-(26, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ahmad Thamrin, dr., Sp.OG', 'Thamrin', NULL, '123456', NULL, NULL, 37),
-(27, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Muhammad Anggawiyatna, Sp.OT', 'Anggawiyatna', NULL, '123456', NULL, NULL, 38),
-(28, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Naindra Kemala Dewi, Sp. P', 'Kemala', NULL, '123456', NULL, NULL, 39),
-(29, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Febriana Novariska, Sp.P', 'Febriana', NULL, '123456', NULL, NULL, 40),
-(30, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Isabella Valentina, Sp.PK', 'Isabella', NULL, '123456', NULL, NULL, 41),
-(31, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Deka Larasati, M. Biomed.', 'Deka', NULL, '123456', NULL, NULL, 42),
-(32, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Indria Yogani, Sp.PD', 'Indria', NULL, '123456', NULL, NULL, 43),
-(33, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Felix Satwika, dr., Sp.PD', 'Felix', NULL, '987654', NULL, NULL, 44),
-(34, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Tatan Saefudin, dr., Sp.Rad', 'Tatan', NULL, '123456', NULL, NULL, 45),
-(35, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Tunjung Prasetyo Nugroho, Sp. Rad', 'Tunjung', NULL, '123456', NULL, NULL, 46),
-(36, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Pangeran Indal Patra Abbas, dr.', 'Patra', NULL, '123456', NULL, NULL, 47),
-(37, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Fariha', 'Fariha', NULL, '123456', NULL, NULL, 48),
-(38, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Erish Harry Angkat', 'Erish', NULL, '121212', NULL, NULL, 50),
-(39, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ramadani Kurniawan', 'Ramadani', NULL, '123456', NULL, NULL, 51),
-(40, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Fachdepy Maulana Ngangi', 'Fachdepy', NULL, '123456', NULL, NULL, 52),
-(41, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Soraya Alamudi', 'Soraya', NULL, '123456', NULL, NULL, 53),
-(42, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Rivki Wida Sarandi', 'Rivki', NULL, '123456', NULL, NULL, 54),
-(43, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ns. Eka Riadi, S. Kep', 'Eka Riadi', NULL, '123456', NULL, NULL, 63),
-(44, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ns. Vita  Sry Sulastri, S.Kep', 'Vita', NULL, '123456', NULL, NULL, 64),
-(45, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ns. Anggraeni, S.Kep', 'Anggraeni', NULL, '220270', NULL, NULL, 65),
-(46, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Marselia Yuli Pratiwi A.Md. Kep', 'Marselia', NULL, '654321', NULL, NULL, 68),
-(47, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Solawatun Mustaekah, A.Md.Kep', 'Solawatun', NULL, '222222', NULL, NULL, 69),
-(48, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yolanda Mastin Samaowati,A.Md.Kep', 'Yolanda Mastin', NULL, '7654321', NULL, NULL, 70),
-(49, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dede Nuraeni, AMK', 'Dede Nuraeni', NULL, '290466', NULL, NULL, 71),
-(50, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Patricia Sitinjak, A.Md.Kep', 'Patricia', NULL, '071096', NULL, NULL, 72),
-(51, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dheni Hendra Bangsawan, A.Md.Kep', 'Dheni', NULL, '112323', NULL, NULL, 73),
-(52, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ummi Zahrah Muntazzah,A.Md.Kep', 'Zahrah', NULL, '221292', NULL, NULL, 74),
-(53, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ainun, A.Md. Kep', 'Ainun', NULL, '123456', NULL, NULL, 75),
-(54, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Mega Nur Komala, AMK', 'ega mala', NULL, '292929', NULL, NULL, 76),
-(55, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Pangestu S.W.D., A.Md.Kep', 'Pangestu', NULL, '123456', NULL, NULL, 77),
-(56, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Putri Budy Utami, A.Md.Kep', 'Putri Budy', NULL, '111111', NULL, NULL, 78),
-(57, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Anggun Cikita Dewi, A.Md.Kep', 'Anggun', NULL, '090497', NULL, NULL, 79),
-(58, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Farid Fikri Akbar, A.Md.Kep', 'Farid Fikri', NULL, '16021997', NULL, NULL, 80),
-(59, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Maya Riandari, A.Md.Kep', 'Maya Riandari', NULL, '123456', NULL, NULL, 81),
-(60, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yumba Laras Sati, A.Md. Kep', 'Yumba', NULL, '060606', NULL, NULL, 82),
-(61, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yolanda, A.Md. Kep', '1221097', NULL, '123456', NULL, NULL, 83),
-(62, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Agustinus Hamonangan, A.Md. Kep', 'Agustinus', NULL, '123456', NULL, NULL, 84),
-(63, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Inas Nur Afifah, A.Md. Kep', 'Inas', NULL, '200497', NULL, NULL, 85),
-(64, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wayan Sudiarta, A.Md.Kep', 'Wayan', NULL, '123456', NULL, NULL, 86),
-(65, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Maria Esther Luciana,A.Md.Kep', 'Maria Esther', NULL, '123456', NULL, NULL, 87),
-(66, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Hotmauli Siregar, AMK', 'Hotmauli', NULL, '123456', NULL, NULL, 88),
-(67, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ni Ketut Murniati', 'Ni Ketut', NULL, '123456', NULL, NULL, 89),
-(68, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Friska Magdalena, A.Md.Kep', 'Friska', NULL, '123456', NULL, NULL, 90),
-(69, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Kurnia, AMK', 'niaaf', NULL, '777777', NULL, NULL, 91),
-(70, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Novita Sari, A.Md.Kep', 'Novita Sari', NULL, '123456', NULL, NULL, 92),
-(71, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Bio Riski Maulana,A.Md.Kep', 'Bio Rizki', NULL, '123456', NULL, NULL, 93),
-(72, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sea Rahayu, AMK', 'Sea Rahayu', NULL, '070618', NULL, NULL, 94),
-(73, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eriyandi Harahap, AMK', 'Eriyandi', NULL, '123456', NULL, NULL, 95),
-(74, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Abdul Rouf Supiyanto, A.Md. Kep', 'Abdul Rouf', NULL, '123456', NULL, NULL, 96),
-(75, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Jumiaty, AMK', 'Jumiaty', NULL, '828282', NULL, NULL, 97),
-(76, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Alifatus Safariyah, A.Md.Kep', 'Alifatus', NULL, '123456', NULL, NULL, 98),
-(77, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rahayu Biyanti, AMK', 'Rahayu Biyanti', NULL, '222222', NULL, NULL, 99),
-(78, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Mardihyana, A.Md.Kep', 'Mardihyana', NULL, '112233', NULL, NULL, 100),
-(79, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wa Wahyu Dian Rostary', 'Dian Rostary', NULL, '200395', NULL, NULL, 101),
-(80, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rahmayuli Ardian Putri, AMD, Kep', 'Rahmayuli', NULL, '100791', NULL, NULL, 102),
-(81, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Putri Adijaya Sakti, A.Md.Kep', 'Putri Adijaya', NULL, 'putridijay', NULL, NULL, 103),
-(82, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Robby, Amd.Kep', 'Robby', NULL, '060690', NULL, NULL, 104),
-(83, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nathasia Jeanet Christy Irala, Amd.Kep', 'Nathasia Jeanet', NULL, '123456', NULL, NULL, 105),
-(84, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Feri Susanto, AMK', 'Feri Susanto', NULL, '123456', NULL, NULL, 106),
-(88, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yudi Sukmara, A.Md.MPRS', 'Yudi', NULL, '850416', NULL, NULL, 109),
-(89, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Roziana Mega Dewi, A.Md.RMIK', 'Roziana Mega', NULL, '654321', NULL, NULL, 110),
-(90, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Hardianti Handayani, A.Md. RMIK', 'Siti Hardianti', NULL, '310896', NULL, NULL, 111),
-(91, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nasrullah', 'Nasrullah', NULL, '312322', NULL, NULL, 112),
-(92, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Firni Dwi Astuti, S.Farm', 'Firni', NULL, '123456', NULL, NULL, 7),
-(93, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Hadijah., S.Si.', 'Hadijah', NULL, 'yaarahman', NULL, NULL, 17),
-(94, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Siti Fatimah., S.Farm', 'Siti Fatimah', NULL, '111111', NULL, NULL, 18),
-(95, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Tri Meiyuliyanti', 'buzz', NULL, '808011', NULL, NULL, 55),
-(96, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Ari Marliyana., S.Farm', 'Ari Marliyana', NULL, 'akuadalahaku', NULL, NULL, 56),
-(97, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fitriyatul Zabariyah, S.Farm', 'Fitriyatul', NULL, '123456', NULL, NULL, 113),
-(98, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Gilang Mahardika, A.Md. AK', 'dnm', NULL, '123456', NULL, NULL, 10),
-(99, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nur Hikmah, A.Md.AK', 'Nur Hikmah', NULL, '123456', NULL, NULL, 13),
-(100, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ema Supiani, A.Md.AK', 'ema supiani', NULL, '123456', NULL, NULL, 14),
-(101, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ipung Purwono, A.Md. AK', 'Ipung', NULL, '123456', NULL, NULL, 15),
-(102, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dewi Yuliana A.Md. AK', 'Awie', NULL, '654321', NULL, NULL, 16),
-(103, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST PENUNJANG', '100001', NULL, '123456', NULL, NULL, 127),
-(104, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rusliadi Kustiawan, A.Md. RMIK', 'Rusliadi', NULL, 'Rusliadi212@', NULL, NULL, 5),
-(105, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Imam Hari Santoso, A.Md. Rad', 'Imam', NULL, '1891emom', NULL, NULL, 107),
-(106, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fadhillah Apriani, A.Md.Rad', 'Fadhillah', NULL, 'dila99', NULL, NULL, 6),
-(107, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Lia Avriani, A.Md. Rad', 'Lia Avriani', NULL, '111111', NULL, NULL, 108),
-(108, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Noor Rizky Zulfira, SE. Ak', 'Rizky', NULL, '654321', NULL, NULL, 8),
-(109, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yoesi Febriansyah, SE.', 'Yoesi', NULL, '010108', NULL, NULL, 61),
-(110, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Bagoes Riyadi Kurniawan, SE', 'Bagoes', NULL, '654321', NULL, NULL, 62),
-(111, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'R. A. Afiani Putri Utaminingsih, SS', 'tami', NULL, '123456', NULL, NULL, 11),
-(112, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Endang Lestariningsih, A.Md.Keb', 'Endang', NULL, '789789', NULL, NULL, 22),
-(113, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Vinda Lyan Nofrin D., A.Md.Keb', 'Vinda', NULL, '123456', NULL, NULL, 20),
-(114, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Pahma Rahmi S., A.Md.Keb', 'Rahmi', NULL, '123123', NULL, NULL, 19),
-(115, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fay Ferry Pardomuan Lambok P. Simanjuntak, dr., Sp. OG', 'Fay', NULL, '123456', NULL, NULL, 130),
-(116, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Tengku Muhammad Iskandar, dr., Sp.OG', 'iskandar', NULL, '123123', NULL, NULL, 131),
-(117, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Bambang Riyadi Agus P', 'Bambang Riyadi', NULL, '123456', NULL, NULL, 132),
-(118, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ery Wildan, Sp.OT', 'Ery', NULL, '112233', NULL, NULL, 133),
-(119, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Maryanne Sri Andriawati, A.Md. Keb', 'Maryanne', NULL, '1234567', NULL, NULL, 118),
-(120, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Maya Zelika Paradita', 'Maya Zelika', NULL, '1234567', NULL, NULL, 134),
-(121, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr M. Candrasa Widya Wardhana', 'Candrasa', NULL, '1234567', NULL, NULL, 135),
-(122, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ade Dewi Naralia', 'Naralia', NULL, '123456', NULL, NULL, 136),
-(123, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Yetti Muthiah, MKK.', 'Yetti', NULL, '123456', NULL, NULL, 137),
-(124, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr Cut Shelma', 'cut', NULL, '1234567', NULL, NULL, 138),
-(125, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sri Nurlaelah, A.Md. Keb', 'Cicie', NULL, '1234567', NULL, NULL, 117),
-(126, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Amia Della, A.Md.Keb', 'Amia', NULL, '031294', NULL, NULL, 3),
-(127, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Syarifudin, dr., Sp.P', 'syarif', NULL, '123456', NULL, NULL, 139),
-(128, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sintha Damayanti, A.Md.Kep', 'shinta', NULL, '111333', NULL, NULL, 141),
-(129, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Syifa Pauziah, A.Md.Kep', 'Syifa', NULL, '131097', NULL, NULL, 142),
-(130, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rifatul Choiriyah, A.Md.Keb', 'Rifatul', NULL, '123456', NULL, NULL, 140),
-(131, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Irenne Purnama, MSc.,Sp.A', 'irenne', NULL, '131088', NULL, NULL, 144),
-(132, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Damba dwisepto aulia,dr. Sp JP', 'Damba', NULL, '123456', NULL, NULL, 145),
-(133, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ainur Rahmah, dr., Sp.M', 'Ainur', NULL, 'Terserah1985', NULL, NULL, 143),
-(134, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Beta Agustia Wisman, Sp.PD', 'Beta', NULL, '123456', NULL, NULL, 146),
-(135, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Junariah, A.Md.Kep', 'Junariah', NULL, '654321', NULL, NULL, 147),
-(136, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ruangan mawar', 'mawar', NULL, '123456', NULL, NULL, 148),
-(137, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ruangan melati', 'melati', NULL, '123456', NULL, NULL, 149),
-(138, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Syarifuddin, dr., Sp.P (y)', 'Dr Riyadi', NULL, '654321', NULL, NULL, 150),
-(139, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ruang teratai', 'Teratai', NULL, '123456', NULL, NULL, 151),
-(140, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ruang anggrek', 'Anggrek', NULL, '123456', NULL, NULL, 152),
-(141, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Galih Arif Azhari', 'Gazari', NULL, '311219', NULL, NULL, 153),
-(142, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Himawan Tryatmaja, Dr.', 'Himawan', NULL, '283010', NULL, NULL, 154),
-(143, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhsin Ali Sahbana, S.Farm.Apt', 'muhsin', NULL, '123456', NULL, NULL, 167),
-(144, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Nahriah', 'siti nahriah', NULL, '123456', NULL, NULL, 156),
-(145, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yana Aprianingsih Tampubolon, A.Md.Kep', 'Yana Aprianingsih', NULL, '123456', NULL, NULL, 171),
-(146, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, '', '', NULL, '123456', NULL, NULL, NULL),
-(147, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wyasa Andrianto, dr., Sp.KFR', 'wyasa', NULL, '123456', NULL, NULL, 4),
-(148, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Fathonah, S.TR.Kes', 'fatho96', NULL, '654321', NULL, NULL, 164),
-(149, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Marisa,S.farm', 'marisa', NULL, '251894', NULL, NULL, 170),
-(150, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Syarifuddin, dr., Sp.P (y)', 'ryadi', NULL, '123456', NULL, NULL, 172),
-(151, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Astari arum sari, dr., Sp.AN', 'Astari Arum', NULL, '785472', NULL, NULL, 173),
-(152, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Trias Wibowo, SE', 'trias', NULL, '1120976', NULL, NULL, 119),
-(153, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nunuk handini, S.Farm', 'nunu', NULL, 'Qirani03', NULL, NULL, 169),
-(154, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fajar Nurul Hadi, SE.', 'Fajar', NULL, '123456', NULL, NULL, 158),
-(155, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'HCU', 'Hcu', NULL, '123456', NULL, NULL, 178),
-(156, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Asysyukriati, Sp.P', 'asy', NULL, '1234567', NULL, NULL, 179),
-(157, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'isolasi', 'isolasi', NULL, '123456', NULL, NULL, 180),
-(158, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ahdi Pratama', 'ahdi', NULL, '123123', NULL, NULL, 2),
-(159, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Cici Diah Cahyanti, AMd. Rad', 'Cici Diah', NULL, '123456', NULL, NULL, 166),
-(160, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Lulus Lusmana, A.Md.Rad', 'Lulus', NULL, '123456', NULL, NULL, 165),
-(161, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dina Septiyanti, AMG', 'Dina', NULL, '123abc', NULL, NULL, 66),
-(162, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Niken Alia Taskya, dr.,Sp.KFR', 'niken', NULL, '123456', NULL, NULL, 192),
-(163, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sony Bagaskara, A.Md.Kep', 'sony', NULL, '1234567', NULL, NULL, 181),
-(164, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eka Apriliana, A.Md.Kep', 'eka a', NULL, '1234567', NULL, NULL, 183),
-(165, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fadhilah Ukhrainy, A.Md.Kep', 'fadhilah', NULL, '12345678', NULL, NULL, 182),
-(166, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Vivi Nadillah, A.Md.Kep', 'vivi', NULL, '310413', NULL, NULL, 188),
-(167, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Agung Dwi Saputra, A.Md.Kep', 'agung', NULL, '123456', NULL, NULL, 186),
-(168, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Syifa Nur Faujiah, A.Md.Kep', 'syifa n', NULL, '1234567', NULL, NULL, 184),
-(169, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Riza Fahlevi, A.Md.Kep', 'riza', NULL, '123456', NULL, NULL, 189),
-(170, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ahmad Rifai, Amd.Kep', 'rifai', NULL, '123456', NULL, NULL, 193),
-(171, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Joharatul Fikriah, A.Md.Kep', 'johar', NULL, '925089', NULL, NULL, 185),
-(172, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Erwin D', '170301', NULL, '123456', NULL, NULL, 196),
-(173, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dwi Indra Prasetyo, AMK', 'dwi', NULL, '654321', NULL, NULL, 175),
-(174, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Mardiana Ismaningsih, dr.', 'Mardiana', NULL, '654321', NULL, NULL, 195),
-(175, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Mardiana Ismaningsih, dr', 'Mardiana Ismaningsih', NULL, '123456', NULL, NULL, 197),
-(176, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Bagus Tridana Mulia, A.Md.Kep', 'bagus', NULL, '273098', NULL, NULL, 187),
-(177, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ruthsuyata Siagian, dr.', 'ruthsuyata', NULL, '123456', NULL, NULL, 199),
-(178, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sondang Virginia, dr.', 'virginia', NULL, '123456', NULL, NULL, 201),
-(179, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Arevia Mega Diduta Utami. dr', 'arevia', NULL, '123456', NULL, NULL, 202),
-(180, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Victor Anderson CH Nguru, dr.', 'victor', NULL, '123456', NULL, NULL, 203),
-(181, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ganjar Nugraha', 'ganjar', NULL, '070023', NULL, NULL, 198),
-(182, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Kasmiyati, AMK', 'kas', NULL, '123456', NULL, NULL, 174),
-(183, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Danang Adi Kusuma, A.Md.Kep', 'Danang', NULL, '12345678', NULL, NULL, 206),
-(184, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yuliana Sartika, A.Md.Kep', 'Yuliana', NULL, '123456', NULL, NULL, 207),
-(185, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yuliana Ade Putri, A.Md.Kep', 'yuliana ade', NULL, 'Angel21', NULL, NULL, 208),
-(186, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Atmiati', 'Atmiati', NULL, '09071991', NULL, NULL, 209),
-(187, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Merty Supriharti Dr', 'Merty', NULL, '123456', NULL, NULL, 210),
-(188, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ratna Dillah', 'Ratna', NULL, 'pelangi', NULL, NULL, 205),
-(189, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wika Karunia Lestari, S.Tr.Keb', 'wika', NULL, 'alhamdulillah', NULL, NULL, 212),
-(190, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Umairoh', 'umairoh', NULL, 'p@ssw0rd', NULL, NULL, 204),
-(191, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Farhah. A.Md.RMIK', 'farhah', NULL, '159159', NULL, NULL, 159),
-(192, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Gigih Herlambang', 'gigih', NULL, '123456', NULL, NULL, 216),
-(193, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dahlia', 'Dahlia', NULL, '123456', NULL, NULL, 217),
-(194, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'EDELWEIS', 'EDELWEIS', NULL, '123456', NULL, NULL, 218),
-(195, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Indah Ari Utari', 'indah', NULL, '12345678', NULL, NULL, 214),
-(196, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Vitriyana Manalu', 'vitri', NULL, '123456', NULL, NULL, 215),
-(197, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Angga Meda Mahardhika, dr', 'Angga', NULL, '1234567', NULL, NULL, 224),
-(198, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Astuti Irani, AMd. AK.', 'Rani', NULL, '123456', NULL, NULL, 155),
-(199, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nopa, AMK', 'nopa', NULL, '654321', NULL, NULL, 222),
-(200, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nunung Latofah, S.AP', 'nunung', NULL, '123456', NULL, NULL, 157),
-(201, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhlisoh, A.Md.Keb', 'lilis', NULL, '123456', NULL, NULL, 221),
-(202, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Arziani Thasya', 'Arziani', NULL, '123456', NULL, NULL, 226),
-(203, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ayu Pratidina', 'Ayu P', NULL, '631206', NULL, NULL, 227),
-(204, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. ANA VERAWATY', 'ana', NULL, '123456', NULL, NULL, 230),
-(205, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'AHMAD AZHARI', 'azhari', NULL, '121212', NULL, NULL, 229),
-(206, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ns. Pita Romawati, S.Kep', 'pita', NULL, '12345678', NULL, NULL, 223),
-(207, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Winny, Sp.KFR', 'winny', NULL, 'William@1961', NULL, NULL, 232),
-(208, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ellyo Ahmad Reza', 'Ellyo', NULL, '123456', NULL, NULL, 235),
-(209, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dr. Muhamad Yugo Hario Sakti Dua, Sp.P.D', 'hario', NULL, '000000', NULL, NULL, 236),
-(210, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Adhika Nugraha', 'adhika', NULL, '526532', NULL, NULL, 234),
-(211, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sheila Dwi A P', 'Sheila', NULL, '654321', NULL, NULL, 238),
-(212, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Puji Rahayu', 'puji', NULL, '123456', NULL, NULL, 239),
-(213, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Rokhmah', 'siti r', NULL, '123456', NULL, NULL, 240),
-(214, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Zulaikha Ayu Hakli', 'zulaikha', NULL, '123456', NULL, NULL, 241),
-(215, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eva Widiyanti', 'eva', NULL, 'gakmau', NULL, NULL, 242),
-(216, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ayu Meliyani Solihah', 'ayu meliyanih', NULL, '654321', NULL, NULL, 243),
-(217, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Olivia Widha Pratiwi', 'olivia', NULL, '123456', NULL, NULL, 244),
-(218, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dina Widyaningrum', 'dina w', NULL, '111111', NULL, NULL, 245),
-(219, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nada Putri Rubiyana', 'nada', NULL, '123456', NULL, NULL, 246),
-(220, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Susy Ambar Wati', 'susy', NULL, '654321', NULL, NULL, 247),
-(221, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Choirunisa', 'choirunisa', NULL, '112233', NULL, NULL, 250),
-(222, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Gita Afriani', 'gita', NULL, '112233', NULL, NULL, 251),
-(223, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rita Oktavia', 'rita', NULL, '123456', NULL, NULL, 252),
-(224, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Indah Nurjanah', 'indah n', NULL, 'kepoasli', NULL, NULL, 253),
-(225, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ijtihad Nur Habibah', 'ijtihad', NULL, '011121', NULL, NULL, 254),
-(226, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Mia Amalia', 'mia', NULL, '123456', NULL, NULL, 255),
-(227, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ajeng Putriyani', 'ajeng', NULL, '000000', NULL, NULL, 256),
-(228, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Bella Sonia Junita', 'bella', NULL, '123456', NULL, NULL, 257),
-(229, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Gita Fepbri Widdona', 'gita f', NULL, '369147', NULL, NULL, 258),
-(230, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Feberianti Sihotang', 'Febri', NULL, '123456', NULL, NULL, 259),
-(231, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Aulia Nur Afifah', 'aulia', NULL, '222222', NULL, NULL, 261),
-(232, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Erdin Dwi Prasetya', 'Erdin', NULL, '123456', NULL, NULL, 262),
-(233, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wiwin Rigianti', 'wiwin', NULL, '112233', NULL, NULL, 263),
-(234, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Reza Amelia', 'amelia', NULL, '654321', NULL, NULL, 265),
-(235, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wayan Lia Suwastuti', 'lia', NULL, '7777777', NULL, NULL, 266),
-(236, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Daifi Sukmasari', 'daifi', NULL, 'D191100', NULL, NULL, 267),
-(237, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ramdhani Hartono Saputra', 'ramdhani', NULL, '123456', NULL, NULL, 264),
-(238, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Diah Kurnia Yussela, A.Md.Keb, SKM', 'diah', NULL, '771988', NULL, NULL, 21),
-(239, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rizka Aulia Safitri', 'rizka', NULL, '123456', NULL, NULL, 233),
-(240, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'R. Muhammad Wawan Purwana Wahyudin', 'wawan', NULL, '123456', NULL, NULL, 272),
-(241, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Subhan Galih Prakasi', 'subhan', NULL, 'subhan190993', NULL, NULL, 270),
-(242, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Madha Surya', 'madha', NULL, '123456', NULL, NULL, 271),
-(243, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dr. Satriyo Kusbandono, Sp.PD', 'satriyo', NULL, '123456', NULL, NULL, 275),
-(244, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Ari Tuti Widia Astuti., S.Farm', 'widia', NULL, '220496', NULL, NULL, 237),
-(245, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Dyna Oki Wulandari., S.Farm', 'dyna', NULL, 'fufu1221', NULL, NULL, 268),
-(246, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dita Puspa Wulansari', 'dita', NULL, '123456', NULL, NULL, 260),
-(247, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nur Ardianty', 'Ardianty', NULL, '123456', NULL, NULL, 277),
-(248, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Reza Dwi Saputra', 'reza', NULL, '020317', NULL, NULL, 269),
-(249, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Evi Septiani', 'Evi', NULL, '123456', NULL, NULL, 276),
-(250, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rafli Mahendra Priyatno', 'Rafli', NULL, 'rr1605', NULL, NULL, 274),
-(251, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'transit igd', 'TRANSIT IGD', NULL, '123456', NULL, NULL, 278),
-(252, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'wijaya kusuma', 'wijaya kusuma', NULL, '123456', NULL, NULL, 319),
-(253, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'SAKURA', 'sakura', NULL, '123456', NULL, NULL, 334),
-(254, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Anderias Julius Bainkabel', 'Anderias', NULL, '555111', NULL, NULL, 318),
-(255, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Kristia Heriyati', 'kristia', NULL, '123456', NULL, NULL, 284),
-(256, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Heni Setia Wati', 'heni', NULL, '123456', NULL, NULL, 332),
-(257, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ermawati', 'ermawati', NULL, '123456', NULL, NULL, 279),
-(258, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Heri Saputra', 'heri', NULL, '123456', NULL, NULL, 280),
-(259, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ocsha Galuh Pradana', 'ocsha', NULL, '123456', NULL, NULL, 306),
-(260, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Indrawati', 'indrawati', NULL, '123456', NULL, NULL, 314),
-(261, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Riki Taufiki Firdausy', 'riki', NULL, '123456', NULL, NULL, 341),
-(262, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'M. Pebuarivan Rahman', 'Pebuarivan', NULL, '123456', NULL, NULL, 305),
-(263, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Iqbal Maulana Putra', 'iqbal', NULL, '123456', NULL, NULL, 291),
-(264, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Cahya Annisa Putri', 'cahya', NULL, '123456', NULL, NULL, 339),
-(265, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Teddy Lahengkeng S', 'Teddy', NULL, '123456', NULL, NULL, 342),
-(266, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Arista Nevyana Bella', 'arista', NULL, '123456', NULL, NULL, 293),
-(267, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhamad Redho Rahman Pratama', 'redho', NULL, '123456', NULL, NULL, 322),
-(268, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Kartika Widyasari', 'kara', NULL, '123456', NULL, NULL, 340),
-(269, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'M. Rusdi', 'rusdi', NULL, '123456', NULL, NULL, 299),
-(270, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Suchipto', 'suchipto', NULL, '123456', NULL, NULL, 297),
-(271, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Winda Sulistyowati', 'winda', NULL, '123456', NULL, NULL, 331),
-(272, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Augustin Mega Anjani', 'augustin', NULL, '123456', NULL, NULL, 324),
-(273, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Riska Safitri', 'riska', NULL, '123456', NULL, NULL, 295),
-(274, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nok Nur Fitria', 'nur', NULL, '123456', NULL, NULL, 281),
-(275, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Juandi', 'juandi', NULL, '123456', NULL, NULL, 307),
-(276, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rosse Anggraeny', 'rosse', NULL, '123456', NULL, NULL, 294),
-(277, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nathalia Dora', 'nathalia', NULL, '123456', NULL, NULL, 320),
-(278, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Raehana', 'raehana123', NULL, '123456', NULL, NULL, 315),
-(279, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nurul Ami Fahlatul Ambia', 'ami', NULL, '123456', NULL, NULL, 303),
-(280, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Neni Kania, SE. MPH.', 'neni', NULL, '260469sam', NULL, NULL, 349),
-(281, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Ari Pratama', 'ari', NULL, '123456', NULL, NULL, 300),
-(282, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Ripay Nur Sepdi', 'ripay', NULL, '123456', NULL, NULL, 321),
-(283, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Lovena Sari, M. Ked (DV), Sp. DV', 'lovena', NULL, '888888', NULL, NULL, 351),
-(284, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Rima Melati, Sp. AK, Sp. OK', 'rima', NULL, '123456', NULL, NULL, 352),
-(285, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Adrian Ridski Harsono, Sp. N', 'Adrian', NULL, 'arhspn', NULL, NULL, 356),
-(286, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Cempaka Dwi Setyasih', 'Cempaka', NULL, '160424', NULL, NULL, 357),
-(287, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ayu Fitri Lestianti, A.md, RMIK', 'Ayu F', NULL, '010101', NULL, NULL, 220),
-(288, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dhony Abdul Kharist', 'dhony', NULL, '654321', NULL, NULL, 333),
-(289, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Andi Ayu Faradiba Mudjahidin', 'yoe', NULL, '123456', NULL, NULL, 311),
-(290, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Diah Ayu Adiati', 'Ayu', NULL, '654321', NULL, NULL, 309),
-(291, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Juhroh', 'juhroh', NULL, '123456', NULL, NULL, 345),
-(292, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Riri Amiati', 'RIRI', NULL, '777777', NULL, NULL, 359),
-(293, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Nino Farizal', 'nino', NULL, 'guaganteng', NULL, NULL, 343),
-(294, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Khoerurrijal', 'khoerurrijal', NULL, '122021', NULL, NULL, 365),
-(295, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'drg. Michael Pangestu, Sp. KG', 'michael', NULL, 'hihihi', NULL, NULL, 364),
-(296, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Riady Ashari, Sp. A', 'riyadi', NULL, '654321', NULL, NULL, 363),
-(297, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Zousepin Akbar', 'zousepin', NULL, '025888', NULL, NULL, 366),
-(298, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. M Darussalam Darwis', 'Darwis', NULL, '123456', NULL, NULL, 371),
-(299, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ranggahesa Wibawa Yudhisty Pramana', 'Rangga', NULL, '123456', NULL, NULL, 372),
-(300, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Roy Martino, Sp. An', 'Roy', NULL, '777777', NULL, NULL, 374),
-(301, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Novy Dewi Rahayu', 'novy d', NULL, '110606', NULL, NULL, 370),
-(302, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Riezalisnoor Maulana Akbar', 'rieza', NULL, '070100', NULL, NULL, 375),
-(303, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Rudi Hermansyah, Sp. B', 'Rudi', NULL, '123456', NULL, NULL, 376),
-(304, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Pipit Kasiani', 'Pipit', NULL, '654321', NULL, NULL, 355),
-(305, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Laily Ridawati, Sp.PD', 'Laily', NULL, '240688', NULL, NULL, 377),
-(306, 0, '2023-02-16 04:14:12', 0, '2023-02-17 01:50:01', NULL, NULL, 'Syam Apriansyah', 'syam', NULL, 'uhuy', 'pTKy78lEYDnPTBmMQkoWkDxmMSIDoml1bDeav7M1sH8ElSDSuM0F9rlxsysn', 2, 354),
-(307, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sultan Alfian', 'alfian', NULL, '7654321', NULL, NULL, 382),
-(308, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Endah Rizqi Winantri', 'endah', NULL, '990615', NULL, NULL, 373),
-(309, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Vania Shaula', 'Vania', NULL, '123456', NULL, NULL, 386),
-(310, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Vannessa Karenina', 'Vannessa', NULL, '123456', NULL, NULL, 385),
-(311, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Syari Maisyarah Rahman, Sp. Rad', 'Maisyarah', NULL, '123456', NULL, NULL, 387),
-(312, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Aminah Asri', 'aminah', NULL, '100519', NULL, NULL, 383),
-(313, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Laili Fathiyah, MPH', 'lailifathiyah', NULL, '17zabran', NULL, NULL, 388),
-(314, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ratna Komari, AMK', 'komari', NULL, 'Tahun2023', NULL, NULL, 57),
-(315, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ade Novianti', 'ade novianti', NULL, '7654321', NULL, NULL, 389),
-(316, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Baktiar Aprianto', 'Baktiar', NULL, '7654321', NULL, NULL, 368),
-(317, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Putri Cahya Kamila Paputungan', 'Putri c', NULL, '123456', NULL, NULL, 380),
-(318, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Edi Supriadi', 'Edi S', NULL, '123456', NULL, NULL, 384),
-(319, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Siti Sarah Rachmadianti', 'Siti Sarah', NULL, '111111', NULL, NULL, 390),
-(320, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'drg. Cut Fadluna Paramita, Sp. Ort', 'Fadluna', NULL, 'Maryam08', NULL, NULL, 391),
-(321, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nurul Fatimah', 'nurullfatiimah', NULL, '123456', NULL, NULL, 58),
-(322, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eva Handini', 'handinieva', NULL, '654321', NULL, NULL, 362),
-(323, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nurjanah', 'cenung', NULL, '090909', NULL, NULL, 60),
-(324, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Viviana Suwikno', 'viviana', NULL, '210292', NULL, NULL, 59),
-(325, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Anisa Habsari Sulistyo Rini', 'anisa', NULL, '181818', NULL, NULL, 190),
-(326, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Raedy Ruwanda Susanto, Sp A.', 'raedy', NULL, '141118', NULL, NULL, 395),
-(327, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Khonita Adian Utami, Sp. N', 'khonita', NULL, '654321', NULL, NULL, 396),
-(328, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Aprilia Dian Kusuma Rini', 'aprilia', NULL, '112233', NULL, NULL, 393),
-(329, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Supandi Rejeki', 'supandi', NULL, '260894', NULL, NULL, 397),
-(330, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wandra Yardi  D', 'Wandra', NULL, '123456789', NULL, NULL, 381),
-(331, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Nur’aini Alamanda, Sp.An', 'manda', NULL, 'PisanganBaru04', NULL, NULL, 399),
-(332, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Rivo Mario Warouw Lintuuran, Sp.KJ', 'rivo', NULL, '123456', NULL, NULL, 400),
-(333, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ive Hana Ruth Sitepu', 'ivehana', NULL, '654321', NULL, NULL, 405),
-(334, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yosep Pransiskus Riki Dosi', 'yosep', NULL, '987654321', NULL, NULL, 404),
-(335, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Vina Arum Sari', 'vinaarum', NULL, 'qwerty', NULL, NULL, 407),
-(336, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Raehana', 'raehana', NULL, '011120', NULL, NULL, 408),
-(337, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eka Ajheng Widyawati', 'ekaajheng', NULL, '210497', NULL, NULL, 406),
-(338, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Iriani Utami Ramdona', 'iriani', NULL, '123456', NULL, NULL, 411),
-(339, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Vista Yulistia', 'vista', NULL, '123456', NULL, NULL, 416),
-(340, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fauziah Hasanah', 'fauziah', NULL, '123456', NULL, NULL, 413),
-(341, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Latifah', 'siti', NULL, '123456', NULL, NULL, 415),
-(342, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Krisna Ramadhan Saputra', 'krisna', NULL, '123456', NULL, NULL, 403),
-(343, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Zulfa', 'm zulfa', NULL, '123456', NULL, NULL, 414),
-(344, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Andi Febrina Sosiawati', 'febrina', NULL, '010997', NULL, NULL, 412),
-(345, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Tiara Kusuma Dewi', 'tiara', NULL, '123456', NULL, NULL, 418),
-(346, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Shaula Adrea Rusdiana Nasution', 'shaula', NULL, '123456', NULL, NULL, 420),
-(347, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wiji Tri Sayekti', 'wiji', NULL, '123456', NULL, NULL, 417),
-(348, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yusron Azkiyah', 'Yusron', NULL, '123456', NULL, NULL, 378),
-(349, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Josse Nathan Goenawan', 'nathan', NULL, '123456', NULL, NULL, 428),
-(350, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Isma Fadlilatus Sadiyah', 'isma', NULL, '123456', NULL, NULL, 429),
-(351, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Bahesty Cut Nyak Din', 'bahesty', NULL, '123456', NULL, NULL, 427),
-(352, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Taufiq R. Dengo', 'taufiq', NULL, '123456', NULL, NULL, 392),
-(353, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ahmad Samdani, SKM., MPH.', 'samdani', NULL, '260469sam', NULL, NULL, 436),
-(354, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Priyanka Ganesa Utami, Sp. N', 'Priyanka', NULL, '022079', NULL, NULL, 439),
-(355, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Arrival Rahman', 'arrival', NULL, '123456', NULL, NULL, 430),
-(356, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Delvina Anastasia Pertiwi', 'delvina', NULL, '123456', NULL, NULL, 431),
-(357, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Semadela Solichin Putri', 'semadela', NULL, '123456', NULL, NULL, 437),
-(358, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Adillah Afrilia Syahwina Pado', 'adillah', NULL, '123456', NULL, NULL, 438),
-(359, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nina Nurjanah', 'ninur', NULL, '123456', NULL, NULL, 435),
-(360, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eka Sarima Hardiani', 'eka', NULL, '123456', NULL, NULL, 434),
-(361, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Frodine Satriati Aer', 'inne', NULL, '123456', NULL, NULL, 367),
-(362, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Farida Nurhayati', 'farida', NULL, '123456', NULL, NULL, 442),
-(363, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'drg. Febrianti Adi Satria', 'Febrianti', NULL, '123456', NULL, NULL, 443),
-(364, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Mariah', 'siti m', NULL, '123456', NULL, NULL, 433),
-(365, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rossmeryanda Rezina', 'Rezina', NULL, '123456', NULL, NULL, 423),
-(366, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Cendy Andestria', 'Cendy', NULL, '123456', NULL, NULL, 444);
+INSERT INTO `users` (`id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `name`, `username`, `email_verified_at`, `password`, `remember_token`, `pegawai_id`) VALUES
+(0, 0, '2023-02-16 04:14:12', 306, '2023-02-16 07:02:42', NULL, NULL, 'mzfa', 'mzfa', NULL, 'mzfa', 'us9omvVo4qT6eHVB9ThUvsb5RrlmFxpIMnKyB4OTA70C2ZiDME9OMsqBGXIo', 0),
+(1, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ADMINISTRATOR', 'admin', NULL, 'qwerty123', NULL, 1),
+(2, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST DOKTER I', 'TEST DOKTER', NULL, '121212', NULL, 120),
+(3, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST REGISTRASI', 'TEST REGISTRASI', NULL, '1234567', NULL, 121),
+(4, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST PERAWAT', 'audit perawat', NULL, '123456', NULL, 122),
+(6, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST FARMASI', 'TEST FARMASI', NULL, '123456', NULL, 124),
+(7, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST GUDANG OBAT', 'TEST GUDANG OBAT', NULL, '123456', NULL, 125),
+(8, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST KASIR', 'TEST KASIR', NULL, '123456', NULL, 126),
+(9, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'MUSTARI', 'MUSTARI', NULL, 'fedora', NULL, 25),
+(10, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Aldityas Eko, dr., Sp.THT-KL', 'aldi', NULL, '161922', NULL, 33),
+(11, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Vriyanka', 'Vriyanka', NULL, '654321', NULL, 49),
+(12, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST FISIOTERAPI', 'TEST FISIOTERAPI', NULL, '123456', NULL, 128),
+(13, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Achmad Agus Sudarwin Haryanto, Sp.B', 'darwin', NULL, '123456', NULL, 12),
+(14, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'drg. Arum Nurdiana Sari, MM', 'Arum', NULL, '123456', NULL, 23),
+(15, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Herdiana Elizabeth, Sp.A', 'Herdiana', NULL, '123456', NULL, 24),
+(16, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Mira Fauziah, Sp.A, Mked.', '0720380', NULL, '123456', NULL, 26),
+(17, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Irwan Amin, Sp. AN-K', 'Irwan', NULL, '123456', NULL, 27),
+(18, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Gina Adriana Nainggolan, Sp.An', 'Gina', NULL, '123456', NULL, 28),
+(19, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Vincent Chrisnata, Sp.AN', 'Vincent', NULL, '123456', NULL, 29),
+(20, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Andri Suhandi, dr., Sp. B', 'Andri', NULL, '123456', NULL, 30),
+(21, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Afria Arista, Sp. KK', 'Afria', NULL, '123456', NULL, 31),
+(22, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Hanekung Titisari, Sp.THT', 'Hanekung', NULL, '123456', NULL, 32),
+(23, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Muhammad Andi Yassiin, Sp. JP', 'Andi Yassiin', NULL, '123456789', NULL, 34),
+(24, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Martua Silalahi, dr., Sp.JP', 'Martua', NULL, '123456', NULL, 35),
+(25, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nadia Prawitra, dr., Sp.S', 'Nadia', NULL, 'Neuro1', NULL, 36),
+(26, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ahmad Thamrin, dr., Sp.OG', 'Thamrin', NULL, '123456', NULL, 37),
+(27, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Muhammad Anggawiyatna, Sp.OT', 'Anggawiyatna', NULL, '123456', NULL, 38),
+(28, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Naindra Kemala Dewi, Sp. P', 'Kemala', NULL, '123456', NULL, 39),
+(29, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Febriana Novariska, Sp.P', 'Febriana', NULL, '123456', NULL, 40),
+(30, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Isabella Valentina, Sp.PK', 'Isabella', NULL, '123456', NULL, 41),
+(31, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Deka Larasati, M. Biomed.', 'Deka', NULL, '123456', NULL, 42),
+(32, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Indria Yogani, Sp.PD', 'Indria', NULL, '123456', NULL, 43),
+(33, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Felix Satwika, dr., Sp.PD', 'Felix', NULL, '987654', NULL, 44),
+(34, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Tatan Saefudin, dr., Sp.Rad', 'Tatan', NULL, '123456', NULL, 45),
+(35, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Tunjung Prasetyo Nugroho, Sp. Rad', 'Tunjung', NULL, '123456', NULL, 46),
+(36, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Pangeran Indal Patra Abbas, dr.', 'Patra', NULL, '123456', NULL, 47),
+(37, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Fariha', 'Fariha', NULL, '123456', 'W8R8MAuupv31xf3TS0jWK4WkFXeQjAw1AmJq5SJ4E3fyMAc4dGjLzUkAvMkr', 48),
+(38, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Erish Harry Angkat', 'Erish', NULL, '121212', NULL, 50),
+(39, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ramadani Kurniawan', 'Ramadani', NULL, '123456', NULL, 51),
+(40, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Fachdepy Maulana Ngangi', 'Fachdepy', NULL, '123456', NULL, 52),
+(41, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Soraya Alamudi', 'Soraya', NULL, '123456', NULL, 53),
+(42, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Rivki Wida Sarandi', 'Rivki', NULL, '123456', NULL, 54),
+(43, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ns. Eka Riadi, S. Kep', 'Eka Riadi', NULL, '123456', NULL, 63),
+(44, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ns. Vita  Sry Sulastri, S.Kep', 'Vita', NULL, '123456', NULL, 64),
+(45, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ns. Anggraeni, S.Kep', 'Anggraeni', NULL, '220270', NULL, 65),
+(46, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Marselia Yuli Pratiwi A.Md. Kep', 'Marselia', NULL, '654321', NULL, 68),
+(47, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Solawatun Mustaekah, A.Md.Kep', 'Solawatun', NULL, '222222', NULL, 69),
+(48, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yolanda Mastin Samaowati,A.Md.Kep', 'Yolanda Mastin', NULL, '7654321', NULL, 70),
+(49, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dede Nuraeni, AMK', 'Dede Nuraeni', NULL, '290466', NULL, 71),
+(50, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Patricia Sitinjak, A.Md.Kep', 'Patricia', NULL, '071096', NULL, 72),
+(51, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dheni Hendra Bangsawan, A.Md.Kep', 'Dheni', NULL, '112323', NULL, 73),
+(52, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ummi Zahrah Muntazzah,A.Md.Kep', 'Zahrah', NULL, '221292', NULL, 74),
+(53, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ainun, A.Md. Kep', 'Ainun', NULL, '123456', NULL, 75),
+(54, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Mega Nur Komala, AMK', 'ega mala', NULL, '292929', NULL, 76),
+(55, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Pangestu S.W.D., A.Md.Kep', 'Pangestu', NULL, '123456', NULL, 77),
+(56, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Putri Budy Utami, A.Md.Kep', 'Putri Budy', NULL, '111111', NULL, 78),
+(57, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Anggun Cikita Dewi, A.Md.Kep', 'Anggun', NULL, '090497', NULL, 79),
+(58, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Farid Fikri Akbar, A.Md.Kep', 'Farid Fikri', NULL, '16021997', NULL, 80),
+(59, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Maya Riandari, A.Md.Kep', 'Maya Riandari', NULL, '123456', NULL, 81),
+(60, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yumba Laras Sati, A.Md. Kep', 'Yumba', NULL, '060606', NULL, 82),
+(61, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yolanda, A.Md. Kep', '1221097', NULL, '123456', NULL, 83),
+(62, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Agustinus Hamonangan, A.Md. Kep', 'Agustinus', NULL, '123456', NULL, 84),
+(63, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Inas Nur Afifah, A.Md. Kep', 'Inas', NULL, '200497', NULL, 85),
+(64, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wayan Sudiarta, A.Md.Kep', 'Wayan', NULL, '123456', NULL, 86),
+(65, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Maria Esther Luciana,A.Md.Kep', 'Maria Esther', NULL, '123456', NULL, 87),
+(66, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Hotmauli Siregar, AMK', 'Hotmauli', NULL, '123456', NULL, 88),
+(67, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ni Ketut Murniati', 'Ni Ketut', NULL, '123456', NULL, 89),
+(68, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Friska Magdalena, A.Md.Kep', 'Friska', NULL, '123456', NULL, 90),
+(69, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Kurnia, AMK', 'niaaf', NULL, '777777', NULL, 91),
+(70, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Novita Sari, A.Md.Kep', 'Novita Sari', NULL, '123456', NULL, 92),
+(71, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Bio Riski Maulana,A.Md.Kep', 'Bio Rizki', NULL, '123456', NULL, 93),
+(72, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sea Rahayu, AMK', 'Sea Rahayu', NULL, '070618', NULL, 94),
+(73, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eriyandi Harahap, AMK', 'Eriyandi', NULL, '123456', NULL, 95),
+(74, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Abdul Rouf Supiyanto, A.Md. Kep', 'Abdul Rouf', NULL, '123456', NULL, 96),
+(75, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Jumiaty, AMK', 'Jumiaty', NULL, '828282', NULL, 97),
+(76, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Alifatus Safariyah, A.Md.Kep', 'Alifatus', NULL, '123456', NULL, 98),
+(77, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rahayu Biyanti, AMK', 'Rahayu Biyanti', NULL, '222222', NULL, 99),
+(78, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Mardihyana, A.Md.Kep', 'Mardihyana', NULL, '112233', NULL, 100),
+(79, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wa Wahyu Dian Rostary', 'Dian Rostary', NULL, '200395', NULL, 101),
+(80, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rahmayuli Ardian Putri, AMD, Kep', 'Rahmayuli', NULL, '100791', NULL, 102),
+(81, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Putri Adijaya Sakti, A.Md.Kep', 'Putri Adijaya', NULL, 'putridijay', NULL, 103),
+(82, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Robby, Amd.Kep', 'Robby', NULL, '060690', NULL, 104),
+(83, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nathasia Jeanet Christy Irala, Amd.Kep', 'Nathasia Jeanet', NULL, '123456', NULL, 105),
+(84, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Feri Susanto, AMK', 'Feri Susanto', NULL, '123456', NULL, 106),
+(88, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yudi Sukmara, A.Md.MPRS', 'Yudi', NULL, '850416', NULL, 109),
+(89, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Roziana Mega Dewi, A.Md.RMIK', 'Roziana Mega', NULL, '654321', NULL, 110),
+(90, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Hardianti Handayani, A.Md. RMIK', 'Siti Hardianti', NULL, '310896', NULL, 111),
+(91, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nasrullah', 'Nasrullah', NULL, '312322', NULL, 112),
+(92, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Firni Dwi Astuti, S.Farm', 'Firni', NULL, '123456', NULL, 7),
+(93, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Hadijah., S.Si.', 'Hadijah', NULL, 'yaarahman', NULL, 17),
+(94, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Siti Fatimah., S.Farm', 'Siti Fatimah', NULL, '111111', NULL, 18),
+(95, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Tri Meiyuliyanti', 'buzz', NULL, '808011', NULL, 55),
+(96, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Ari Marliyana., S.Farm', 'Ari Marliyana', NULL, 'akuadalahaku', NULL, 56),
+(97, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fitriyatul Zabariyah, S.Farm', 'Fitriyatul', NULL, '123456', NULL, 113),
+(98, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Gilang Mahardika, A.Md. AK', 'dnm', NULL, '123456', 'RCcsbgrnfmpZ7Dr5kWo7uxRRs0Nugg1saOJyFNvGUEHlbOu47Y58ur5B9xQ9', 10),
+(99, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nur Hikmah, A.Md.AK', 'Nur Hikmah', NULL, '123456', NULL, 13),
+(100, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ema Supiani, A.Md.AK', 'ema supiani', NULL, '123456', NULL, 14),
+(101, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ipung Purwono, A.Md. AK', 'Ipung', NULL, '123456', NULL, 15),
+(102, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dewi Yuliana A.Md. AK', 'Awie', NULL, '654321', NULL, 16),
+(103, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST PENUNJANG', '100001', NULL, '123456', NULL, 127),
+(104, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rusliadi Kustiawan, A.Md. RMIK', 'Rusliadi', NULL, 'Rusliadi212@', NULL, 5),
+(105, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Imam Hari Santoso, A.Md. Rad', 'Imam', NULL, '1891emom', NULL, 107),
+(106, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fadhillah Apriani, A.Md.Rad', 'Fadhillah', NULL, 'dila99', NULL, 6),
+(107, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Lia Avriani, A.Md. Rad', 'Lia Avriani', NULL, '111111', NULL, 108),
+(108, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Noor Rizky Zulfira, SE. Ak', 'Rizky', NULL, '654321', 'vSrq4OqRRRuyuqIsboCxAudbMyvGi9gOTr9IScJpbkyPKfYaCOSzNMhHoOJ7', 8),
+(109, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yoesi Febriansyah, SE.', 'Yoesi', NULL, '010108', NULL, 61),
+(110, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Bagoes Riyadi Kurniawan, SE', 'Bagoes', NULL, '654321', NULL, 62),
+(111, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'R. A. Afiani Putri Utaminingsih, SS', 'tami', NULL, '123456', NULL, 11),
+(112, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Endang Lestariningsih, A.Md.Keb', 'Endang', NULL, '789789', NULL, 22),
+(113, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Vinda Lyan Nofrin D., A.Md.Keb', 'Vinda', NULL, '123456', NULL, 20),
+(114, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Pahma Rahmi S., A.Md.Keb', 'Rahmi', NULL, '123123', NULL, 19),
+(115, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fay Ferry Pardomuan Lambok P. Simanjuntak, dr., Sp. OG', 'Fay', NULL, '123456', NULL, 130),
+(116, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Tengku Muhammad Iskandar, dr., Sp.OG', 'iskandar', NULL, '123123', NULL, 131),
+(117, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Bambang Riyadi Agus P', 'Bambang Riyadi', NULL, '123456', NULL, 132),
+(118, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ery Wildan, Sp.OT', 'Ery', NULL, '112233', NULL, 133),
+(119, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Maryanne Sri Andriawati, A.Md. Keb', 'Maryanne', NULL, '1234567', NULL, 118),
+(120, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Maya Zelika Paradita', 'Maya Zelika', NULL, '1234567', NULL, 134),
+(121, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr M. Candrasa Widya Wardhana', 'Candrasa', NULL, '1234567', NULL, 135),
+(122, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ade Dewi Naralia', 'Naralia', NULL, '123456', NULL, 136),
+(123, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Yetti Muthiah, MKK.', 'Yetti', NULL, '123456', NULL, 137),
+(124, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr Cut Shelma', 'cut', NULL, '1234567', NULL, 138),
+(125, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sri Nurlaelah, A.Md. Keb', 'Cicie', NULL, '1234567', NULL, 117),
+(126, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Amia Della, A.Md.Keb', 'Amia', NULL, '031294', NULL, 3),
+(127, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Syarifudin, dr., Sp.P', 'syarif', NULL, '123456', NULL, 139),
+(128, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sintha Damayanti, A.Md.Kep', 'shinta', NULL, '111333', NULL, 141),
+(129, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Syifa Pauziah, A.Md.Kep', 'Syifa', NULL, '131097', NULL, 142),
+(130, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rifatul Choiriyah, A.Md.Keb', 'Rifatul', NULL, '123456', NULL, 140),
+(131, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Irenne Purnama, MSc.,Sp.A', 'irenne', NULL, '131088', NULL, 144),
+(132, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Damba dwisepto aulia,dr. Sp JP', 'Damba', NULL, '123456', NULL, 145),
+(133, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ainur Rahmah, dr., Sp.M', 'Ainur', NULL, 'Terserah1985', NULL, 143),
+(134, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Beta Agustia Wisman, Sp.PD', 'Beta', NULL, '123456', NULL, 146),
+(135, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Junariah, A.Md.Kep', 'Junariah', NULL, '654321', NULL, 147),
+(136, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ruangan mawar', 'mawar', NULL, '123456', NULL, 148),
+(137, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ruangan melati', 'melati', NULL, '123456', NULL, 149),
+(138, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Syarifuddin, dr., Sp.P (y)', 'Dr Riyadi', NULL, '654321', NULL, 150),
+(139, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ruang teratai', 'Teratai', NULL, '123456', NULL, 151),
+(140, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ruang anggrek', 'Anggrek', NULL, '123456', NULL, 152),
+(141, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Galih Arif Azhari', 'Gazari', NULL, '311219', NULL, 153),
+(142, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Himawan Tryatmaja, Dr.', 'Himawan', NULL, '283010', NULL, 154),
+(143, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhsin Ali Sahbana, S.Farm.Apt', 'muhsin', NULL, '123456', NULL, 167),
+(144, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Nahriah', 'siti nahriah', NULL, '123456', NULL, 156),
+(145, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yana Aprianingsih Tampubolon, A.Md.Kep', 'Yana Aprianingsih', NULL, '123456', NULL, 171),
+(146, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, '', '', NULL, '123456', NULL, NULL),
+(147, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wyasa Andrianto, dr., Sp.KFR', 'wyasa', NULL, '123456', NULL, 4),
+(148, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Fathonah, S.TR.Kes', 'fatho96', NULL, '654321', NULL, 164),
+(149, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Marisa,S.farm', 'marisa', NULL, '251894', NULL, 170),
+(150, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Syarifuddin, dr., Sp.P (y)', 'ryadi', NULL, '123456', NULL, 172),
+(151, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Astari arum sari, dr., Sp.AN', 'Astari Arum', NULL, '785472', NULL, 173),
+(152, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Trias Wibowo, SE', 'trias', NULL, '1120976', NULL, 119),
+(153, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nunuk handini, S.Farm', 'nunu', NULL, 'Qirani03', NULL, 169),
+(154, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fajar Nurul Hadi, SE.', 'Fajar', NULL, '123456', NULL, 158),
+(155, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'HCU', 'Hcu', NULL, '123456', NULL, 178),
+(156, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Asysyukriati, Sp.P', 'asy', NULL, '1234567', NULL, 179),
+(157, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'isolasi', 'isolasi', NULL, '123456', NULL, 180),
+(158, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ahdi Pratama', 'ahdi', NULL, '123123', NULL, 2),
+(159, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Cici Diah Cahyanti, AMd. Rad', 'Cici Diah', NULL, '123456', NULL, 166),
+(160, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Lulus Lusmana, A.Md.Rad', 'Lulus', NULL, '123456', NULL, 165),
+(161, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dina Septiyanti, AMG', 'Dina', NULL, '123abc', NULL, 66),
+(162, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Niken Alia Taskya, dr.,Sp.KFR', 'niken', NULL, '123456', NULL, 192),
+(163, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sony Bagaskara, A.Md.Kep', 'sony', NULL, '1234567', NULL, 181),
+(164, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eka Apriliana, A.Md.Kep', 'eka a', NULL, '1234567', NULL, 183),
+(165, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fadhilah Ukhrainy, A.Md.Kep', 'fadhilah', NULL, '12345678', NULL, 182),
+(166, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Vivi Nadillah, A.Md.Kep', 'vivi', NULL, '310413', NULL, 188),
+(167, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Agung Dwi Saputra, A.Md.Kep', 'agung', NULL, '123456', NULL, 186),
+(168, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Syifa Nur Faujiah, A.Md.Kep', 'syifa n', NULL, '1234567', NULL, 184),
+(169, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Riza Fahlevi, A.Md.Kep', 'riza', NULL, '123456', NULL, 189),
+(170, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ahmad Rifai, Amd.Kep', 'rifai', NULL, '123456', NULL, 193),
+(171, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Joharatul Fikriah, A.Md.Kep', 'johar', NULL, '925089', NULL, 185),
+(172, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Erwin D', '170301', NULL, '123456', NULL, 196),
+(173, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dwi Indra Prasetyo, AMK', 'dwi', NULL, '654321', NULL, 175),
+(174, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Mardiana Ismaningsih, dr.', 'Mardiana', NULL, '654321', NULL, 195),
+(175, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Mardiana Ismaningsih, dr', 'Mardiana Ismaningsih', NULL, '123456', NULL, 197),
+(176, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Bagus Tridana Mulia, A.Md.Kep', 'bagus', NULL, '273098', NULL, 187),
+(177, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ruthsuyata Siagian, dr.', 'ruthsuyata', NULL, '123456', NULL, 199),
+(178, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sondang Virginia, dr.', 'virginia', NULL, '123456', NULL, 201),
+(179, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Arevia Mega Diduta Utami. dr', 'arevia', NULL, '123456', NULL, 202),
+(180, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Victor Anderson CH Nguru, dr.', 'victor', NULL, '123456', NULL, 203),
+(181, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ganjar Nugraha', 'ganjar', NULL, '070023', NULL, 198),
+(182, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Kasmiyati, AMK', 'kas', NULL, '123456', NULL, 174),
+(183, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Danang Adi Kusuma, A.Md.Kep', 'Danang', NULL, '12345678', NULL, 206),
+(184, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yuliana Sartika, A.Md.Kep', 'Yuliana', NULL, '123456', NULL, 207),
+(185, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yuliana Ade Putri, A.Md.Kep', 'yuliana ade', NULL, 'Angel21', NULL, 208),
+(186, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Atmiati', 'Atmiati', NULL, '09071991', NULL, 209),
+(187, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Merty Supriharti Dr', 'Merty', NULL, '123456', NULL, 210),
+(188, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ratna Dillah', 'Ratna', NULL, 'pelangi', NULL, 205),
+(189, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wika Karunia Lestari, S.Tr.Keb', 'wika', NULL, 'alhamdulillah', NULL, 212),
+(190, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Umairoh', 'umairoh', NULL, 'p@ssw0rd', NULL, 204),
+(191, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Farhah. A.Md.RMIK', 'farhah', NULL, '159159', NULL, 159),
+(192, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Gigih Herlambang', 'gigih', NULL, '123456', NULL, 216),
+(193, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dahlia', 'Dahlia', NULL, '123456', NULL, 217),
+(194, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'EDELWEIS', 'EDELWEIS', NULL, '123456', NULL, 218),
+(195, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Indah Ari Utari', 'indah', NULL, '12345678', NULL, 214),
+(196, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Vitriyana Manalu', 'vitri', NULL, '123456', NULL, 215),
+(197, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Angga Meda Mahardhika, dr', 'Angga', NULL, '1234567', NULL, 224),
+(198, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Astuti Irani, AMd. AK.', 'Rani', NULL, '123456', NULL, 155),
+(199, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nopa, AMK', 'nopa', NULL, '654321', NULL, 222),
+(200, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nunung Latofah, S.AP', 'nunung', NULL, '123456', NULL, 157),
+(201, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhlisoh, A.Md.Keb', 'lilis', NULL, '123456', NULL, 221),
+(202, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Arziani Thasya', 'Arziani', NULL, '123456', NULL, 226),
+(203, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ayu Pratidina', 'Ayu P', NULL, '631206', NULL, 227),
+(204, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. ANA VERAWATY', 'ana', NULL, '123456', NULL, 230),
+(205, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'AHMAD AZHARI', 'azhari', NULL, '121212', '54eOkK5RYmTr0JRZ0wO6UcXUfIyyBf9alCvwfqis4PSOdqph6SmB6REMqOrp', 229),
+(206, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ns. Pita Romawati, S.Kep', 'pita', NULL, '12345678', NULL, 223),
+(207, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Winny, Sp.KFR', 'winny', NULL, 'William@1961', NULL, 232),
+(208, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ellyo Ahmad Reza', 'Ellyo', NULL, '123456', NULL, 235),
+(209, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dr. Muhamad Yugo Hario Sakti Dua, Sp.P.D', 'hario', NULL, '000000', NULL, 236),
+(210, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Adhika Nugraha', 'adhika', NULL, '526532', NULL, 234),
+(211, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sheila Dwi A P', 'Sheila', NULL, '654321', NULL, 238),
+(212, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Puji Rahayu', 'puji', NULL, '123456', NULL, 239),
+(213, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Rokhmah', 'siti r', NULL, '123456', NULL, 240),
+(214, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Zulaikha Ayu Hakli', 'zulaikha', NULL, '123456', NULL, 241),
+(215, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eva Widiyanti', 'eva', NULL, 'gakmau', NULL, 242),
+(216, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ayu Meliyani Solihah', 'ayu meliyanih', NULL, '654321', NULL, 243),
+(217, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Olivia Widha Pratiwi', 'olivia', NULL, '123456', NULL, 244),
+(218, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dina Widyaningrum', 'dina w', NULL, '111111', NULL, 245),
+(219, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nada Putri Rubiyana', 'nada', NULL, '123456', NULL, 246),
+(220, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Susy Ambar Wati', 'susy', NULL, '654321', NULL, 247),
+(221, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Choirunisa', 'choirunisa', NULL, '112233', NULL, 250),
+(222, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Gita Afriani', 'gita', NULL, '112233', NULL, 251),
+(223, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rita Oktavia', 'rita', NULL, '123456', NULL, 252),
+(224, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Indah Nurjanah', 'indah n', NULL, 'kepoasli', NULL, 253),
+(225, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ijtihad Nur Habibah', 'ijtihad', NULL, '011121', NULL, 254),
+(226, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Mia Amalia', 'mia', NULL, '123456', NULL, 255),
+(227, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ajeng Putriyani', 'ajeng', NULL, '000000', NULL, 256),
+(228, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Bella Sonia Junita', 'bella', NULL, '123456', NULL, 257),
+(229, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Gita Fepbri Widdona', 'gita f', NULL, '369147', NULL, 258),
+(230, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Feberianti Sihotang', 'Febri', NULL, '123456', NULL, 259),
+(231, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Aulia Nur Afifah', 'aulia', NULL, '222222', NULL, 261),
+(232, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Erdin Dwi Prasetya', 'Erdin', NULL, '123456', NULL, 262),
+(233, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wiwin Rigianti', 'wiwin', NULL, '112233', NULL, 263),
+(234, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Reza Amelia', 'amelia', NULL, '654321', NULL, 265),
+(235, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wayan Lia Suwastuti', 'lia', NULL, '7777777', NULL, 266),
+(236, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Daifi Sukmasari', 'daifi', NULL, 'D191100', NULL, 267),
+(237, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ramdhani Hartono Saputra', 'ramdhani', NULL, '123456', NULL, 264),
+(238, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Diah Kurnia Yussela, A.Md.Keb, SKM', 'diah', NULL, '771988', NULL, 21),
+(239, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rizka Aulia Safitri', 'rizka', NULL, '123456', NULL, 233),
+(240, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'R. Muhammad Wawan Purwana Wahyudin', 'wawan', NULL, '123456', NULL, 272),
+(241, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Subhan Galih Prakasi', 'subhan', NULL, 'subhan190993', '6RCSFiFTuUGzvHKae13Qp4Z9GUKaP78PULycHvLavxq6UPYfZj6HaVLrV09C', 270),
+(242, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Madha Surya', 'madha', NULL, '123456', NULL, 271),
+(243, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dr. Satriyo Kusbandono, Sp.PD', 'satriyo', NULL, '123456', NULL, 275),
+(244, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Ari Tuti Widia Astuti., S.Farm', 'widia', NULL, '220496', NULL, 237),
+(245, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Dyna Oki Wulandari., S.Farm', 'dyna', NULL, 'fufu1221', NULL, 268),
+(246, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dita Puspa Wulansari', 'dita', NULL, '123456', NULL, 260),
+(247, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nur Ardianty', 'Ardianty', NULL, '123456', NULL, 277),
+(248, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Reza Dwi Saputra', 'reza', NULL, '020317', NULL, 269),
+(249, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Evi Septiani', 'Evi', NULL, '123456', NULL, 276),
+(250, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rafli Mahendra Priyatno', 'Rafli', NULL, 'rr1605', NULL, 274),
+(251, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'transit igd', 'TRANSIT IGD', NULL, '123456', NULL, 278),
+(252, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'wijaya kusuma', 'wijaya kusuma', NULL, '123456', NULL, 319),
+(253, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'SAKURA', 'sakura', NULL, '123456', NULL, 334),
+(254, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Anderias Julius Bainkabel', 'Anderias', NULL, '555111', NULL, 318),
+(255, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Kristia Heriyati', 'kristia', NULL, '123456', NULL, 284),
+(256, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Heni Setia Wati', 'heni', NULL, '123456', NULL, 332),
+(257, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ermawati', 'ermawati', NULL, '123456', NULL, 279),
+(258, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Heri Saputra', 'heri', NULL, '123456', NULL, 280),
+(259, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ocsha Galuh Pradana', 'ocsha', NULL, '123456', NULL, 306),
+(260, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Indrawati', 'indrawati', NULL, '123456', NULL, 314),
+(261, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Riki Taufiki Firdausy', 'riki', NULL, '123456', NULL, 341),
+(262, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'M. Pebuarivan Rahman', 'Pebuarivan', NULL, '123456', NULL, 305),
+(263, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Iqbal Maulana Putra', 'iqbal', NULL, '123456', NULL, 291),
+(264, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Cahya Annisa Putri', 'cahya', NULL, '123456', NULL, 339),
+(265, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Teddy Lahengkeng S', 'Teddy', NULL, '123456', NULL, 342),
+(266, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Arista Nevyana Bella', 'arista', NULL, '123456', NULL, 293),
+(267, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhamad Redho Rahman Pratama', 'redho', NULL, '123456', NULL, 322),
+(268, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Kartika Widyasari', 'kara', NULL, '123456', NULL, 340),
+(269, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'M. Rusdi', 'rusdi', NULL, '123456', NULL, 299),
+(270, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Suchipto', 'suchipto', NULL, '123456', NULL, 297),
+(271, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Winda Sulistyowati', 'winda', NULL, '123456', NULL, 331),
+(272, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Augustin Mega Anjani', 'augustin', NULL, '123456', NULL, 324),
+(273, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Riska Safitri', 'riska', NULL, '123456', NULL, 295),
+(274, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nok Nur Fitria', 'nur', NULL, '123456', NULL, 281),
+(275, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Juandi', 'juandi', NULL, '123456', NULL, 307),
+(276, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rosse Anggraeny', 'rosse', NULL, '123456', NULL, 294),
+(277, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nathalia Dora', 'nathalia', NULL, '123456', NULL, 320),
+(278, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Raehana', 'raehana123', NULL, '123456', NULL, 315),
+(279, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nurul Ami Fahlatul Ambia', 'ami', NULL, '123456', NULL, 303),
+(280, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Neni Kania, SE. MPH.', 'neni', NULL, '260469sam', NULL, 349),
+(281, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Ari Pratama', 'ari', NULL, '123456', NULL, 300),
+(282, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Ripay Nur Sepdi', 'ripay', NULL, '123456', NULL, 321),
+(283, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Lovena Sari, M. Ked (DV), Sp. DV', 'lovena', NULL, '888888', NULL, 351),
+(284, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Rima Melati, Sp. AK, Sp. OK', 'rima', NULL, '123456', NULL, 352),
+(285, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Adrian Ridski Harsono, Sp. N', 'Adrian', NULL, 'arhspn', NULL, 356),
+(286, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Cempaka Dwi Setyasih', 'Cempaka', NULL, '160424', NULL, 357),
+(287, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ayu Fitri Lestianti, A.md, RMIK', 'Ayu F', NULL, '010101', NULL, 220),
+(288, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Dhony Abdul Kharist', 'dhony', NULL, '654321', NULL, 333),
+(289, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Andi Ayu Faradiba Mudjahidin', 'yoe', NULL, '123456', NULL, 311),
+(290, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Diah Ayu Adiati', 'Ayu', NULL, '654321', NULL, 309),
+(291, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Juhroh', 'juhroh', NULL, '123456', NULL, 345),
+(292, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Riri Amiati', 'RIRI', NULL, '777777', NULL, 359),
+(293, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Nino Farizal', 'nino', NULL, 'guaganteng', NULL, 343),
+(294, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Khoerurrijal', 'khoerurrijal', NULL, '122021', NULL, 365),
+(295, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'drg. Michael Pangestu, Sp. KG', 'michael', NULL, 'hihihi', NULL, 364),
+(296, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Riady Ashari, Sp. A', 'riyadi', NULL, '654321', NULL, 363),
+(297, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Zousepin Akbar', 'zousepin', NULL, '025888', NULL, 366),
+(298, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. M Darussalam Darwis', 'Darwis', NULL, '123456', NULL, 371),
+(299, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Ranggahesa Wibawa Yudhisty Pramana', 'Rangga', NULL, '123456', NULL, 372),
+(300, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Roy Martino, Sp. An', 'Roy', NULL, '777777', NULL, 374),
+(301, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Novy Dewi Rahayu', 'novy d', NULL, '110606', NULL, 370),
+(302, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Riezalisnoor Maulana Akbar', 'rieza', NULL, '070100', NULL, 375),
+(303, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Rudi Hermansyah, Sp. B', 'Rudi', NULL, '123456', NULL, 376),
+(304, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Pipit Kasiani', 'Pipit', NULL, '654321', NULL, 355),
+(305, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Laily Ridawati, Sp.PD', 'Laily', NULL, '240688', NULL, 377),
+(306, 0, '2023-02-16 04:14:12', 0, '2023-02-17 01:50:01', NULL, NULL, 'Syam Apriansyah', 'syam', NULL, 'uhuy', '5qhTKxtuJzB3pByzk31dZxxiMvfVRBP3KHfraYt4X10M9BFNEg1ELFHF5eck', 354),
+(307, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sultan Alfian', 'alfian', NULL, '7654321', NULL, 382),
+(308, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Endah Rizqi Winantri', 'endah', NULL, '990615', NULL, 373),
+(309, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Vania Shaula', 'Vania', NULL, '123456', NULL, 386),
+(310, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Vannessa Karenina', 'Vannessa', NULL, '123456', NULL, 385),
+(311, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Syari Maisyarah Rahman, Sp. Rad', 'Maisyarah', NULL, '123456', NULL, 387),
+(312, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Aminah Asri', 'aminah', NULL, '100519', NULL, 383),
+(313, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Laili Fathiyah, MPH', 'lailifathiyah', NULL, '17zabran', 'UaoY9h4YEXhESMCWCoGGVAc3jybIelzQ6o7jiOrKUDV3C3YObRVn1aU4GfGo', 388),
+(314, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ratna Komari, AMK', 'komari', NULL, 'Tahun2023', NULL, 57),
+(315, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ade Novianti', 'ade novianti', NULL, '7654321', NULL, 389),
+(316, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Baktiar Aprianto', 'Baktiar', NULL, '7654321', NULL, 368),
+(317, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Putri Cahya Kamila Paputungan', 'Putri c', NULL, '123456', NULL, 380),
+(318, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Edi Supriadi', 'Edi S', NULL, '123456', NULL, 384),
+(319, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Siti Sarah Rachmadianti', 'Siti Sarah', NULL, '111111', NULL, 390),
+(320, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'drg. Cut Fadluna Paramita, Sp. Ort', 'Fadluna', NULL, 'Maryam08', NULL, 391),
+(321, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nurul Fatimah', 'nurullfatiimah', NULL, '123456', NULL, 58),
+(322, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eva Handini', 'handinieva', NULL, '654321', NULL, 362),
+(323, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nurjanah', 'cenung', NULL, '090909', NULL, 60),
+(324, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Viviana Suwikno', 'viviana', NULL, '210292', NULL, 59),
+(325, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Anisa Habsari Sulistyo Rini', 'anisa', NULL, '181818', NULL, 190),
+(326, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Raedy Ruwanda Susanto, Sp A.', 'raedy', NULL, '141118', NULL, 395),
+(327, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Khonita Adian Utami, Sp. N', 'khonita', NULL, '654321', NULL, 396),
+(328, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Aprilia Dian Kusuma Rini', 'aprilia', NULL, '112233', NULL, 393),
+(329, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Supandi Rejeki', 'supandi', NULL, '260894', NULL, 397),
+(330, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wandra Yardi  D', 'Wandra', NULL, '123456789', NULL, 381),
+(331, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Nur’aini Alamanda, Sp.An', 'manda', NULL, 'PisanganBaru04', NULL, 399),
+(332, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Rivo Mario Warouw Lintuuran, Sp.KJ', 'rivo', NULL, '123456', NULL, 400),
+(333, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ive Hana Ruth Sitepu', 'ivehana', NULL, '654321', NULL, 405),
+(334, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yosep Pransiskus Riki Dosi', 'yosep', NULL, '987654321', NULL, 404),
+(335, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Vina Arum Sari', 'vinaarum', NULL, 'qwerty', NULL, 407),
+(336, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Raehana', 'raehana', NULL, '011120', NULL, 408),
+(337, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eka Ajheng Widyawati', 'ekaajheng', NULL, '210497', NULL, 406),
+(338, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Iriani Utami Ramdona', 'iriani', NULL, '123456', NULL, 411),
+(339, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Vista Yulistia', 'vista', NULL, '123456', NULL, 416),
+(340, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fauziah Hasanah', 'fauziah', NULL, '123456', NULL, 413),
+(341, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Latifah', 'siti', NULL, '123456', NULL, 415),
+(342, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Krisna Ramadhan Saputra', 'krisna', NULL, '123456', NULL, 403),
+(343, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Zulfa', 'm zulfa', NULL, '123456', NULL, 414),
+(344, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Andi Febrina Sosiawati', 'febrina', NULL, '010997', NULL, 412),
+(345, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Tiara Kusuma Dewi', 'tiara', NULL, '123456', NULL, 418),
+(346, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Shaula Adrea Rusdiana Nasution', 'shaula', NULL, '123456', NULL, 420),
+(347, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Wiji Tri Sayekti', 'wiji', NULL, '123456', NULL, 417),
+(348, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Yusron Azkiyah', 'Yusron', NULL, '123456', NULL, 378),
+(349, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Josse Nathan Goenawan', 'nathan', NULL, '123456', NULL, 428),
+(350, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Isma Fadlilatus Sadiyah', 'isma', NULL, '123456', NULL, 429),
+(351, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Bahesty Cut Nyak Din', 'bahesty', NULL, '123456', NULL, 427),
+(352, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Muhammad Taufiq R. Dengo', 'taufiq', NULL, '123456', NULL, 392),
+(353, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ahmad Samdani, SKM., MPH.', 'samdani', NULL, '260469sam', NULL, 436),
+(354, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Priyanka Ganesa Utami, Sp. N', 'Priyanka', NULL, '022079', NULL, 439),
+(355, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Arrival Rahman', 'arrival', NULL, '123456', NULL, 430),
+(356, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Delvina Anastasia Pertiwi', 'delvina', NULL, '123456', NULL, 431),
+(357, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Semadela Solichin Putri', 'semadela', NULL, '123456', NULL, 437),
+(358, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Adillah Afrilia Syahwina Pado', 'adillah', NULL, '123456', NULL, 438),
+(359, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nina Nurjanah', 'ninur', NULL, '123456', NULL, 435),
+(360, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Eka Sarima Hardiani', 'eka', NULL, '123456', NULL, 434),
+(361, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Frodine Satriati Aer', 'inne', NULL, '123456', NULL, 367),
+(362, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Farida Nurhayati', 'farida', NULL, '123456', NULL, 442),
+(363, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'drg. Febrianti Adi Satria', 'Febrianti', NULL, '123456', NULL, 443),
+(364, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Siti Mariah', 'siti m', NULL, '123456', NULL, 433),
+(365, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Rossmeryanda Rezina', 'Rezina', NULL, '123456', NULL, 423),
+(366, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Cendy Andestria', 'Cendy', NULL, '123456', NULL, 444);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_akses`
+--
+
+CREATE TABLE `user_akses` (
+  `user_akses_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `hakakses_id` int(11) NOT NULL,
+  `jenis_akses` varchar(255) DEFAULT NULL,
+  `akses_bagian_tambahan` varchar(2000) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_akses`
+--
+
+INSERT INTO `user_akses` (`user_akses_id`, `user_id`, `hakakses_id`, `jenis_akses`, `akses_bagian_tambahan`) VALUES
+(1, 0, 1, NULL, NULL),
+(3, 306, 4, NULL, NULL),
+(4, 313, 5, NULL, NULL),
+(5, 104, 4, NULL, NULL),
+(6, 109, 3, NULL, NULL),
+(7, 108, 3, NULL, NULL),
+(8, 241, 4, NULL, NULL),
+(9, 37, 3, NULL, NULL),
+(10, 205, 6, NULL, NULL),
+(11, 353, 7, NULL, NULL),
+(12, 98, 4, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -1306,6 +1423,12 @@ INSERT INTO `users` (`id`, `created_by`, `created_at`, `updated_by`, `updated_at
 --
 ALTER TABLE `bagian`
   ADD PRIMARY KEY (`bagian_id`) USING BTREE;
+
+--
+-- Indexes for table `file`
+--
+ALTER TABLE `file`
+  ADD PRIMARY KEY (`file_id`);
 
 --
 -- Indexes for table `hakakses`
@@ -1368,20 +1491,44 @@ ALTER TABLE `profesi`
   ADD PRIMARY KEY (`profesi_id`) USING BTREE;
 
 --
+-- Indexes for table `surat`
+--
+ALTER TABLE `surat`
+  ADD PRIMARY KEY (`surat_id`) USING BTREE;
+
+--
+-- Indexes for table `surat_balasan`
+--
+ALTER TABLE `surat_balasan`
+  ADD PRIMARY KEY (`surat_balasan_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user_akses`
+--
+ALTER TABLE `user_akses`
+  ADD PRIMARY KEY (`user_akses_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `file`
+--
+ALTER TABLE `file`
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `hakakses`
 --
 ALTER TABLE `hakakses`
-  MODIFY `hakakses_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `hakakses_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `jenis_pelatihan`
@@ -1405,7 +1552,7 @@ ALTER TABLE `kompetensi`
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `pegawai_detail`
@@ -1424,6 +1571,24 @@ ALTER TABLE `pelatihan`
 --
 ALTER TABLE `pendidikan`
   MODIFY `pendidikan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `surat`
+--
+ALTER TABLE `surat`
+  MODIFY `surat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `surat_balasan`
+--
+ALTER TABLE `surat_balasan`
+  MODIFY `surat_balasan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `user_akses`
+--
+ALTER TABLE `user_akses`
+  MODIFY `user_akses_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
