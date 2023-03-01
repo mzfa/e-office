@@ -4,16 +4,78 @@
     <div class="card card-primary card-outline">
         <div class="card-header">
             <h3 class="card-title">Read Mail</h3>
-
         </div>
         <!-- /.card-header -->
         <div class="card-body p-0">
             <div class="mailbox-read-info">
-                <h5>{{ $surat->judul_surat }}</h5>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        
+                        
+                    </div>
+                </div>
+                <table>
+                    <tr>
+                        <td width="30%"><img src="{{ asset(env('APP_LOGO')) }}" style="width: 90%" alt=""></td>
+                        <th align="left">
+                            <h2>Nota Dinas</h2>
+                            <h5>{{ $surat->no_surat }}</h5>
+                        </th>
+                    </tr>
+                </table>
+                <hr>
+                <table>
+                    <tr>
+                        <th>Kepada Yth</th>
+                        <td>&nbsp;</td>
+                        <td>:</td>
+                        <td>
+                            @php
+                                $penerima_id = explode('|', $surat->penerima_id);
+                                // dump($penerima_id);
+                                for ($i = 0; $i < count($penerima_id); $i++) {
+                                    $id = $penerima_id[$i];
+                                    if ($penerima_id[$i] > 0) {
+                                        $user = DB::table('users')
+                                            ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
+                                            ->where(['users.id' => $id])
+                                            ->first();
+                                        echo $user->nama_pegawai . ' , ';
+                                    }
+                                }
+                            @endphp
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Dari</th>
+                        <td>&nbsp;</td>
+                        <td>:</td>
+                        <td>{{ $surat->nama_pegawai }}</td>
+                    </tr>
+                    <tr>
+                        <th>Perihal</th>
+                        <td>&nbsp;</td>
+                        <td>:</td>
+                        <td>{{ $surat->judul_surat }}</td>
+                    </tr>
+                    <tr>
+                        <th>Lampiran</th>
+                        <td>&nbsp;</td>
+                        <td>:</td>
+                        <td>Terlampir</td>
+                    </tr>
+                    <tr>
+                        <th>Tanggal</th>
+                        <td>&nbsp;</td>
+                        <td>:</td>
+                        <td>{{ date('d-M-Y H:i:s', strtotime($surat->created_at)) }}</td>
+                    </tr>
+                </table>
+                {{-- <h5>{{ $surat->judul_surat }}</h5>
                 <h6 class="mt-2">From: <b>{{ $surat->nama_pegawai }}</b>
                     <span class="mailbox-read-time float-right">{{ date('d-M-Y H:i:s', strtotime($surat->created_at)) }}</span>
-                </h6>
-                <h6>To : <b>
+                </h6> --}}
+                {{-- <h6>To : <b>
                     @php
                         $penerima_id = explode('|',$surat->penerima_id);
                         // dump($penerima_id);
@@ -26,7 +88,7 @@
                         }
                     @endphp
                     </b>
-                </h6>
+                </h6> --}}
             </div>
             <!-- /.mailbox-read-info -->
             {{-- <div class="mailbox-controls with-border text-center">
@@ -50,15 +112,36 @@
             <div class="mailbox-read-message">
                 {!! $surat->isi_surat !!}
             </div>
+            <div class="card-footer bg-white">
+                <h2>Lampiran</h2>
+                <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+                    @foreach($lampiran as $item)
+                    <li>
+                        <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
+
+                        <div class="mailbox-attachment-info">
+                            <a href="{{ asset('document/lampiran/'.$item->nama_file) }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file }}</a>
+                            {{-- <span class="mailbox-attachment-size clearfix mt-1">
+                                <span>1,245 KB</span>
+                                <a href="#" class="btn btn-default btn-sm float-right"><i
+                                        class="fas fa-eye"></i></a>
+                            </span> --}}
+                        </div>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
             @php
-            $datapenerima = explode('|',$surat->penerima_id);
-            $hitung = count($datapenerima)-2;
-            // dump($datapenerima[$hitung]);
+                $datapenerima = explode('|', $surat->penerima_id);
+                $hitung = count($datapenerima) - 2;
+                // dump($datapenerima[$hitung]);
             @endphp
-            @foreach($surat_balasan as $balas)
+            @foreach ($surat_balasan as $balas)
                 <hr>
                 <div class="mailbox-read-message text-right">
-                    <u><h5>Dijawab : {{ $balas->nama_pegawai }}</h5></u>
+                    <u>
+                        <em>Dijawab : {{ $balas->nama_pegawai }}</em>
+                    </u><br>
                     {{-- <u><h5>Diteruskan : {{ $balas->nama_pegawai }}</h5></u> --}}
                     <em>{{ \Carbon\Carbon::parse($balas->created_at)->diffForHumans() }}</em><br><br>
                     {!! $balas->isi_balasan !!}
@@ -127,8 +210,9 @@
         <div class="card-footer">
             <div class="float-right">
                 {{-- <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> Reply</button> --}}
-                @if($datapenerima[$hitung] == Auth::user()->id)
-                    <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i class="fas fa-share"></i> Balas</button>
+                @if ($datapenerima[$hitung] == Auth::user()->id)
+                    <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i
+                            class="fas fa-share"></i> Balas</button>
                 @endif
             </div>
             {{-- <button type="button" class="btn btn-default"><i class="far fa-trash-alt"></i> Delete</button> --}}
@@ -148,15 +232,16 @@
                         </div>
                         <div class="modal-body">
                             <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
-                            <input type="hidden" required name="penerima_sebelumnya" value="{{ Crypt::encrypt($surat->penerima_id) }}">
+                            <input type="hidden" required name="penerima_sebelumnya"
+                                value="{{ Crypt::encrypt($surat->penerima_id) }}">
                             {{-- <div class="form-group">
                                 <div class="select2-purple">
                                     <select class="select2" name="penerima_id[]" multiple="multiple" data-placeholder="Penerima"
                                         data-dropdown-css-class="select2-purple" style="width: 100%;" required>
                                         @foreach ($list_penerima as $penerima)
-                                            @if($penerima->id != Auth::user()->id && $penerima->id != $surat->user_id && $penerima->id != 0)
+                                            @if ($penerima->id != Auth::user()->id && $penerima->id != $surat->user_id && $penerima->id != 0)
                                                 @php $id_penerima = explode('|',$surat->penerima_id); @endphp
-                                                @if(array_search($penerima->id,$id_penerima))
+                                                @if (array_search($penerima->id, $id_penerima))
 
                                                 @else
                                                     <option value="{{ $penerima->id }}" >{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
@@ -167,14 +252,16 @@
                                 </div>
                             </div> --}}
                             <div class="form-group">
-                                <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required>
+                                <select class="form-control select2bs4" data-dropdown-css-class="select2-danger"
+                                    data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required>
                                     @foreach ($list_penerima as $penerima)
-                                        @if($penerima->id != Auth::user()->id)
-                                            <option value="{{ $penerima->id }}">{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
+                                        @if ($penerima->id != Auth::user()->id)
+                                            <option value="{{ $penerima->id }}">
+                                                {{ $penerima->nama_hakakses . ' | ' . $penerima->name }}</option>
                                         @endif
                                     @endforeach
                                 </select>
-                              </div>
+                            </div>
                             <div class="form-group">
                                 <textarea id="compose-textarea" name="pesan" class="form-control" style="height: 300px">
                                 </textarea>
@@ -191,8 +278,6 @@
             <!-- /.modal-dialog -->
         </div>
     </div>
-
-    
 @endsection
 
 @push('scripts')

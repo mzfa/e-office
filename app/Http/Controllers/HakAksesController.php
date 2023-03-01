@@ -83,30 +83,35 @@ class HakAksesController extends Controller
 
     public function edit($id)
     {
-        // $id = Crypt::decrypt($id);
-        // dd($data);
         $text = "Data tidak ditemukan";
-        if($data = DB::table('hakakses')->where(['hakakses_id' => $id])->get()){
-            // dd($data);
-            $text = '<div class="mb-3 row">'.
-                    '<label for="staticEmail" class="col-sm-2 col-form-label">Hak Akses</label>'.
-                    '<div class="col-sm-10">'.
-                    '<input type="text" class="form-control" id="nama_hakakses" name="nama_hakakses" value="'.$data[0]->nama_hakakses.'" required>'.
-                    '</div>'.
-                '</div>'.
-                '<input type="hidden" class="form-control" id="hakakses_id" name="hakakses_id" value="'.Crypt::encrypt($data[0]->hakakses_id) .'" required>';
-        }
-        return $text;
-        // return view('admin.hakakses.edit');
+        $hakakses = DB::table('hakakses')->get();
+        $data = DB::table('hakakses')->where(['hakakses_id' => $id])->first();
+        // if($data = DB::table('hakakses')->where(['hakakses_id' => $id])->get()){
+        //     // dd($data);
+        //     $text = '<div class="mb-3 row">'.
+        //             '<label for="staticEmail" class="col-sm-2 col-form-label">Hak Akses</label>'.
+        //             '<div class="col-sm-10">'.
+        //             '<input type="text" class="form-control" id="nama_hakakses" name="nama_hakakses" value="'.$data[0]->nama_hakakses.'" required>'.
+        //             '</div>'.
+        //         '</div>'.
+        //         '<input type="hidden" class="form-control" id="hakakses_id" name="hakakses_id" value="'.Crypt::encrypt($data[0]->hakakses_id) .'" required>';
+        // }
+        // return $text;
+        return view('modal_content.hak_akses', compact('data','hakakses'));
     }
 
     public function update(Request $request){
         $request->validate([
             'nama_hakakses' => ['required', 'string'],
         ]);
+        $akses_bagian = "|";
+        foreach($request->akses_bagian as $akses_bagian_id){
+            $akses_bagian .= $akses_bagian_id.'|';
+        }
         $hakakses_id = Crypt::decrypt($request->hakakses_id);
         $data = [
             'nama_hakakses' => $request->nama_hakakses,
+            'akses_bagian' => $akses_bagian,
             'updated_by' => Auth::user()->id,
             'updated_at' => now(),
         ];

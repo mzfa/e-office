@@ -45,12 +45,14 @@
                     <input class="form-control" type="text" name="no_surat" required placeholder="Nomor Surat">
                 </div> --}}
                 <div class="form-group">
-                    <input class="form-control" type="file" multiple name="file" placeholder="File">
-                </div>
-                <div class="form-group">
-                    <textarea id="compose-textarea" name="pesan" required class="form-control" style="height: 300px">
+                    <textarea id="compose-textarea" rows="5" name="pesan" required class="form-control">
                         
                     </textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Upload Lampiran (opsional)</label>
+                    <input class="form-control" type="file" multiple name="file[]" placeholder="File">
                 </div>
             </div>
             <!-- /.card-body -->

@@ -148,6 +148,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/message/store', 'store');
         Route::post('/message/update', 'update');
         Route::get('/message/edit/{id}', 'edit');
+        Route::get('/message/batal/{id}', 'batal');
+        Route::get('/message/aktifkan/{id}', 'aktifkan');
         Route::get('/message/read/{id}', 'read');
         Route::post('/message/reply', 'reply');
         Route::get('/message/pencarian/{jenis}/{text}', 'pencarian');

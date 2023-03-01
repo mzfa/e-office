@@ -300,6 +300,8 @@
                 "responsive": true,
             });
         });
+
+        
     </script>
     @if (Session::has('success'))
         <script>

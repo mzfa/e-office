@@ -22,12 +22,29 @@ class MessageController extends Controller
     }
 
     public function tulis(){
+
+        $user_id = Auth::user()->id;
+
+        $user_akses = DB::table('users')
+        ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
+        ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
+        ->where(['users.id' => $user_id])
+        ->first();
+        $pecah_array = explode('|', $user_akses->akses_bagian);
+        // $gabung_array = [];
+        // foreach($pecah_array as $gabung){
+        //     array_push($gabung_array,$gabung);
+        // }
+        // dd($pecah_array, $gabung_array);
+        // $gabung_array = implode(',', $pecah_array);
+        
         $list_penerima = DB::table('users')
         ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
         ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
-        ->whereNotNull('user_akses.hakakses_id')
-        ->whereNull('users.deleted_at')
+        ->whereIn('hakakses.hakakses_id', $pecah_array)
         ->get();
+        // ->whereNotNull('user_akses.hakakses_id')
+        // ->whereNull('users.deleted_at')
 
         $list_profesi = DB::table('profesi')->whereNull('profesi.deleted_at')->get();
         return view('message.tulis',compact('list_penerima','list_profesi'));
@@ -91,8 +108,13 @@ class MessageController extends Controller
         ->where(['surat_balasan.surat_id' => $id])
         ->whereNull('surat_balasan.deleted_at')
         ->get();
+
+        $lampiran = DB::table('file')
+        ->where(['surat_id' => $id])
+        ->get();
+        
         // dd($surat);
-        return view('message.read', compact('surat','list_penerima','surat_balasan','cek_balasan'));
+        return view('message.read', compact('surat','list_penerima','surat_balasan','cek_balasan','lampiran'));
     }
     public function draft(){
         $user_id = Auth::user()->id;
@@ -104,7 +126,32 @@ class MessageController extends Controller
         return view('message.draft',compact('list_surat'));
     }
     public function trash(){
-        return view('message.trash');
+        $user_id = Auth::user()->id;
+        $list_surat = DB::table('surat')
+        ->where(['surat.user_id' => $user_id])
+        ->whereNotNull('surat.deleted_at')
+        ->get();
+        return view('message.trash',compact('list_surat'));
+    }
+    public function batal($id){
+        $id = Crypt::decrypt($id);
+        $data = [
+            'deleted_at' => now(),
+            'deleted_by' => Auth::user()->id,
+        ];
+        // dd($data);
+        DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
+        return Redirect::back()->with(['success' => 'Surat Berhasil di batalkan!']);
+    }
+    public function aktifkan($id){
+        $id = Crypt::decrypt($id);
+        $data = [
+            'deleted_at' => null,
+            'deleted_by' => null,
+        ];
+        // dd($data);
+        DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
+        return Redirect::back()->with(['success' => 'Surat Berhasil di Aktifkan!']);
     }
     public function nomorotomatis($bagian){
         $user_id = Auth::user()->id;
@@ -159,10 +206,31 @@ class MessageController extends Controller
         $no = explode('/', $no_surat);
         // dd($no[0]);
         if(isset($request->simpan)){
+            $error = "";
+            $nama_file_surat = [];
+            if($request->hasFile('file')){
+                $semua_file = "";
+                foreach($request->file as $file){
+                    // dd($file->getClientMimeType());
+                    if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/xlsx','application/pdf'])){
+                        $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
+                        // $name = Auth::user()->pegawai_id;
+                        $file->move(public_path('document/lampiran/'), $file_name);
+                        array_push($nama_file_surat, $file_name);
+                    }else{
+                        $error .= $file->getClientOriginalName()."File anda tidak dapat kami simpan cek kembali extensi dan besar filenya"."<br>";
+                    }
+                }
+                // dd($nama_file_surat);
+                if($error !== ""){
+                    return Redirect::back()->with(['error' => $error]);
+                }
+                
+            }
             $penerima = "|".$request->penerima_id."|";
             // foreach($request->penerima_id as $penerima_id){
-            //     $penerima .= $penerima_id.'|';
-            // }
+                //     $penerima .= $penerima_id.'|';
+                // }
             $data = [
                 'created_by' => Auth::user()->id,
                 'user_id' => Auth::user()->id,
@@ -174,15 +242,21 @@ class MessageController extends Controller
                 'no_surat' => $no_surat,
                 'no' => $no[0],
             ];
-            // dd($data);
-            DB::table('surat')->insert($data);
+            $store_surat = DB::table('surat')->insertGetId($data);
+            
+            foreach($nama_file_surat as $file_surat){
+                $data1 = [
+                    'nama_file' => $file_surat,
+                    'surat_id' => $store_surat,
+                ];
+                DB::table('file')->insert($data1);
+            }
             return Redirect::back()->with(['success' => 'Surat Berhasil di kirim!']);
         }else{
             // $penerima = "|";
             // foreach($request->penerima_id as $penerima_id){
-            //     $penerima .= $penerima_id.'|';
-            // }
-
+                //     $penerima .= $penerima_id.'|';
+                // }
             $penerima = "|".$request->penerima_id."|";
             $data = [
                 'created_at' => now(),
@@ -247,47 +321,5 @@ class MessageController extends Controller
             return Redirect::back()->with(['success' => 'Surat Berhasil di simpan!']);
         }
         // return view('message.trash');
-    }
-    public function sync()
-    {
-        $list_profesi_phis = DB::connection('PHIS-V2')
-            ->table('profesi')
-            ->select([
-                'profesi_id',
-                'input_time',
-                'input_user_id',
-                'mod_time',
-                'mod_user_id',
-                'status_batal',
-                'nama_profesi'
-            ])
-            ->orderBy('profesi_id')
-            ->get();
-
-        foreach ($list_profesi_phis as $profesi) {
-            if ($profesi->status_batal) {
-                $deleted_at = $profesi->mod_time ?? now();
-                $deleted_by = $profesi->mod_user_id ?? 1;
-            } else {
-                $deleted_at = null;
-                $deleted_by = null;
-            }
-            $datanya[] = [
-                'profesi_id' => $profesi->profesi_id,
-                'created_at' => $profesi->input_time,
-                'created_by' => $profesi->input_user_id,
-                'updated_at' => $profesi->mod_time,
-                'updated_by' => $profesi->mod_user_id,
-                'deleted_at' => $deleted_at,
-                'deleted_by' => $deleted_by,
-                'nama_profesi' => $profesi->nama_profesi
-            ];
-        }
-
-        DB::table('profesi')->truncate();
-        DB::table('profesi')->insert($datanya);
-        return Redirect::back()->with(['success' => 'Data Berhasil Di Perbarui!']);
-
-        // return redirect()->back()->with('status', ['success', 'Data berhasil disimpan']);
     }
 }
