@@ -1,6 +1,4 @@
-@extends('layouts.tamplate')
 
-@section('content')
     <div class="card card-primary card-outline">
         <div class="card-header">
             <h3 class="card-title">Read Mail</h3>
@@ -8,15 +6,6 @@
         <!-- /.card-header -->
         <div class="card-body p-0">
             <div class="mailbox-read-info">
-                @if($surat->status == "batal")
-                    <div class="alert alert-danger">
-                        <h5><i class="icon fas fa-ban"></i> Mohon Maaf Surat Sudah Di Batalkan!</h5>
-                    </div>
-                @elseif($surat->status == "acc")
-                    <div class="alert alert-success">
-                        <h5><i class="icon fas fa-ban"></i> Surat Sudah Di ACC!</h5>
-                    </div>
-                @endif
                 <div class="row">
                     <div class="col-12 text-center">
                         
@@ -122,7 +111,7 @@
                 {!! $surat->isi_surat !!}
             </div>
             <div class="card-footer bg-white">
-                {{-- <h2>Lampiran</h2> --}}
+                <h2>Lampiran</h2>
                 <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
                     @foreach($lampiran as $item)
                     <li>
@@ -159,18 +148,73 @@
             <!-- /.mailbox-read-message -->
         </div>
         <!-- /.card-body -->
+        {{-- <div class="card-footer bg-white">
+            <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+                <li>
+                    <span class="mailbox-attachment-icon"><i class="far fa-file-pdf"></i></span>
+
+                    <div class="mailbox-attachment-info">
+                        <a href="#" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i>
+                            Sep2014-report.pdf</a>
+                        <span class="mailbox-attachment-size clearfix mt-1">
+                            <span>1,245 KB</span>
+                            <a href="#" class="btn btn-default btn-sm float-right"><i
+                                    class="fas fa-cloud-download-alt"></i></a>
+                        </span>
+                    </div>
+                </li>
+                <li>
+                    <span class="mailbox-attachment-icon"><i class="far fa-file-word"></i></span>
+
+                    <div class="mailbox-attachment-info">
+                        <a href="#" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> App
+                            Description.docx</a>
+                        <span class="mailbox-attachment-size clearfix mt-1">
+                            <span>1,245 KB</span>
+                            <a href="#" class="btn btn-default btn-sm float-right"><i
+                                    class="fas fa-cloud-download-alt"></i></a>
+                        </span>
+                    </div>
+                </li>
+                <li>
+                    <span class="mailbox-attachment-icon has-img"><img src="../../dist/img/photo1.png"
+                            alt="Attachment"></span>
+
+                    <div class="mailbox-attachment-info">
+                        <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> photo1.png</a>
+                        <span class="mailbox-attachment-size clearfix mt-1">
+                            <span>2.67 MB</span>
+                            <a href="#" class="btn btn-default btn-sm float-right"><i
+                                    class="fas fa-cloud-download-alt"></i></a>
+                        </span>
+                    </div>
+                </li>
+                <li>
+                    <span class="mailbox-attachment-icon has-img"><img src="../../dist/img/photo2.png"
+                            alt="Attachment"></span>
+
+                    <div class="mailbox-attachment-info">
+                        <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> photo2.png</a>
+                        <span class="mailbox-attachment-size clearfix mt-1">
+                            <span>1.9 MB</span>
+                            <a href="#" class="btn btn-default btn-sm float-right"><i
+                                    class="fas fa-cloud-download-alt"></i></a>
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div> --}}
         <!-- /.card-footer -->
         <div class="card-footer">
             <div class="float-right">
                 {{-- <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> Reply</button> --}}
-                @if ($datapenerima[$hitung] == Auth::user()->id && empty($surat->status))
-                    <a onclick="return confirm('Apakah anda yakin surat ini ingin langsung di Acc?')" href="{{ url('message/approve/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-check-circle"></i> Approve</a>
-                    <a onclick="return confirm('Apakah anda yakin surat ini ingin dibatalkan?')" href="{{ url('message/batal/'.Crypt::encrypt($surat->surat_id)) }}"  class="btn btn-danger"><i class="fas fa-times-circle"></i> Batalkan</a>
-                    <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i class="fas fa-reply"></i> Balas</button>
+                @if ($datapenerima[$hitung] == Auth::user()->id)
+                    <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i
+                            class="fas fa-share"></i> Balas</button>
                 @endif
             </div>
             {{-- <button type="button" class="btn btn-default"><i class="far fa-trash-alt"></i> Delete</button> --}}
-            {{-- <button type="button" class="btn btn-default"><i class="fas fa-print"></i> Print</button> --}}
+            <button type="button" class="btn btn-default"><i class="fas fa-print"></i> Print</button>
         </div>
         <!-- /.card-footer -->
         <div class="modal fade" id="reply-surat">
@@ -232,7 +276,6 @@
             <!-- /.modal-dialog -->
         </div>
     </div>
-@endsection
 
 @push('scripts')
     <script>

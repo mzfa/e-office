@@ -18,13 +18,14 @@
                         @endforeach
                     </select>
                   </div>
-                <div class="form-group">
+                  <input type="hidden" name="bagian" value="{{ $list_bagian->seri_bagian }}">
+                {{-- <div class="form-group">
                     <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="profesi" required>
                         @foreach ($list_profesi as $profesi)
                             <option value="{{ $profesi->nama_profesi }}">{{ $profesi->nama_profesi }}</option>
                         @endforeach
                     </select>
-                  </div>
+                  </div> --}}
                 {{-- <div class="form-group">
                     <div class="select2-purple">
                         <select class="select2" name="penerima_id[]" multiple="multiple" data-placeholder="Penerima"

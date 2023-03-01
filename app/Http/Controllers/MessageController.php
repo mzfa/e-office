@@ -46,10 +46,12 @@ class MessageController extends Controller
         // ->whereNotNull('user_akses.hakakses_id')
         // ->whereNull('users.deleted_at')
 
-        $list_profesi = DB::table('profesi')->whereNull('profesi.deleted_at')->get();
-        return view('message.tulis',compact('list_penerima','list_profesi'));
+        $list_bagian = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->leftJoin('bagian', 'pegawai.bagian_id', '=', 'bagian.bagian_id')->where(['users.id' => $user_id])->first();
+        // dd($list_bagian);
+        return view('message.tulis',compact('list_penerima','list_bagian'));
     }
     public function edit($id){
+        $user_id = Auth::user()->id;
         $list_penerima = DB::table('users')
         ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
         ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
@@ -61,23 +63,31 @@ class MessageController extends Controller
         ->whereNull('surat.created_by')
         ->whereNull('surat.deleted_at')
         ->first();
-        $list_profesi = DB::table('profesi')->whereNull('profesi.deleted_at')->get();
-        return view('message.edit',compact('list_penerima','surat','list_profesi'));
+        $list_bagian = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->leftJoin('bagian', 'pegawai.bagian_id', '=', 'bagian.bagian_id')->where(['users.id' => $user_id])->first();
+        return view('message.edit',compact('list_penerima','surat','list_bagian'));
     }
-    public function inbox(){
+    public function inbox(Request $request){
+        // dd($request->pencarian);
+        $pencarian = $request->pencarian;
+        // dd($pencarian)
         $user_id = Auth::user()->id;
         $list_surat = DB::table('surat')
         ->where('surat.penerima_id', 'like', '%|'. $user_id .'|%')
-        ->whereNull('surat.deleted_at')
+        ->where('surat.judul_surat', 'like', '%'. $pencarian .'%')
+        // ->whereNull('surat.deleted_at')
+        ->orderByDesc('surat.created_at')
         ->get();
         return view('message.inbox', compact('list_surat'));
     }
-    public function sent(){
+    public function sent(Request $request){
         $user_id = Auth::user()->id;
+        $pencarian = $request->pencarian;
         $list_surat = DB::table('surat')
         ->where(['surat.user_id' => $user_id])
         ->whereNotNull('surat.created_by')
         ->whereNull('surat.deleted_at')
+        ->orderByDesc('surat.created_at')
+        ->where('surat.judul_surat', 'like', '%'. $pencarian .'%')
         ->get();
         return view('message.sent', compact('list_surat'));
     }
@@ -93,7 +103,7 @@ class MessageController extends Controller
         ->leftJoin('users', 'users.id', '=', 'surat.user_id')
         ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
         ->where(['surat.surat_id' => $id])
-        ->whereNull('surat.deleted_at')
+        // ->whereNull('surat.status')
         ->first();
         $cek_balasan = DB::table('surat_balasan')->where(['surat_balasan.surat_id' => $id])->where(['surat_balasan.user_id' => $user_id])->first();
         $surat_balasan = DB::table('surat_balasan')
@@ -116,12 +126,15 @@ class MessageController extends Controller
         // dd($surat);
         return view('message.read', compact('surat','list_penerima','surat_balasan','cek_balasan','lampiran'));
     }
-    public function draft(){
+    public function draft(Request $request){
+        $pencarian = $request->pencarian;
         $user_id = Auth::user()->id;
         $list_surat = DB::table('surat')
         ->where(['surat.user_id' => $user_id])
         ->whereNull('surat.created_by')
         ->whereNull('surat.deleted_at')
+        ->orderByDesc('surat.created_at')
+        ->where('surat.judul_surat', 'like', '%'. $pencarian .'%')
         ->get();
         return view('message.draft',compact('list_surat'));
     }
@@ -130,6 +143,7 @@ class MessageController extends Controller
         $list_surat = DB::table('surat')
         ->where(['surat.user_id' => $user_id])
         ->whereNotNull('surat.deleted_at')
+        ->orderByDesc('surat.deleted_at')
         ->get();
         return view('message.trash',compact('list_surat'));
     }
@@ -138,16 +152,32 @@ class MessageController extends Controller
         $data = [
             'deleted_at' => now(),
             'deleted_by' => Auth::user()->id,
+            'status' => 'batal',
+            'change_status_id' => Auth::user()->id,
         ];
         // dd($data);
         DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
         return Redirect::back()->with(['success' => 'Surat Berhasil di batalkan!']);
+    }
+    public function approve($id){
+        $id = Crypt::decrypt($id);
+        $data = [
+            'updated_at' => now(),
+            'updated_by' => Auth::user()->id,
+            'status' => 'acc',
+            'change_status_id' => Auth::user()->id,
+        ];
+        // dd($data);
+        DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
+        return Redirect::back()->with(['success' => 'Surat Berhasil di approve!']);
     }
     public function aktifkan($id){
         $id = Crypt::decrypt($id);
         $data = [
             'deleted_at' => null,
             'deleted_by' => null,
+            'status' => null,
+            'change_status_id' => null,
         ];
         // dd($data);
         DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
@@ -202,7 +232,8 @@ class MessageController extends Controller
             'judul' => ['required'],
             'pesan' => 'required',
         ]);
-        $no_surat = app('App\Http\Controllers\MessageController')->nomorotomatis($request->profesi);
+        // dd($request->bagian);
+        $no_surat = app('App\Http\Controllers\MessageController')->nomorotomatis($request->bagian);
         $no = explode('/', $no_surat);
         // dd($no[0]);
         if(isset($request->simpan)){
@@ -212,7 +243,7 @@ class MessageController extends Controller
                 $semua_file = "";
                 foreach($request->file as $file){
                     // dd($file->getClientMimeType());
-                    if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/xlsx','application/pdf'])){
+                    if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf'])){
                         $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
                         // $name = Auth::user()->pegawai_id;
                         $file->move(public_path('document/lampiran/'), $file_name);
@@ -238,7 +269,7 @@ class MessageController extends Controller
                 'penerima_id' => $penerima,
                 'judul_surat' => $request->judul,
                 'isi_surat' => $request->pesan,
-                'bagian' => $request->profesi,
+                'bagian' => $request->bagian,
                 'no_surat' => $no_surat,
                 'no' => $no[0],
             ];
@@ -277,14 +308,36 @@ class MessageController extends Controller
             'judul' => ['required'],
             'pesan' => 'required'
         ]);
+        // dd($request);
         $id = $request->surat_id;
-        $no_surat = app('App\Http\Controllers\MessageController')->nomorotomatis($request->profesi);
+        $no_surat = app('App\Http\Controllers\MessageController')->nomorotomatis($request->bagian);
         $no = explode('/', $no_surat);
         if(isset($request->simpan)){
             // $penerima = "|";
             // foreach($request->penerima_id as $penerima_id){
             //     $penerima .= $penerima_id.'|';
             // }
+            $error = "";
+            $nama_file_surat = [];
+            if($request->hasFile('file')){
+                $semua_file = "";
+                foreach($request->file as $file){
+                    // dd($file->getClientMimeType());
+                    if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/pdf'])){
+                        $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
+                        // $name = Auth::user()->pegawai_id;
+                        $file->move(public_path('document/lampiran/'), $file_name);
+                        array_push($nama_file_surat, $file_name);
+                    }else{
+                        $error .= $file->getClientOriginalName()."File anda tidak dapat kami simpan cek kembali extensi dan besar filenya"."<br>";
+                    }
+                }
+                // dd($nama_file_surat);
+                if($error !== ""){
+                    return Redirect::back()->with(['error' => $error]);
+                }
+                
+            }
             $penerima = "|".$request->penerima_id."|";
             $data = [
                 'created_by' => Auth::user()->id,
@@ -293,12 +346,20 @@ class MessageController extends Controller
                 'penerima_id' => $penerima,
                 'judul_surat' => $request->judul,
                 'isi_surat' => $request->pesan,
-                'bagian' => $request->profesi,
+                'bagian' => $request->bagian,
                 'no_surat' => $no_surat,
                 'no' => $no[0],
             ];
-            // dd($data);
             DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
+            
+            foreach($nama_file_surat as $file_surat){
+                $data1 = [
+                    'nama_file' => $file_surat,
+                    'surat_id' => $id,
+                ];
+                DB::table('file')->insert($data1);
+            }
+            
             return Redirect::back()->with(['success' => 'Surat Berhasil di kirim!']);
         }else{
             // $penerima = "|";
@@ -312,9 +373,9 @@ class MessageController extends Controller
                 'penerima_id' => $penerima,
                 'judul_surat' => $request->judul,
                 'isi_surat' => $request->pesan,
-                'bagian' => $request->profesi,
-                'no_surat' => $no_surat,
-                'no' => $no,
+                // 'bagian' => $request->profesi,
+                // 'no_surat' => $no_surat,
+                // 'no' => $no,
             ];
             // dd($data);
             DB::table('surat')->where(['surat.surat_id' => $id])->update($data);

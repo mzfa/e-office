@@ -30,6 +30,7 @@ class BagianController extends Controller
                 'mod_user_id',
                 'status_batal',
                 'nama_bagian',
+                'seri_bagian',
                 'referensi_bagian',
                 'group_bagian',
             ])
@@ -52,9 +53,10 @@ class BagianController extends Controller
                 'updated_by' => $bagian->mod_user_id,
                 'deleted_at' => $deleted_at,
                 'deleted_by' => $deleted_by,
-                'referensi_id' => $bagian->referensi_bagian,
-                'tipe' => $bagian->group_bagian,
-                'nama' => $bagian->nama_bagian
+                'referensi_bagian' => $bagian->referensi_bagian,
+                'group_bagian' => $bagian->group_bagian,
+                'nama_bagian' => $bagian->nama_bagian,
+                'seri_bagian' => $bagian->seri_bagian
             ];
         }
 

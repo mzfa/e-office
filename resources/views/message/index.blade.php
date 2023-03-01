@@ -406,10 +406,11 @@
 
 @push('scripts')
     <script>
+        var pencarian = "";
         $.ajax({
             type: 'get',
             url: "{{ url('message/inbox') }}/",
-            // data:{'id':id}, 
+            data:{'pencarian':pencarian}, 
             beforeSend: function() {
                 var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
                 $('#message-content').html('<center><img src="'+url+'"></center>');
@@ -448,16 +449,18 @@
             })
         }
         function inboxOpen() {
+            var pencarian = "";
             $.ajax({
                 type: 'get',
                 url: "{{ url('message/inbox') }}/",
-                // data:{'id':id}, 
+                data:{'pencarian':pencarian}, 
                 beforeSend: function() {
                     var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
                     $('#message-content').html('<center><img src="'+url+'"></center>');
                 },
                 success: function(tampil) {
                     $('#message-content').html(tampil);
+                    // $("#loading-image").hide();
                 }
             })
         }

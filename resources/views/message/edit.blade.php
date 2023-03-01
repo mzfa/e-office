@@ -22,6 +22,7 @@
                         </select>
                     </div>
                 </div> --}}
+                <input type="hidden" name="bagian" value="{{ $list_bagian->seri_bagian }}">
                 <div class="form-group">
                     <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required>
                         @foreach ($list_penerima as $penerima)
@@ -31,13 +32,13 @@
                         @endforeach
                     </select>
                   </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="profesi" required>
                         @foreach ($list_profesi as $profesi)
                             <option value="{{ $profesi->nama_profesi }}" @if($profesi->nama_profesi == $surat->bagian) selected @endif>{{ $profesi->nama_profesi }}</option>
                         @endforeach
                     </select>
-                  </div>
+                  </div> --}}
                 <input class="form-control" type="hidden" required name="surat_id" value="{{ $surat->surat_id }}">
                 <div class="form-group">
                     <input class="form-control" type="text" required name="judul" value="{{ $surat->judul_surat }}" placeholder="Judul Surat">
@@ -46,12 +47,13 @@
                     <input class="form-control" type="text" value="{{ $surat->no_surat }}" required name="no_surat" placeholder="Nomor Surat">
                 </div> --}}
                 <div class="form-group">
-                    <input class="form-control" type="file" multiple name="file" placeholder="File">
-                </div>
-                <div class="form-group">
                     <textarea id="compose-textarea" required name="pesan" class="form-control" style="height: 300px">
                         {!! $surat->isi_surat !!}
                     </textarea>
+                </div>
+                <div class="form-group">
+                    <label for="">Upload Lampiran (opsional)</label>
+                    <input class="form-control" type="file" multiple name="file[]" placeholder="File">
                 </div>
             </div>
             <!-- /.card-body -->
@@ -64,6 +66,7 @@
                 </div>
                 <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Discard</button>
             </div>
+            
             <!-- /.card-footer -->
         </div>
     </form>

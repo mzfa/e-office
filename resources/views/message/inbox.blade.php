@@ -59,14 +59,28 @@
             // var pencarian = document.getElementById('pencarian').value;
             if (event.keyCode === 13) {
                 console.log(text.value);
+                var pencarian = text.value;
+                // $.ajax({
+                //     type: 'get',
+                //     url: "{{ url('message/pencarian') }}/inbox/" + text.value,
+                //     // data:{'id':id}, 
+                //     success: function(tampil) {
+                //         $('#tableData').html(tampil);
+                //     }
+                // })
                 $.ajax({
-                type: 'get',
-                url: "{{ url('message/pencarian') }}/inbox/" + text.value,
-                // data:{'id':id}, 
-                success: function(tampil) {
-                    $('#tableData').html(tampil);
-                }
-            })
+                    type: 'get',
+                    url: "{{ url('message/inbox') }}/",
+                    data:{'pencarian':pencarian}, 
+                    beforeSend: function() {
+                        var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                        $('#message-content').html('<center><img src="'+url+'"></center>');
+                    },
+                    success: function(tampil) {
+                        $('#message-content').html(tampil);
+                        // $("#loading-image").hide();
+                    }
+                })
             }
         }
         
