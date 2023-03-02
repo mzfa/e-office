@@ -8,7 +8,7 @@
 
                 <div class="card-tools">
                     <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" placeholder="Search Mail">
+                        <input type="text" onkeyup="cariData(this)" id="pencarian" class="form-control" placeholder="Search Mail">
                         <div class="input-group-append">
                             <div class="btn btn-primary">
                                 <i class="fas fa-search"></i>
@@ -64,7 +64,7 @@
                         <tbody>
                             <div id="tableData">
                                 @foreach($list_surat as $surat)
-                                <tr>
+                                <tr @if($surat->status == "acc") class="bg-success" @elseif($surat->status == "batal") class="bg-danger" @endif>
                                     {{-- <td>
                                         <div class="icheck-primary">
                                             <input type="checkbox" value="" id="check1">
@@ -79,7 +79,9 @@
                                         @endphp
                                     </td>
                                     <td class="mailbox-date">{{ \Carbon\Carbon::parse($surat->created_at)->diffForHumans() }}</td>
-                                    <td class="mailbox-date"><a onclick="return confirm('Apakah kamu yakin pesan ini ingin dibatalkan')"  href="{{ url('message/batal/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-danger">Batal</a></td>
+                                    {{-- <td class="mailbox-date">
+                                        <a onclick="return confirm('Apakah kamu yakin pesan ini ingin dibatalkan')"  href="{{ url('message/batal/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-danger">Batal</a>
+                                    </td> --}}
                                 </tr>
                                 @endforeach
                             </div>
@@ -132,6 +134,35 @@
 
 @push('scripts')
     <script>
+
+        function cariData(text){
+            // var pencarian = document.getElementById('pencarian').value;
+            if (event.keyCode === 13) {
+                console.log(text.value);
+                var pencarian = text.value;
+                // $.ajax({
+                //     type: 'get',
+                //     url: "{{ url('message/pencarian') }}/inbox/" + text.value,
+                //     // data:{'id':id}, 
+                //     success: function(tampil) {
+                //         $('#tableData').html(tampil);
+                //     }
+                // })
+                $.ajax({
+                    type: 'get',
+                    url: "{{ url('message/sent') }}/",
+                    data:{'pencarian':pencarian}, 
+                    beforeSend: function() {
+                        var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                        $('#message-content').html('<center><img src="'+url+'"></center>');
+                    },
+                    success: function(tampil) {
+                        $('#message-content').html(tampil);
+                        // $("#loading-image").hide();
+                    }
+                })
+            }
+        }
         function lihatSurat(id) {
             $.ajax({
                 type: 'get',

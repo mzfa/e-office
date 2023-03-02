@@ -41,7 +41,7 @@
                                         @endphp
                                     </td>
                                     <td class="mailbox-date">{{ \Carbon\Carbon::parse($surat->created_at)->diffForHumans() }}</td>
-                                    <td class="mailbox-date"><a onclick="return confirm('Apakah kamu yakin pesan ini ingin diaktifkan')" href="{{ url('message/aktifkan/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-primary">Aktifkan</a></td>
+                                    {{-- <td class="mailbox-date"><a onclick="return confirm('Apakah kamu yakin pesan ini ingin diaktifkan')" href="{{ url('message/aktifkan/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-primary">Aktifkan</a></td> --}}
                                 </tr>
                                 @endforeach
                             </div>
