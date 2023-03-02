@@ -14,7 +14,7 @@
                     </div>
                 @elseif($surat->status == "acc")
                     <div class="alert alert-success">
-                        <h5><i class="icon fas fa-ban"></i> Surat Sudah Di ACC!</h5>
+                        <h5><i class="icon fas fa-check"></i> Surat Sudah Di ACC!</h5>
                     </div>
                 @endif
                 <div class="row">

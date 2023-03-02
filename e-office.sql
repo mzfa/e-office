@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 01, 2023 at 01:45 AM
+-- Generation Time: Mar 02, 2023 at 02:38 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -37,104 +37,105 @@ CREATE TABLE `bagian` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `nama_bagian` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `referensi_bagian` bigint(20) UNSIGNED DEFAULT NULL,
-  `group_bagian` varchar(100) DEFAULT NULL
+  `group_bagian` varchar(100) DEFAULT NULL,
+  `seri_bagian` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bagian`
 --
 
-INSERT INTO `bagian` (`bagian_id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `nama_bagian`, `referensi_bagian`, `group_bagian`) VALUES
-(1, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'UNIT RAWAT JALAN', NULL, 'GROUP'),
-(2, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'UNIT RAWAT INAP', NULL, 'GROUP'),
-(3, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'PENUNJANG MEDIS', NULL, 'GROUP'),
-(4, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'LABORATORIUM', 3, 'GROUP'),
-(5, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'LABORATORIUM', 4, 'DETAIL'),
-(6, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'DIAGNOSTIC CENTER', 3, 'GROUP'),
-(7, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'RADIOLOGI', 6, 'DETAIL'),
-(8, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'CT SCAN', 6, 'DETAIL'),
-(9, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'PELAYANAN MEDIS', NULL, 'GROUP'),
-(10, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'USG', 6, 'DETAIL'),
-(11, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'ICU', 2, 'DETAIL'),
-(12, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KAMAR BEDAH', 3, 'DETAIL'),
-(13, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'REKAM MEDIS', 3, 'DETAIL'),
-(14, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'CASEMIX', 9, 'DETAIL'),
-(15, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'PSRS & UMUM', 15, 'GROUP'),
-(16, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'PENGADAAN OBAT', 33, 'DETAIL'),
-(17, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'PENGADAAN UMUM', 33, 'DETAIL'),
-(18, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'TEKNIK', 15, 'DETAIL'),
-(19, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KEUANGAN DAN IT', NULL, 'GROUP'),
-(20, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KEPERAWATAN', NULL, 'GROUP'),
-(21, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'PEMASARAN', NULL, 'DETAIL'),
-(22, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'IGD', 9, 'DETAIL'),
-(23, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'FARMASI', 44, 'DETAIL'),
-(24, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'GIZI', 3, 'DETAIL'),
-(25, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KAMAR JENAZAH', 3, 'DETAIL'),
-(26, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'PERHOTELAN', 15, 'DETAIL'),
-(27, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KEPERAWATAN', 9, 'DETAIL'),
-(28, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK KANDUNGAN', 1, 'DETAIL'),
-(29, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK GIGI', 1, 'DETAIL'),
-(30, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KEUANGAN', 19, 'DETAIL'),
-(31, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'TEKNIK INFORMASI', 19, 'DETAIL'),
-(32, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'SDM', NULL, 'GROUP'),
-(33, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'SDM DAN PENGADAAN', NULL, 'DETAIL'),
-(34, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK MATA', 1, 'DETAIL'),
-(35, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK REHAB MEDIK', 1, 'DETAIL'),
-(36, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK PARU', 1, 'DETAIL'),
-(37, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK THT', 1, 'DETAIL'),
-(38, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK SYARAF', 1, 'DETAIL'),
-(39, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK BEDAH', 1, 'DETAIL'),
-(40, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK KULIT DAN KELAMIN', 1, 'DETAIL'),
-(41, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK PENYAKIT DALAM', 1, 'DETAIL'),
-(42, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK ANAK', 1, 'DETAIL'),
-(43, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK UROLOGI', 1, 'DETAIL'),
-(44, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'INSTALASI FARMASI', 3, 'GROUP'),
-(45, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK JANTUNG', 1, 'DETAIL'),
-(46, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK UMUM', 1, 'DETAIL'),
-(47, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK ORTOPEDI', 1, 'DETAIL'),
-(48, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'TRANSIT IGD', 2, 'DETAIL'),
-(49, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'DAHLIA', NULL, 'GROUP'),
-(50, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'UNIT REHABILITASI MEDIK', 9, 'GROUP'),
-(51, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'FISIOTERAPI', 50, 'DETAIL'),
-(52, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'GUDANG UMUM', 49, 'DETAIL'),
-(53, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'GUDANG OBAT', 49, 'DETAIL'),
-(54, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'OKUPASI TERAPI', 50, 'DETAIL'),
-(55, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'TERAPI WICARA', 50, 'DETAIL'),
-(56, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'MELATI', 2, 'DETAIL'),
-(57, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'MAWAR/ISOLASI', 2, 'DETAIL'),
-(58, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'ISOLASI', 2, 'DETAIL'),
-(59, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'TERATAI', 2, 'DETAIL'),
-(60, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'ANGGREK', 2, 'DETAIL'),
-(61, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'EDELWEIS', 2, 'DETAIL'),
-(62, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'TULIP', 2, 'DETAIL'),
-(63, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'HCU', 2, 'DETAIL'),
-(64, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'PERINA', 2, 'DETAIL'),
-(65, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK FISIOTERAPI', 1, 'DETAIL'),
-(66, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'HEMODIALISA', 9, 'DETAIL'),
-(67, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KEPALA RUMAHSAKIT', NULL, 'GROUP'),
-(68, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'IGD OBGYN', 9, 'DETAIL'),
-(69, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK HEMODIALISA', 9, 'DETAIL'),
-(70, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'MEDICAL CHECK UP', 3, 'DETAIL'),
-(71, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'AMARILIS / ISOLASI', 2, 'DETAIL'),
-(72, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'SAKURA / ISOLASI', 2, 'DETAIL'),
-(73, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'LAVENDER / ISOLASI', 2, 'DETAIL'),
-(74, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK HD', 1, 'DETAIL'),
-(75, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'BAYI SEHAT', 2, 'DETAIL'),
-(76, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'AMBULANCE', 3, 'DETAIL'),
-(77, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'ICU / ISOLASI', 2, 'DETAIL'),
-(78, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK KESEHATAN KERJA', 1, 'DETAIL'),
-(79, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK OKUPASI', 1, 'DETAIL'),
-(80, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK TERAPI WICARA', 1, 'DETAIL'),
-(81, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KOMITE', NULL, 'DETAIL'),
-(82, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK KECANTIKAN', 1, 'DETAIL'),
-(83, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'GIGI ENDODONSI', 1, 'DETAIL'),
-(84, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'INSTALASI GUDANG', 19, 'DETAIL'),
-(85, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'ONE DAY CARE', 1, 'GROUP'),
-(86, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'ONE DAY CARE KATARAK', 85, 'DETAIL'),
-(87, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK ORTODONTI', 1, 'DETAIL'),
-(88, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KBN GRAHA MEDIKA', 67, 'GROUP'),
-(89, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'KLINIK KEDOKTERAN JIWA', 1, 'DETAIL'),
-(90, 0, '2023-02-16 01:57:46', NULL, NULL, NULL, NULL, 'DUTY MANAGER DAN SPGDT', NULL, 'DETAIL');
+INSERT INTO `bagian` (`bagian_id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `nama_bagian`, `referensi_bagian`, `group_bagian`, `seri_bagian`) VALUES
+(1, 1, '2020-01-14 06:45:23', 1, '2020-01-15 07:27:50', NULL, NULL, 'UNIT RAWAT JALAN', NULL, 'GROUP', NULL),
+(2, 1, '2020-01-14 06:46:04', 1, '2020-01-16 08:27:19', NULL, NULL, 'UNIT RAWAT INAP', NULL, 'GROUP', NULL),
+(3, 1, '2020-01-14 06:49:12', NULL, NULL, NULL, NULL, 'PENUNJANG MEDIS', NULL, 'GROUP', NULL),
+(4, 1, '2020-01-14 06:50:58', NULL, NULL, NULL, NULL, 'LABORATORIUM', 3, 'GROUP', 'LAB'),
+(5, 1, '2020-01-14 06:51:24', NULL, NULL, NULL, NULL, 'LABORATORIUM', 4, 'DETAIL', 'LAB'),
+(6, 1, '2020-01-14 06:51:54', NULL, NULL, NULL, NULL, 'DIAGNOSTIC CENTER', 3, 'GROUP', NULL),
+(7, 1, '2020-01-14 06:52:14', NULL, NULL, NULL, NULL, 'RADIOLOGI', 6, 'DETAIL', NULL),
+(8, 1, '2020-01-14 06:52:55', NULL, NULL, NULL, NULL, 'CT SCAN', 6, 'DETAIL', NULL),
+(9, 1, '2020-01-14 06:56:31', 158, '2023-02-20 01:56:41', NULL, NULL, 'PELAYANAN MEDIS', 9, 'DETAIL', ''),
+(10, 1, '2020-01-14 07:16:29', NULL, NULL, NULL, NULL, 'USG', 6, 'DETAIL', NULL),
+(11, 1, '2020-01-14 07:18:57', 1, '2021-11-10 06:34:34', NULL, NULL, 'ICU', 2, 'DETAIL', ''),
+(12, 1, '2020-01-14 07:19:57', 1, '2020-03-18 04:55:29', NULL, NULL, 'KAMAR BEDAH', 3, 'DETAIL', NULL),
+(13, 1, '2020-01-14 07:20:39', NULL, NULL, NULL, NULL, 'REKAM MEDIS', 3, 'DETAIL', NULL),
+(14, 1, '2020-01-14 07:21:28', NULL, NULL, NULL, NULL, 'CASEMIX', 9, 'DETAIL', NULL),
+(15, 1, '2020-01-14 07:22:01', 1, '2020-01-14 07:23:19', NULL, NULL, 'PSRS & UMUM', 15, 'GROUP', NULL),
+(16, 1, '2020-01-14 07:22:21', NULL, NULL, NULL, NULL, 'PENGADAAN OBAT', 33, 'DETAIL', NULL),
+(17, 1, '2020-01-14 07:22:36', NULL, NULL, NULL, NULL, 'PENGADAAN UMUM', 33, 'DETAIL', NULL),
+(18, 1, '2020-01-14 07:23:40', NULL, NULL, NULL, NULL, 'TEKNIK', 15, 'DETAIL', NULL),
+(19, 1, '2020-01-14 07:24:18', NULL, NULL, NULL, NULL, 'KEUANGAN DAN IT', NULL, 'GROUP', NULL),
+(20, 1, '2020-01-14 07:24:48', NULL, NULL, NULL, NULL, 'KEPERAWATAN', NULL, 'GROUP', NULL),
+(21, 1, '2020-01-14 07:25:16', NULL, NULL, NULL, NULL, 'PEMASARAN', NULL, 'DETAIL', NULL),
+(22, 1, '2020-01-14 07:25:59', 1, '2020-04-27 07:02:42', NULL, NULL, 'IGD', 9, 'DETAIL', NULL),
+(23, 1, '2020-01-14 07:26:53', NULL, NULL, NULL, NULL, 'FARMASI', 44, 'DETAIL', 'TX'),
+(24, 1, '2020-01-14 07:27:11', NULL, NULL, NULL, NULL, 'GIZI', 3, 'DETAIL', NULL),
+(25, 1, '2020-01-14 07:27:25', NULL, NULL, NULL, NULL, 'KAMAR JENAZAH', 3, 'DETAIL', NULL),
+(26, 1, '2020-01-14 07:28:13', NULL, NULL, NULL, NULL, 'PERHOTELAN', 15, 'DETAIL', NULL),
+(27, 1, '2020-01-14 07:36:28', NULL, NULL, NULL, NULL, 'KEPERAWATAN', 9, 'DETAIL', NULL),
+(28, 1, '2020-01-15 07:28:44', NULL, NULL, NULL, NULL, 'KLINIK KANDUNGAN', 1, 'DETAIL', NULL),
+(29, 1, '2020-01-15 07:29:29', NULL, NULL, NULL, NULL, 'KLINIK GIGI', 1, 'DETAIL', NULL),
+(30, 1, '2020-01-15 08:17:38', NULL, NULL, NULL, NULL, 'KEUANGAN', 19, 'DETAIL', NULL),
+(31, 1, '2020-01-15 08:18:16', 1, '2021-05-24 06:54:14', NULL, NULL, 'TEKNIK INFORMASI', 19, 'DETAIL', 'IT'),
+(32, 1, '2020-01-16 08:42:16', 152, '2020-10-05 01:00:16', NULL, NULL, 'SDM', NULL, 'GROUP', NULL),
+(33, 1, '2020-01-16 08:42:59', NULL, NULL, NULL, NULL, 'SDM DAN PENGADAAN', NULL, 'DETAIL', NULL),
+(34, 1, '2020-01-21 03:20:17', NULL, NULL, NULL, NULL, 'KLINIK MATA', 1, 'DETAIL', NULL),
+(35, 1, '2020-01-21 03:21:12', NULL, NULL, NULL, NULL, 'KLINIK REHAB MEDIK', 1, 'DETAIL', NULL),
+(36, 1, '2020-01-21 03:22:17', NULL, NULL, NULL, NULL, 'KLINIK PARU', 1, 'DETAIL', NULL),
+(37, 1, '2020-01-21 03:23:03', NULL, NULL, NULL, NULL, 'KLINIK THT', 1, 'DETAIL', NULL),
+(38, 1, '2020-01-21 03:23:35', NULL, NULL, NULL, NULL, 'KLINIK SYARAF', 1, 'DETAIL', NULL),
+(39, 1, '2020-01-21 03:24:06', NULL, NULL, NULL, NULL, 'KLINIK BEDAH', 1, 'DETAIL', NULL),
+(40, 1, '2020-01-21 03:25:10', NULL, NULL, NULL, NULL, 'KLINIK KULIT DAN KELAMIN', 1, 'DETAIL', NULL),
+(41, 1, '2020-01-21 03:25:41', NULL, NULL, NULL, NULL, 'KLINIK PENYAKIT DALAM', 1, 'DETAIL', NULL),
+(42, 1, '2020-01-21 03:26:21', NULL, NULL, NULL, NULL, 'KLINIK ANAK', 1, 'DETAIL', NULL),
+(43, 1, '2020-01-21 03:26:58', NULL, NULL, NULL, NULL, 'KLINIK UROLOGI', 1, 'DETAIL', NULL),
+(44, 1, '2020-01-21 03:27:33', NULL, NULL, NULL, NULL, 'INSTALASI FARMASI', 3, 'GROUP', NULL),
+(45, 1, '2020-01-21 03:27:59', NULL, NULL, NULL, NULL, 'KLINIK JANTUNG', 1, 'DETAIL', NULL),
+(46, 1, '2020-01-21 03:28:25', 1, '2020-01-28 12:02:56', NULL, NULL, 'KLINIK UMUM', 1, 'DETAIL', NULL),
+(47, 1, '2020-01-21 03:29:05', NULL, NULL, NULL, NULL, 'KLINIK ORTOPEDI', 1, 'DETAIL', NULL),
+(48, 1, '2020-01-21 06:35:54', 1, '2021-11-06 04:32:18', 1, '2021-11-06 04:32:18', 'TRANSIT IGD', 2, 'DETAIL', 'TRS'),
+(49, 1, '2020-01-21 06:58:20', 1, '2022-04-28 03:00:40', 1, '2022-04-28 03:00:40', 'DAHLIA', NULL, 'GROUP', 'ING'),
+(50, 1, '2020-01-23 05:19:41', NULL, NULL, NULL, NULL, 'UNIT REHABILITASI MEDIK', 9, 'GROUP', NULL),
+(51, 1, '2020-01-23 05:19:53', NULL, NULL, NULL, NULL, 'FISIOTERAPI', 50, 'DETAIL', NULL),
+(52, 1, '2020-01-23 05:26:22', NULL, NULL, NULL, NULL, 'GUDANG UMUM', 49, 'DETAIL', NULL),
+(53, 1, '2020-01-23 05:26:35', 152, '2020-10-05 00:59:59', NULL, NULL, 'GUDANG OBAT', 49, 'DETAIL', NULL),
+(54, 1, '2020-02-12 15:22:42', NULL, NULL, NULL, NULL, 'OKUPASI TERAPI', 50, 'DETAIL', NULL),
+(55, 1, '2020-02-12 15:22:56', NULL, NULL, NULL, NULL, 'TERAPI WICARA', 50, 'DETAIL', NULL),
+(56, 1, '2020-02-12 15:22:56', 1, '2022-04-27 03:41:11', NULL, NULL, 'MELATI', 2, 'DETAIL', 'MLT'),
+(57, 1, '2020-02-12 15:22:56', 1, '2021-06-11 04:29:46', 1, '2021-06-11 04:29:46', 'MAWAR/ISOLASI', 2, 'DETAIL', NULL),
+(58, 1, '2020-02-12 15:22:56', 1, '2021-11-06 04:32:27', 1, '2021-11-06 04:32:27', 'ISOLASI', 2, 'DETAIL', NULL),
+(59, 1, '2020-02-12 15:22:56', 1, '2021-11-06 04:32:10', 1, '2021-11-06 04:32:10', 'TERATAI', 2, 'DETAIL', NULL),
+(60, 1, '2020-02-12 15:22:56', 1, '2021-11-06 01:26:32', NULL, NULL, 'ANGGREK', 2, 'DETAIL', 'ANG'),
+(61, 1, '2020-02-12 15:22:56', 1, '2021-11-10 01:00:15', NULL, NULL, 'EDELWEIS', 2, 'DETAIL', 'EDS'),
+(62, 1, '2020-02-12 15:22:56', 1, '2021-08-21 03:15:01', 1, '2021-08-21 03:15:01', 'TULIP', 2, 'DETAIL', NULL),
+(63, 1, '2020-02-12 15:22:56', NULL, NULL, 1, '2023-03-01 04:48:57', 'HCU', 2, 'DETAIL', NULL),
+(64, 1, '2020-02-12 15:22:56', NULL, NULL, NULL, NULL, 'PERINA', 2, 'DETAIL', NULL),
+(65, 1, '2020-08-18 07:17:12', NULL, NULL, NULL, NULL, 'KLINIK FISIOTERAPI', 1, 'DETAIL', NULL),
+(66, 1, '2020-09-24 09:08:07', 152, '2020-11-20 08:09:07', NULL, NULL, 'HEMODIALISA', 9, 'DETAIL', NULL),
+(67, 1, '2020-10-20 02:43:43', NULL, NULL, NULL, NULL, 'KEPALA RUMAHSAKIT', NULL, 'GROUP', NULL),
+(68, 1, '2020-10-24 04:13:27', NULL, NULL, NULL, NULL, 'IGD OBGYN', 9, 'DETAIL', NULL),
+(69, 152, '2020-11-20 08:16:31', 1, '2021-01-19 03:03:44', 1, '2021-01-19 03:03:44', 'KLINIK HEMODIALISA', 9, 'DETAIL', NULL),
+(70, 1, '2021-01-19 02:35:45', 1, '2021-01-19 02:50:50', NULL, NULL, 'MEDICAL CHECK UP', 3, 'DETAIL', NULL),
+(71, 1, '2021-02-22 00:41:48', 1, '2021-06-11 07:07:00', 1, '2021-06-11 07:07:00', 'AMARILIS / ISOLASI', 2, 'DETAIL', NULL),
+(72, 1, '2021-02-22 00:42:44', 1, '2021-11-10 06:34:19', NULL, NULL, 'SAKURA / ISOLASI', 2, 'DETAIL', 'SAK'),
+(73, 1, '2021-02-22 00:43:50', 1, '2021-06-11 07:53:23', 1, '2021-06-11 07:53:23', 'LAVENDER / ISOLASI', 2, 'DETAIL', NULL),
+(74, 1, '2021-04-07 03:39:06', 1, '2021-04-07 03:52:55', NULL, NULL, 'KLINIK HD', 1, 'DETAIL', NULL),
+(75, 1, '2021-06-29 04:47:16', 158, '2022-11-17 07:30:37', NULL, NULL, 'BAYI SEHAT', 2, 'DETAIL', 'BS'),
+(76, 1, '2021-07-27 01:32:07', NULL, NULL, NULL, NULL, 'AMBULANCE', 3, 'DETAIL', 'AMB'),
+(77, 1, '2021-08-03 03:05:07', 1, '2021-11-06 02:14:42', 1, '2021-11-06 02:14:42', 'ICU / ISOLASI', 2, 'DETAIL', 'ICUS'),
+(78, 1, '2021-09-01 01:17:47', NULL, NULL, NULL, NULL, 'KLINIK KESEHATAN KERJA', 1, 'DETAIL', 'KKK'),
+(79, 1, '2021-10-25 09:31:34', NULL, NULL, NULL, NULL, 'KLINIK OKUPASI', 1, 'DETAIL', 'OKT'),
+(80, 1, '2021-11-15 04:39:06', NULL, NULL, NULL, NULL, 'KLINIK TERAPI WICARA', 1, 'DETAIL', 'TW'),
+(81, 152, '2022-01-14 06:44:00', NULL, NULL, NULL, NULL, 'KOMITE', NULL, 'DETAIL', ''),
+(82, 1, '2022-01-19 08:43:31', NULL, NULL, NULL, NULL, 'KLINIK KECANTIKAN', 1, 'DETAIL', 'KKN'),
+(83, 1, '2022-03-15 07:48:49', 306, '2023-02-28 02:02:04', NULL, NULL, 'GIGI ENDODONSI', 1, 'DETAIL', 'END'),
+(84, 1, '2022-04-27 03:13:29', 1, '2022-06-16 06:54:31', NULL, NULL, 'INSTALASI GUDANG', 19, 'DETAIL', 'DHA'),
+(85, 1, '2022-05-18 02:32:50', 1, '2022-05-18 02:42:11', NULL, NULL, 'ONE DAY CARE', 1, 'GROUP', 'ODC'),
+(86, 1, '2022-05-18 02:40:45', NULL, NULL, NULL, NULL, 'ONE DAY CARE KATARAK', 85, 'DETAIL', 'ODCK'),
+(87, 1, '2022-08-20 01:24:05', 1, '2022-08-20 01:29:41', NULL, NULL, 'KLINIK ORTODONTI', 1, 'DETAIL', 'GIORT'),
+(88, 152, '2022-09-28 01:31:15', NULL, NULL, NULL, NULL, 'KBN GRAHA MEDIKA', 67, 'GROUP', ''),
+(89, 152, '2022-10-14 07:11:11', NULL, NULL, NULL, NULL, 'KLINIK KEDOKTERAN JIWA', 1, 'DETAIL', ''),
+(90, 152, '2022-11-28 04:11:58', NULL, NULL, NULL, NULL, 'DUTY MANAGER DAN SPGDT', NULL, 'DETAIL', '');
 
 -- --------------------------------------------------------
 
@@ -155,7 +156,11 @@ CREATE TABLE `file` (
 INSERT INTO `file` (`file_id`, `nama_file`, `surat_id`) VALUES
 (1, '1677574671848-Bukti-Kegiatan.pdf', 18),
 (2, '1677574671849-Bukti-Piagam:Penghargaan:Medali.pdf', 18),
-(3, '1677574671849-Bukti-Sertifikat.pdf', 18);
+(3, '1677574671849-Bukti-Sertifikat.pdf', 18),
+(4, '1677654279458-SKU-Toped-vs-Gdrive---Retail-&-Selling-Price.xlsx', 27),
+(5, '1677654279493-ubah-sekaligus-11061935-(1)-20220814210257.895-(version-1).xlsx', 27),
+(6, '1677654811453-12210377_SURAT-PERMOHONAN-BEASISWA_Muhammad-Zulfikar-F-A.docx', 30),
+(7, '1677654811455-12210377_SURAT-PERNYATAAN_Muhammad-Zulfikar-F-A.docx', 30);
 
 -- --------------------------------------------------------
 
@@ -188,7 +193,7 @@ INSERT INTO `hakakses` (`hakakses_id`, `created_by`, `created_at`, `updated_by`,
 (5, 0, '2023-02-25 04:21:14', 0, '2023-02-28 02:10:45', NULL, NULL, 'Kepala RS', '25|', '|3|4|5|6|7|8|'),
 (6, 0, '2023-02-27 07:27:43', NULL, NULL, NULL, NULL, 'Kordinator Pengadaan', '25|', NULL),
 (7, 0, '2023-02-27 07:28:46', NULL, NULL, NULL, NULL, 'Wakars', '25|', NULL),
-(8, 0, '2023-02-27 07:30:24', NULL, NULL, NULL, NULL, 'Direktur PT KGM', NULL, NULL),
+(8, 0, '2023-02-27 07:30:24', 0, '2023-03-01 04:25:14', NULL, NULL, 'Direktur PT KGM', NULL, '|1|2|3|4|5|6|7|8|9|'),
 (9, 0, '2023-02-28 01:36:52', NULL, NULL, NULL, NULL, 'Kepala', NULL, '|3|4|5|7|');
 
 -- --------------------------------------------------------
@@ -955,15 +960,24 @@ CREATE TABLE `surat` (
   `no_surat` varchar(255) DEFAULT NULL,
   `no` int(11) DEFAULT NULL,
   `bagian` varchar(255) DEFAULT NULL,
-  `isi_surat` longtext DEFAULT NULL
+  `isi_surat` longtext DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `change_status_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `surat`
 --
 
-INSERT INTO `surat` (`surat_id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `user_id`, `penerima_id`, `judul_surat`, `no_surat`, `no`, `bagian`, `isi_surat`) VALUES
-(18, 306, '2023-02-28 08:57:51', NULL, NULL, NULL, NULL, 306, '|108|37|', 'Judul', '1/MEMO/IT/02/2023', 1, 'IT', '<div>(function (root, factory) {</div><div>&nbsp; if (typeof define === \'function\' &amp;&amp; define.amd) {</div><div>&nbsp; &nbsp; // AMD. Register as an anonymous module.</div><div>&nbsp; &nbsp; define(factory);</div><div>&nbsp; } else if (typeof exports === \'object\') {</div><div>&nbsp; &nbsp; // Node. Does not work with strict CommonJS, but</div><div>&nbsp; &nbsp; // only CommonJS-like enviroments that support module.exports,</div><div>&nbsp; &nbsp; // like Node.</div><div>&nbsp; &nbsp; module.exports = factory();</div><div>&nbsp; } else {</div><div>&nbsp; &nbsp; // Browser globals (root is window)</div><div>&nbsp; &nbsp; root.Sparkline = factory();</div><div>&nbsp; }</div><div>}(window, function () {</div><div>&nbsp; function extend(specific, general) {</div><div>&nbsp; &nbsp; var obj = {};</div><div>&nbsp; &nbsp; for (var key in general) {</div><div>&nbsp; &nbsp; &nbsp; obj[key] = key in specific ? specific[key] : general[key];</div><div>&nbsp; &nbsp; }</div><div>&nbsp; &nbsp; return obj;</div><div>&nbsp; }</div><div><br></div><div>&nbsp; function Sparkline(element, options) {</div><div>&nbsp; &nbsp; this.element = element;</div><div>&nbsp; &nbsp; this.options = extend(options || {}, Sparkline.options);</div><div><br></div><div>&nbsp; &nbsp; init: {</div><div>&nbsp; &nbsp; &nbsp; this.element.innerHTML = \"&lt;canvas&gt;&lt;/canvas&gt;\";</div><div>&nbsp; &nbsp; &nbsp; this.canvas = this.element.firstChild;</div><div>&nbsp; &nbsp; &nbsp; this.context = this.canvas.getContext(\"2d\");</div><div>&nbsp; &nbsp; &nbsp; this.ratio = window.devicePixelRatio || 1;</div><div><br></div><div>&nbsp; &nbsp; &nbsp; if (this.options.tooltip) {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; this.canvas.style.position = \"relative\";</div><div>&nbsp; &nbsp; &nbsp; &nbsp; this.canvas.onmousemove = showTooltip.bind(this);</div><div>&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; }</div><div>&nbsp; }</div>');
+INSERT INTO `surat` (`surat_id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `user_id`, `penerima_id`, `judul_surat`, `no_surat`, `no`, `bagian`, `isi_surat`, `status`, `change_status_id`) VALUES
+(18, 306, '2023-02-28 08:57:51', NULL, NULL, NULL, NULL, 306, '|108|37|', 'Judul', '1/MEMO/IT/02/2023', 1, 'IT', '<div>(function (root, factory) {</div><div>&nbsp; if (typeof define === \'function\' &amp;&amp; define.amd) {</div><div>&nbsp; &nbsp; // AMD. Register as an anonymous module.</div><div>&nbsp; &nbsp; define(factory);</div><div>&nbsp; } else if (typeof exports === \'object\') {</div><div>&nbsp; &nbsp; // Node. Does not work with strict CommonJS, but</div><div>&nbsp; &nbsp; // only CommonJS-like enviroments that support module.exports,</div><div>&nbsp; &nbsp; // like Node.</div><div>&nbsp; &nbsp; module.exports = factory();</div><div>&nbsp; } else {</div><div>&nbsp; &nbsp; // Browser globals (root is window)</div><div>&nbsp; &nbsp; root.Sparkline = factory();</div><div>&nbsp; }</div><div>}(window, function () {</div><div>&nbsp; function extend(specific, general) {</div><div>&nbsp; &nbsp; var obj = {};</div><div>&nbsp; &nbsp; for (var key in general) {</div><div>&nbsp; &nbsp; &nbsp; obj[key] = key in specific ? specific[key] : general[key];</div><div>&nbsp; &nbsp; }</div><div>&nbsp; &nbsp; return obj;</div><div>&nbsp; }</div><div><br></div><div>&nbsp; function Sparkline(element, options) {</div><div>&nbsp; &nbsp; this.element = element;</div><div>&nbsp; &nbsp; this.options = extend(options || {}, Sparkline.options);</div><div><br></div><div>&nbsp; &nbsp; init: {</div><div>&nbsp; &nbsp; &nbsp; this.element.innerHTML = \"&lt;canvas&gt;&lt;/canvas&gt;\";</div><div>&nbsp; &nbsp; &nbsp; this.canvas = this.element.firstChild;</div><div>&nbsp; &nbsp; &nbsp; this.context = this.canvas.getContext(\"2d\");</div><div>&nbsp; &nbsp; &nbsp; this.ratio = window.devicePixelRatio || 1;</div><div><br></div><div>&nbsp; &nbsp; &nbsp; if (this.options.tooltip) {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; this.canvas.style.position = \"relative\";</div><div>&nbsp; &nbsp; &nbsp; &nbsp; this.canvas.onmousemove = showTooltip.bind(this);</div><div>&nbsp; &nbsp; &nbsp; }</div><div>&nbsp; &nbsp; }</div><div>&nbsp; }</div>', NULL, NULL),
+(24, 306, '2023-03-01 06:55:04', NULL, NULL, NULL, NULL, 306, '|104|', 'judul', '2/MEMO/IT/03/2023', 2, 'IT', 'asd', NULL, NULL),
+(25, 306, '2023-03-01 06:57:39', NULL, NULL, NULL, NULL, 306, '|104|', 'judul', '3/MEMO/IT/03/2023', 3, 'IT', 'asd', NULL, NULL),
+(26, 98, '2023-03-01 07:03:14', NULL, NULL, 306, '2023-03-01 07:41:00', 98, '|306|', 'sad', '1/MEMO/LAB/03/2023', 1, 'LAB', 'asdasdasd', 'batal', 306),
+(27, 98, '2023-03-01 07:04:39', NULL, NULL, NULL, NULL, 98, '|306|108|', 'asdasd', '2/MEMO/LAB/03/2023', 2, 'LAB', 'asd', NULL, NULL),
+(28, 98, '2023-03-01 07:05:54', 306, '2023-03-02 01:14:40', NULL, NULL, 98, '|306|', 'asd', '3/MEMO/LAB/03/2023', 3, 'LAB', 'asdasd', 'acc', 306),
+(29, 98, '2023-03-01 07:09:17', 306, '2023-03-01 07:45:57', NULL, NULL, 98, '|306|', 'dddddddd', '4/MEMO/LAB/03/2023', 4, 'LAB', 'dddddddddddd', 'acc', 306),
+(30, 98, '2023-03-01 07:13:31', NULL, NULL, NULL, NULL, 98, '|0|', 'asdasd', '5/MEMO/LAB/03/2023', 5, 'LAB', 'sadasdasdasd', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -990,7 +1004,8 @@ CREATE TABLE `surat_balasan` (
 --
 
 INSERT INTO `surat_balasan` (`surat_balasan_id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `surat_id`, `user_id`, `isi_balasan`, `penerima_balasan_id`) VALUES
-(10, 108, '2023-02-28 09:45:39', NULL, NULL, NULL, NULL, 18, 108, '<p>Yth. Kepala Bagian Pengadaan</p><p>Berdasarkan permintaan yang disampaikan Kepala Unit IT dimohon untuk segera di proses permintaanya</p><p><br></p>', 37);
+(10, 108, '2023-02-28 09:45:39', NULL, NULL, NULL, NULL, 18, 108, '<p>Yth. Kepala Bagian Pengadaan</p><p>Berdasarkan permintaan yang disampaikan Kepala Unit IT dimohon untuk segera di proses permintaanya</p><p><br></p>', 37),
+(11, 306, '2023-03-01 07:43:13', NULL, NULL, NULL, NULL, 27, 306, '<p>Dimohon untuk dilanjutkan ke bagian pengadaan ya pak</p>', 108);
 
 -- --------------------------------------------------------
 
@@ -1019,7 +1034,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`, `name`, `username`, `email_verified_at`, `password`, `remember_token`, `pegawai_id`) VALUES
-(0, 0, '2023-02-16 04:14:12', 306, '2023-02-16 07:02:42', NULL, NULL, 'mzfa', 'mzfa', NULL, 'mzfa', 'us9omvVo4qT6eHVB9ThUvsb5RrlmFxpIMnKyB4OTA70C2ZiDME9OMsqBGXIo', 0),
+(0, 0, '2023-02-16 04:14:12', 306, '2023-02-16 07:02:42', NULL, NULL, 'mzfa', 'mzfa', NULL, 'mzfa', 'iDY7mq6wZc3B2zweifFrqb5SOP1FCsEMtHEgYu581SM8chKIoeTLyQijZEhd', 0),
 (1, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'ADMINISTRATOR', 'admin', NULL, 'qwerty123', NULL, 1),
 (2, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST DOKTER I', 'TEST DOKTER', NULL, '121212', NULL, 120),
 (3, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'TEST REGISTRASI', 'TEST REGISTRASI', NULL, '1234567', NULL, 121),
@@ -1113,7 +1128,7 @@ INSERT INTO `users` (`id`, `created_by`, `created_at`, `updated_by`, `updated_at
 (95, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Tri Meiyuliyanti', 'buzz', NULL, '808011', NULL, 55),
 (96, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Apt. Ari Marliyana., S.Farm', 'Ari Marliyana', NULL, 'akuadalahaku', NULL, 56),
 (97, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Fitriyatul Zabariyah, S.Farm', 'Fitriyatul', NULL, '123456', NULL, 113),
-(98, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Gilang Mahardika, A.Md. AK', 'dnm', NULL, '123456', 'RCcsbgrnfmpZ7Dr5kWo7uxRRs0Nugg1saOJyFNvGUEHlbOu47Y58ur5B9xQ9', 10),
+(98, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Gilang Mahardika, A.Md. AK', 'dnm', NULL, '123456', '2QLGIPtxkHib47Gx4TKouoqsp23ZUwTMYn4qM8WP1wSrWMADqYjQF559VqxQ', 10),
 (99, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Nur Hikmah, A.Md.AK', 'Nur Hikmah', NULL, '123456', NULL, 13),
 (100, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ema Supiani, A.Md.AK', 'ema supiani', NULL, '123456', NULL, 14),
 (101, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Ipung Purwono, A.Md. AK', 'Ipung', NULL, '123456', NULL, 15),
@@ -1321,7 +1336,7 @@ INSERT INTO `users` (`id`, `created_by`, `created_at`, `updated_by`, `updated_at
 (303, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Rudi Hermansyah, Sp. B', 'Rudi', NULL, '123456', NULL, 376),
 (304, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Pipit Kasiani', 'Pipit', NULL, '654321', NULL, 355),
 (305, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Laily Ridawati, Sp.PD', 'Laily', NULL, '240688', NULL, 377),
-(306, 0, '2023-02-16 04:14:12', 0, '2023-02-17 01:50:01', NULL, NULL, 'Syam Apriansyah', 'syam', NULL, 'uhuy', '5qhTKxtuJzB3pByzk31dZxxiMvfVRBP3KHfraYt4X10M9BFNEg1ELFHF5eck', 354),
+(306, 0, '2023-02-16 04:14:12', 0, '2023-02-17 01:50:01', NULL, NULL, 'Syam Apriansyah', 'syam', NULL, 'uhuy', 'FwJ0cTIRdrilgl2aOpNOwJyuzOo6V6tw3jfwwZSSuafHw6DPskC0YZiR7opT', 354),
 (307, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Sultan Alfian', 'alfian', NULL, '7654321', NULL, 382),
 (308, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'Endah Rizqi Winantri', 'endah', NULL, '990615', NULL, 373),
 (309, 0, '2023-02-16 04:14:12', NULL, NULL, NULL, NULL, 'dr. Vania Shaula', 'Vania', NULL, '123456', NULL, 386),
@@ -1522,7 +1537,7 @@ ALTER TABLE `user_akses`
 -- AUTO_INCREMENT for table `file`
 --
 ALTER TABLE `file`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `hakakses`
@@ -1576,13 +1591,13 @@ ALTER TABLE `pendidikan`
 -- AUTO_INCREMENT for table `surat`
 --
 ALTER TABLE `surat`
-  MODIFY `surat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `surat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `surat_balasan`
 --
 ALTER TABLE `surat_balasan`
-  MODIFY `surat_balasan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `surat_balasan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `user_akses`
