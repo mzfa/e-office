@@ -64,7 +64,7 @@
                         <tbody>
                             <div id="tableData">
                                 @foreach($list_surat as $surat)
-                                <tr @if($surat->status == "acc") class="bg-success" @elseif($surat->status == "batal") class="bg-danger" @endif>
+                                <tr @if($surat->status == "arsip") class="bg-success" @elseif($surat->status == "batal") class="bg-danger" @endif>
                                     {{-- <td>
                                         <div class="icheck-primary">
                                             <input type="checkbox" value="" id="check1">

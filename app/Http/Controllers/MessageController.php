@@ -74,7 +74,7 @@ class MessageController extends Controller
         $list_surat = DB::table('surat')
         ->where('surat.penerima_id', 'like', '%|'. $user_id .'|%')
         ->where('surat.judul_surat', 'like', '%'. $pencarian .'%')
-        // ->whereNull('surat.deleted_at')
+        ->whereNull('surat.status')
         ->orderByDesc('surat.created_at')
         ->get();
         return view('message.inbox', compact('list_surat'));
@@ -119,12 +119,17 @@ class MessageController extends Controller
         ->whereNull('surat_balasan.deleted_at')
         ->get();
 
+        $list_bagian = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->leftJoin('bagian', 'pegawai.bagian_id', '=', 'bagian.bagian_id')->where(['users.id' => $user_id])->first();
+
         $lampiran = DB::table('file')
         ->where(['surat_id' => $id])
         ->get();
         
+        $lampiran = DB::table('file')
+        ->where(['surat_id' => $id])
+        ->get();
         // dd($surat);
-        return view('message.read', compact('surat','list_penerima','surat_balasan','cek_balasan','lampiran'));
+        return view('message.read', compact('surat','list_penerima','surat_balasan','cek_balasan','lampiran','list_bagian'));
     }
     public function draft(Request $request){
         $pencarian = $request->pencarian;
@@ -138,14 +143,14 @@ class MessageController extends Controller
         ->get();
         return view('message.draft',compact('list_surat'));
     }
-    public function trash(){
+    public function arsipOpen(){
         $user_id = Auth::user()->id;
         $list_surat = DB::table('surat')
         ->where(['surat.user_id' => $user_id])
-        ->whereNotNull('surat.deleted_at')
-        ->orderByDesc('surat.deleted_at')
+        ->where(['surat.status' => "arsip"])
+        ->orderByDesc('surat.created_at')
         ->get();
-        return view('message.trash',compact('list_surat'));
+        return view('message.arsip',compact('list_surat'));
     }
     public function batal($id){
         $id = Crypt::decrypt($id);
@@ -159,17 +164,17 @@ class MessageController extends Controller
         DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
         return Redirect::back()->with(['success' => 'Surat Berhasil di batalkan!']);
     }
-    public function approve($id){
+    public function arsip($id){
         $id = Crypt::decrypt($id);
         $data = [
             'updated_at' => now(),
             'updated_by' => Auth::user()->id,
-            'status' => 'acc',
+            'status' => 'arsip',
             'change_status_id' => Auth::user()->id,
         ];
         // dd($data);
         DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
-        return Redirect::back()->with(['success' => 'Surat Berhasil di approve!']);
+        return Redirect::back()->with(['success' => 'Surat Berhasil di arsip!']);
     }
     public function aktifkan($id){
         $id = Crypt::decrypt($id);
@@ -184,18 +189,7 @@ class MessageController extends Controller
         return Redirect::back()->with(['success' => 'Surat Berhasil di Aktifkan!']);
     }
     public function nomorotomatis($bagian){
-        $user_id = Auth::user()->id;
-        // $user = DB::table('users')
-        // ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
-        // ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
-        // ->leftJoin('profesi', 'pegawai.profesi_id', '=', 'profesi.profesi_id')
-        // ->where(['surat.surat_id' => $user_id])
-        // ->first();
-        // $profesi = $user->nama_profesi;
-        // $surat = DB::table('surat')
-        // ->where(['surat.surat_id', 'like', '%|'. $user->nama_profesi .'|%'])
-        // // ->whereNull('surat.deleted_at')
-        // ->first();
+        // $user_id = Auth::user()->id;
         $data = DB::select("SELECT max(no) as nourut FROM surat WHERE bagian='$bagian'");
         $notis = 1;
         if(isset($data[0]->nourut)){
@@ -204,12 +198,45 @@ class MessageController extends Controller
         $notis .= '/MEMO/'.$bagian.'/'.date('m/Y');
         return $notis;
     }
+    public function nomordisposisi($bagian){
+        // $user_id = Auth::user()->id;
+        $data = DB::select("SELECT max(no) as nourut FROM surat_balasan WHERE disposisi_bagian='$bagian'");
+        $notis = 1;
+        if(isset($data[0]->nourut)){
+            $notis = $data[0]->nourut + 1;
+        }
+        $notis .= '/DIS/'.$bagian.'/'.date('m/Y');
+        return $notis;
+    }
     public function reply(Request $request){
         // dd($request);
         $penerima = $request->penerima_id;
         // foreach($request->penerima_id as $penerima_id){
         //     $penerima .= $penerima_id.'|';
         // }
+        $error = "";
+        $nama_file_surat = [];
+        if($request->hasFile('file')){
+            $semua_file = "";
+            foreach($request->file as $file){
+                // dd($file->getClientMimeType());
+                if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf'])){
+                    $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
+                    // $name = Auth::user()->pegawai_id;
+                    $file->move(public_path('document/lampiran/'), $file_name);
+                    array_push($nama_file_surat, $file_name);
+                }else{
+                    $error .= $file->getClientOriginalName()."File anda tidak dapat kami simpan cek kembali extensi dan besar filenya"."<br>";
+                }
+            }
+            // dd($nama_file_surat);
+            if($error !== ""){
+                return Redirect::back()->with(['error' => $error]);
+            }
+            
+        }
+        $no_surat = app('App\Http\Controllers\MessageController')->nomordisposisi($request->bagian);
+        $no = explode('/', $no_surat);
         $surat_id = Crypt::decrypt($request->surat_id);
         $penerima_id = Crypt::decrypt($request->penerima_sebelumnya).$penerima.'|';
         DB::table('surat')->where(['surat.surat_id' => $surat_id])->update([
@@ -222,8 +249,19 @@ class MessageController extends Controller
             'isi_balasan' => $request->pesan,
             'surat_id' => $surat_id,
             'penerima_balasan_id' => $penerima,
+            'no' => $no[0],
+            'disposisi_bagian' => $request->bagian,
+            'nomor_disposisi' => $no_surat,
         ];
-        DB::table('surat_balasan')->insert($data);
+        $store_surat = DB::table('surat_balasan')->insertGetId($data);
+        // DB::table('surat_balasan')->insert($data);
+        foreach($nama_file_surat as $file_surat){
+            $data1 = [
+                'nama_file_balasan' => $file_surat,
+                'surat_balasan_id' => $store_surat,
+            ];
+            DB::table('file_balasan')->insert($data1);
+        }
         return Redirect::back()->with(['success' => 'Surat Berhasil di kirim!']);
     }
     public function store(Request $request){

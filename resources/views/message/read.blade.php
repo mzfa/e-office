@@ -14,7 +14,7 @@
                     </div>
                 @elseif($surat->status == "acc")
                     <div class="alert alert-success">
-                        <h5><i class="icon fas fa-check"></i> Surat Sudah Di ACC!</h5>
+                        <h5><i class="icon fas fa-check"></i> Surat Sudah Di Arsipkan!</h5>
                     </div>
                 @endif
                 <div class="row">
@@ -71,7 +71,7 @@
                         <th>Lampiran</th>
                         <td>&nbsp;</td>
                         <td>:</td>
-                        <td>Terlampir</td>
+                        <td>@if(isset($lampiran[0])) Terlampir @else - @endif</td>
                     </tr>
                     <tr>
                         <th>Tanggal</th>
@@ -80,52 +80,16 @@
                         <td>{{ date('d-M-Y H:i:s', strtotime($surat->created_at)) }}</td>
                     </tr>
                 </table>
-                {{-- <h5>{{ $surat->judul_surat }}</h5>
-                <h6 class="mt-2">From: <b>{{ $surat->nama_pegawai }}</b>
-                    <span class="mailbox-read-time float-right">{{ date('d-M-Y H:i:s', strtotime($surat->created_at)) }}</span>
-                </h6> --}}
-                {{-- <h6>To : <b>
-                    @php
-                        $penerima_id = explode('|',$surat->penerima_id);
-                        // dump($penerima_id);
-                        for ( $i = 0; $i < count( $penerima_id ); $i++ ) {
-                            $id = $penerima_id[$i];
-                            if($penerima_id[$i] > 0){
-                                $user = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->where(['users.id' => $id])->first();
-                                echo $user->nama_pegawai . " , ";
-                            }
-                        }
-                    @endphp
-                    </b>
-                </h6> --}}
             </div>
-            <!-- /.mailbox-read-info -->
-            {{-- <div class="mailbox-controls with-border text-center">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete">
-                        <i class="far fa-trash-alt"></i>
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm" data-container="body" title="Reply">
-                        <i class="fas fa-reply"></i>
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm" data-container="body" title="Forward">
-                        <i class="fas fa-share"></i>
-                    </button>
-                </div>
-                <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm" title="Print">
-                    <i class="fas fa-print"></i>
-                </button>
-            </div> --}}
             <!-- /.mailbox-controls -->
             <div class="mailbox-read-message">
                 {!! $surat->isi_surat !!}
             </div>
             <div class="card-footer bg-white">
                 {{-- <h2>Lampiran</h2> --}}
-                <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+                <div class="row">
                     @foreach($lampiran as $item)
-                    <li>
+                    <div class="col-md-3 col-4">
                         <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
 
                         <div class="mailbox-attachment-info">
@@ -136,9 +100,9 @@
                                         class="fas fa-eye"></i></a>
                             </span> --}}
                         </div>
-                    </li>
+                    </div>
                     @endforeach
-                </ul>
+                </div>
             </div>
             @php
                 $datapenerima = explode('|', $surat->penerima_id);
@@ -149,11 +113,32 @@
                 <hr>
                 <div class="mailbox-read-message text-right">
                     <u>
-                        <em>Dijawab : {{ $balas->nama_pegawai }}</em>
+                        <em class="bg-warning">Dijawab : {{ $balas->nama_pegawai }}</em><br>
+                        <em>No Disposisi : {{ $balas->nomor_disposisi }}</em>
                     </u><br>
                     {{-- <u><h5>Diteruskan : {{ $balas->nama_pegawai }}</h5></u> --}}
                     <em>{{ \Carbon\Carbon::parse($balas->created_at)->diffForHumans() }}</em><br><br>
                     {!! $balas->isi_balasan !!}
+                    @php
+                    $id_balasan = $balas->surat_balasan_id;
+                    $lampiran_balasan = DB::table('file_balasan')->where(['surat_balasan_id' => $id_balasan])->get();
+                    @endphp
+                    <div class="row text-right">
+                        @foreach($lampiran_balasan as $item)
+                        <div class="col-md-3 col-4">
+                        <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
+                        
+                        <div class="mailbox-attachment-info">
+                            <a href="{{ asset('document/lampiran/'.$item->nama_file_balasan) }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file_balasan }}</a>
+                            {{-- <span class="mailbox-attachment-size clearfix mt-1">
+                                <span>1,245 KB</span>
+                                <a href="#" class="btn btn-default btn-sm float-right"><i
+                                    class="fas fa-eye"></i></a>
+                                </span> --}}
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
             @endforeach
             <!-- /.mailbox-read-message -->
@@ -164,9 +149,8 @@
             <div class="float-right">
                 {{-- <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> Reply</button> --}}
                 @if ($datapenerima[$hitung] == Auth::user()->id && empty($surat->status))
-                    <a onclick="return confirm('Apakah anda yakin surat ini ingin langsung di Acc?')" href="{{ url('message/approve/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-check-circle"></i> Approve</a>
-                    <a onclick="return confirm('Apakah anda yakin surat ini ingin dibatalkan?')" href="{{ url('message/batal/'.Crypt::encrypt($surat->surat_id)) }}"  class="btn btn-danger"><i class="fas fa-times-circle"></i> Batalkan</a>
-                    <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i class="fas fa-reply"></i> Balas</button>
+                    <a onclick="return confirm('Apakah anda yakin surat ini ingin mengarsipkan surat ini?')" href="{{ url('message/arsip/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-check-circle"></i> Arsip</a>
+                    <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i class="fas fa-reply"></i> Teruskan</button>
                 @endif
             </div>
             {{-- <button type="button" class="btn btn-default"><i class="far fa-trash-alt"></i> Delete</button> --}}
@@ -185,6 +169,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <input type="hidden" name="bagian" value="{{ $list_bagian->seri_bagian }}">
                             <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
                             <input type="hidden" required name="penerima_sebelumnya"
                                 value="{{ Crypt::encrypt($surat->penerima_id) }}">
@@ -217,8 +202,12 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <textarea id="compose-textarea" name="pesan" class="form-control" style="height: 300px">
+                                <textarea id="compose-textarea" name="pesan" class="form-control" style="height: 300px" required>
                                 </textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Upload Lampiran (opsional)</label>
+                                <input class="form-control" type="file" multiple name="file[]" placeholder="File">
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
