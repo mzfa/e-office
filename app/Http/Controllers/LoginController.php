@@ -14,6 +14,44 @@ class LoginController extends Controller
         // dd($user);
         return view('auth.login');
     }
+    public function cek_surat_dong($id)
+    {
+        $id = base64_decode($id);
+        $list_penerima = DB::table('users')
+        ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
+        ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
+        ->whereNotNull('user_akses.hakakses_id')
+        ->whereNull('users.deleted_at')
+        ->get();
+        $surat = DB::table('surat')
+        ->leftJoin('users', 'users.id', '=', 'surat.user_id')
+        ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
+        ->where(['surat.surat_id' => $id])
+        // ->whereNull('surat.status')
+        ->first();
+        $surat_balasan = DB::table('surat_balasan')
+        ->leftJoin('users', 'users.id', '=', 'surat_balasan.user_id')
+        ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
+        ->select([
+            'pegawai.nama_pegawai',
+            'users.name',
+            'surat_balasan.*',
+        ])
+        // ->leftJoin('users', 'users.id', '=', 'surat.user_id')
+        ->where(['surat_balasan.surat_id' => $id])
+        ->whereNull('surat_balasan.deleted_at')
+        ->get();
+
+        $lampiran = DB::table('file')
+        ->where(['surat_id' => $id])
+        ->get();
+        
+        $lampiran = DB::table('file')
+        ->where(['surat_id' => $id])
+        ->get();
+        // dd($surat);
+        return view('cek_surat_dong', compact('surat','list_penerima','surat_balasan','lampiran'));
+    }
 
     public function authenticate(Request $request)
     {

@@ -79,6 +79,17 @@ class MessageController extends Controller
         ->get();
         return view('message.inbox', compact('list_surat'));
     }
+    public function cetak_barcode($id)
+    {
+        $id = Crypt::decrypt($id);
+        $surat = DB::table('surat')
+        ->leftJoin('users', 'users.id', '=', 'surat.user_id')
+        ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
+        ->where(['surat.surat_id' => $id])
+        ->first();
+        // dd($surat);
+        return view('message.cetak_barcode', compact('surat'));
+    }   
     public function sent(Request $request){
         $user_id = Auth::user()->id;
         $pencarian = $request->pencarian;

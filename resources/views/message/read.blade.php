@@ -152,6 +152,10 @@
                     <a onclick="return confirm('Apakah anda yakin surat ini ingin mengarsipkan surat ini?')" href="{{ url('message/arsip/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-check-circle"></i> Arsip</a>
                     <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i class="fas fa-reply"></i> Teruskan</button>
                 @endif
+
+                @if($surat->status == "arsip")
+                    <a onclick="return confirm('Apakah anda yakin ingin mencetak barcode surat ini?')" target="_blank" href="{{ url('message/cetak_barcode/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-barcode"></i> Print QR Code</a>
+                @endif
             </div>
             {{-- <button type="button" class="btn btn-default"><i class="far fa-trash-alt"></i> Delete</button> --}}
             {{-- <button type="button" class="btn btn-default"><i class="fas fa-print"></i> Print</button> --}}

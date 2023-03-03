@@ -17,6 +17,7 @@ use App\Http\Controllers\KompetensiController;
 use App\Http\Controllers\PekerjaanController;
 use App\Http\Controllers\PelatihanController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MonitoringController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::get('/login', [\App\Http\Controllers\LoginController::class, 'index'])->n
 Route::post('/login', [\App\Http\Controllers\LoginController::class, 'authenticate'])->name('login.store');
 Route::get('/register', [\App\Http\Controllers\RegisterController::class, 'index'])->name('register');
 Route::post('/register', [\App\Http\Controllers\RegisterController::class, 'store'])->name('register.store');
+Route::get('/cek_surat_dong/{id}', [\App\Http\Controllers\LoginController::class, 'cek_surat_dong'])->name('cek_surat');
 Route::post('/logout', function () {
     auth()->logout();
     request()->session()->invalidate();
@@ -150,11 +152,24 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/message/update', 'update');
         Route::get('/message/edit/{id}', 'edit');
         Route::get('/message/batal/{id}', 'batal');
+        Route::get('/message/cetak_barcode/{id}', 'cetak_barcode');
         Route::get('/message/arsip/{id}', 'arsip');
         Route::get('/message/aktifkan/{id}', 'aktifkan');
         Route::get('/message/read/{id}', 'read');
         Route::post('/message/reply', 'reply');
         Route::get('/message/pencarian/{jenis}/{text}', 'pencarian');
+    });
+    Route::controller(MonitoringController::class)->middleware('cek_login:monitoring.index')->group(function () {
+        Route::get('/monitoring', 'index')->name('monitoring.index');
+        Route::get('/monitoring/today/', 'today');
+        Route::get('/monitoring/unit/', 'unit');
+        Route::get('/monitoring/perunit/{id}', 'perunit');
+        Route::get('/monitoring/arsip/', 'arsip');
+        Route::get('/monitoring/arsip_detail/{id}', 'arsip_detail');
+        Route::get('/monitoring/status/{id}', 'status');
+        Route::get('/monitoring/delete/{id}', 'delete');
+        Route::post('/monitoring/store', 'store');
+        Route::post('/monitoring/update', 'update');
     });
 
 
