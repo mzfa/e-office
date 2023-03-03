@@ -18,6 +18,7 @@ use App\Http\Controllers\PekerjaanController;
 use App\Http\Controllers\PelatihanController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\SPBController;
 
 /*
 |--------------------------------------------------------------------------
@@ -170,6 +171,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/monitoring/delete/{id}', 'delete');
         Route::post('/monitoring/store', 'store');
         Route::post('/monitoring/update', 'update');
+    });
+    Route::controller(SPBController::class)->middleware('cek_login:spb.index')->group(function () {
+        Route::get('/spb', 'index')->name('spb.index');
+        Route::post('/spb/store', 'store');
     });
 
 

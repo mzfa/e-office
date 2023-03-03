@@ -82,6 +82,12 @@
                                         <h2>Nota Dinas</h2>
                                         <h5>{{ $surat->no_surat }}</h5>
                                     </th>
+                                    <th>
+                                        <center>
+                                            {!! QrCode::size(150)->generate(url('/cek_surat_dong/').base64_encode($surat->surat_id) ) !!}
+                                            <br><em>QR CODE</em>
+                                        </center>
+                                    </th>
                                 </tr>
                             </table>
                             <hr>
