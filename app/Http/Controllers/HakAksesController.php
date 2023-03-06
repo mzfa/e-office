@@ -15,8 +15,8 @@ class HakAksesController extends Controller
     public function index()
     {
         $data = DB::table('hakakses')->whereNull('deleted_at')->get();
-        $list_profesi = DB::table('profesi')->whereNull('profesi.deleted_at')->get();
-        return view('hakakses.index', compact('data','list_profesi'));
+        $list_variabel = DB::table('variabel')->whereNull('variabel.deleted_at')->get();
+        return view('hakakses.index', compact('data','list_variabel'));
     }
     public function modul_akses($id)
     {
@@ -85,19 +85,9 @@ class HakAksesController extends Controller
     {
         $text = "Data tidak ditemukan";
         $hakakses = DB::table('hakakses')->get();
+        $list_variabel = DB::table('variabel')->whereNull('variabel.deleted_at')->get();
         $data = DB::table('hakakses')->where(['hakakses_id' => $id])->first();
-        // if($data = DB::table('hakakses')->where(['hakakses_id' => $id])->get()){
-        //     // dd($data);
-        //     $text = '<div class="mb-3 row">'.
-        //             '<label for="staticEmail" class="col-sm-2 col-form-label">Hak Akses</label>'.
-        //             '<div class="col-sm-10">'.
-        //             '<input type="text" class="form-control" id="nama_hakakses" name="nama_hakakses" value="'.$data[0]->nama_hakakses.'" required>'.
-        //             '</div>'.
-        //         '</div>'.
-        //         '<input type="hidden" class="form-control" id="hakakses_id" name="hakakses_id" value="'.Crypt::encrypt($data[0]->hakakses_id) .'" required>';
-        // }
-        // return $text;
-        return view('modal_content.hak_akses', compact('data','hakakses'));
+        return view('modal_content.hak_akses', compact('data','hakakses','list_variabel'));
     }
 
     public function update(Request $request){
