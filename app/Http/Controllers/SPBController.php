@@ -13,14 +13,6 @@ class SPBController extends Controller
 {
     public function index()
     {
-        // $data = DB::table('users')
-        // ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
-        // ->leftJoin('hakakses', 'user_akses.hakakses_id', '=', 'hakakses.hakakses_id')
-        // ->select([
-        //     'users.*',
-        //     'user_akses.jenis_akses',
-        //     'hakakses.nama_hakakses',
-        // ])->whereNull('users.deleted_at')->get();
         $data = DB::table('spb')->leftJoin('surat', 'spb.surat_id', '=', 'surat.surat_id')->get();
         $list_surat = DB::table('surat')->leftJoin('spb', 'spb.surat_id', '=', 'surat.surat_id')->select([
                 'surat.*',
