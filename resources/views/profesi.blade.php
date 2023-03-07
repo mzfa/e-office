@@ -21,8 +21,8 @@
                             <table class="table" id="example1" style="width: 100%">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
-                                        <th>Nama Profesi </th>
+                                        <th>Nama Profesi</th>
+                                        <th>Group </th>
                                     </tr>
                                 </thead>
                                 <tbody>

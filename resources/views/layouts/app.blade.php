@@ -8,15 +8,13 @@
     <link rel="icon" href="{{ asset(env('APP_LOGO')) }}" type="image/png">
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet"
-        href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- JQVMap -->
@@ -31,92 +29,43 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 </head>
 
-<body class="hold-transition layout-top-nav">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
-            <div class="container">
-                <a href="{{ url('/') }}" class="navbar-brand">
-                    <img src="{{ asset(env('APP_LOGO')) }}" alt="RSU PEKERJA"
-                        class="brand-image img-circle elevation-3" style="opacity: .8;width:30%">
-                    <span class="brand-text font-weight-light">RS Umum Pekerja</span>
-                </a>
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="{{ url('/home') }}" class="nav-link">Home</a>
+                </li>
+            </ul>
 
-                <button class="navbar-toggler order-1" type="button" data-toggle="collapse"
-                    data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-                    <!-- Left navbar links -->
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="{{ url('home') }}" class="nav-link"><p>Home</p></a>
-                        </li>
-                        @php
-                            $sidebar = Session('menu');
-                            // dump($sidebar);
-                        @endphp
-                        @isset($sidebar)
-                            @foreach ($sidebar as $item)
-                                @if (empty($item['submenu'][0]))
-                                    <li class="nav-item">
-                                        <a href="@if (Route::has($item['url_menu'])) {{ route($item['url_menu']) }} @endif"
-                                            class="nav-link">
-                                            <p>
-                                                {{ $item['nama_menu'] }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @else
-                                    <li class="nav-item dropdown">
-                                        <a href="#" id="dropdownSubMenu1" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false" class="nav-link dropdown-toggle">
-                                            {{ $item['nama_menu'] }}
-                                        </a>
-                                        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                                            @foreach ($item['submenu'] as $submenu)
-                                                @php $url = $submenu['url_menu']; @endphp
-                                                <li>
-                                                    <a href="@if (Route::has($submenu['url_menu'])) {{ route($submenu['url_menu']) }} @endif"
-                                                        class="dropdown-item">
-                                                        <p>{{ $submenu['nama_menu'] }}</p>
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </li>
-                                @endif
-                            @endforeach
-                        @endisset
-                        <li class="nav-item">
-                            <form action="{{ route('logout') }}" method="post" id="logout">
-                                @csrf
-                            </form>
-                            <a class="nav-link" onclick="return document.getElementById('logout').submit()">
-                                <i class="fa fa-arrow-right"></i> Logout ({{ Auth::user()->name }})
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-
-            </div>
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Navbar Search -->
+                
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+            </ul>
         </nav>
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        {{-- @include('layouts.sidebar') --}}
+        @include('layouts.sidebar')
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -149,10 +98,10 @@
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+            <strong>RSUP PEKERJA</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.2.0
+                <b>Version</b> 1.0
             </div>
         </footer>
 
@@ -215,7 +164,7 @@
 
     <!-- Toastr -->
     <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
-
+    
     <!-- Select2 -->
     <script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
 
@@ -226,7 +175,7 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["csv", "excel", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,
@@ -238,6 +187,8 @@
                 "responsive": true,
             });
         });
+
+        
     </script>
     @if (Session::has('success'))
         <script>

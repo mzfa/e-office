@@ -14,7 +14,7 @@
             <div class="icon">
                 <i class="ion ion-hospital-o"></i>
             </div>
-            <a href="{{ url('portal') }}" class="small-box-footer"><i class="fas fa-envelope"></i> &nbsp; Lanjut Ke Portal </a>
+            <a href="{{ url('message') }}" class="small-box-footer"><i class="fas fa-envelope"></i> &nbsp; Lanjut Ke Surat </a>
         </div>
     </div>
     <!-- ./col -->

@@ -14,7 +14,7 @@
                                 <!-- small box -->
                                 <div class="small-box bg-info">
                                     <div class="inner">
-                                        <h3>150</h3>
+                                        <h3>{{ $unit }}</h3>
 
                                         <p>Unit</p>
                                     </div>
@@ -30,7 +30,7 @@
                                 <!-- small box -->
                                 <div class="small-box bg-success">
                                     <div class="inner">
-                                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                        <h3>{{ $today }}</h3>
 
                                         <p>Hari Ini</p>
                                     </div>
@@ -46,14 +46,14 @@
                                 <!-- small box -->
                                 <div class="small-box bg-warning">
                                     <div class="inner">
-                                        <h3>44</h3>
+                                        <h3>{{ $pending }}</h3>
 
                                         <p>Pending</p>
                                     </div>
                                     <div class="icon">
                                         <i class="ion ion-clock"></i>
                                     </div>
-                                    <a href="#" class="small-box-footer">More info <i
+                                    <a href="{{ url('monitoring/pending') }}" class="small-box-footer">More info <i
                                             class="fas fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                 <!-- small box -->
                                 <div class="small-box bg-danger">
                                     <div class="inner">
-                                        <h3>65</h3>
+                                        <h3>{{ $arsip }}</h3>
                                         <p>Arsip</p>
                                     </div>
                                     <div class="icon">

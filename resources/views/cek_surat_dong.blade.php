@@ -84,7 +84,7 @@
                                     </th>
                                     <th>
                                         <center>
-                                            {!! QrCode::size(150)->generate(url('/cek_surat_dong/').base64_encode($surat->surat_id) ) !!}
+                                            {!! QrCode::size(150)->generate(url('/cek_surat_dong').'/'.base64_encode($surat->surat_id) ) !!}
                                             <br><em>QR CODE</em>
                                         </center>
                                     </th>

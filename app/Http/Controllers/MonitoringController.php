@@ -18,6 +18,33 @@ class MonitoringController extends Controller
         $menu = [];
         $data = DB::table('menu')->where(['parent_id' => 0])->whereNull('deleted_at')->get();
         // dd($data);
+        $unit = DB::table('users')
+        ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
+        ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
+        ->leftJoin('pegawai', 'pegawai.pegawai_id', '=', 'users.pegawai_id')
+        ->leftJoin('bagian', 'bagian.bagian_id', '=', 'pegawai.bagian_id')
+        // ->whereIn('hakakses.hakakses_id', $pecah_array)
+        ->whereNotNull('user_akses.hakakses_id')
+        ->count();
+        $today = DB::table('surat')
+        ->where(['surat.created_at' => Carbon::now()])
+        ->whereNotNull('surat.created_by')
+        ->whereNull('surat.deleted_at')
+        ->orderByDesc('surat.created_at')
+        ->count();
+        $pending = DB::table('surat')
+        ->where( 'surat.created_at', '<', Carbon::now()->subDays(3))
+        ->whereNotNull('surat.created_by')
+        ->whereNull('surat.status')
+        ->whereNull('surat.deleted_at')
+        ->orderByDesc('surat.created_at')
+        ->count();
+        $arsip = DB::table('surat')
+        ->where(['surat.status' => 'arsip'])
+        ->whereNotNull('surat.created_by')
+        ->orderByDesc('surat.created_at')
+        ->count();
+
         foreach($data as $key => $item)
         {
             array_push($menu, [
@@ -43,7 +70,7 @@ class MonitoringController extends Controller
             }
         }
         // dd($menu);
-        return view('monitoring.index', compact('menu'));
+        return view('monitoring.index', compact('menu','unit','today','arsip','pending'));
     }
 
     public function unit()
@@ -81,7 +108,20 @@ class MonitoringController extends Controller
         ->whereNotNull('surat.created_by')
         ->whereNull('surat.deleted_at')
         ->orderByDesc('surat.created_at')
-        // ->where('surat.judul_surat', 'like', '%'. $pencarian .'%')
+        ->whereNull('surat.status')
+        ->get();
+        // dd($list_surat);
+        return view('monitoring.today', compact('list_surat'));
+    }
+    public function pending(){
+        // $bagian = Auth::user()->id;
+        // dd($bagian);
+        $list_surat = DB::table('surat')
+        ->where( 'surat.created_at', '<', Carbon::now()->subDays(3))
+        ->whereNotNull('surat.created_by')
+        ->whereNull('surat.deleted_at')
+        ->orderByDesc('surat.created_at')
+        ->whereNull('surat.status')
         ->get();
         // dd($list_surat);
         return view('monitoring.today', compact('list_surat'));

@@ -8,7 +8,7 @@
                     <div id="message-content">
                         <div class="card card-primary card-outline">
                             <div class="card-header">
-                                <h3 class="card-title">Hari Ini</h3>
+                                <h3 class="card-title">Pending</h3>
                 
                                 <div class="card-tools">
                                     <div class="input-group input-group-sm">

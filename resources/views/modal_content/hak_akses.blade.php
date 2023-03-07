@@ -18,11 +18,11 @@
                 <div class="select2-purple">
                     <select class="select2" name="akses_bagian[]" multiple="multiple" data-placeholder="Akses Bagian"
                         data-dropdown-css-class="select2-purple" style="width: 100%;" required>
-                        @foreach ($list_variabel as $item)
-                            @if(array_search(strval($item->variabel_id),$bagian,true))
-                                <option value="{{ $item->variabel_id }}" selected>{{ $item->nama_variabel }}</option>
+                        @foreach ($hakakses as $akses)
+                            @if(array_search(strval($akses->hakakses_id),$bagian,true))
+                                <option value="{{ $akses->hakakses_id }}" selected>{{ $akses->nama_hakakses }}</option>
                             @else
-                                <option value="{{ $item->variabel_id }}">{{ $item->nama_variabel }}</option>
+                                <option value="{{ $akses->hakakses_id }}">{{ $akses->nama_hakakses }}</option>
                             @endif
                         @endforeach
 

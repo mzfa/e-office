@@ -63,10 +63,12 @@
                                 <div class="col-sm-10">
                                     <div class="form-group">
                                         <div class="select2-purple">
-                                            <select class="select2" name="akses_bagian[]" multiple="multiple" data-placeholder="Akses Bagian" data-dropdown-css-class="select2-purple" style="width: 100%;" required>
-                                                @foreach ($list_variabel as $item)
-                                                    <option value="{{ $item->variabel_id }}">{{ $item->nama_variabel }}</option>
+                                            <select class="select2" name="akses_bagian[]" multiple="multiple" data-placeholder="Akses Bagian"
+                                                data-dropdown-css-class="select2-purple" style="width: 100%;" required>
+                                                @foreach ($data as $hakakses)
+                                                    <option value="{{ $hakakses->hakakses_id }}">{{ $hakakses->nama_hakakses }}</option>
                                                 @endforeach
+            
                                             </select>
                                         </div>
                                     </div>
