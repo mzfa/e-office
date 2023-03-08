@@ -14,9 +14,9 @@
     
         {!! QrCode::size(300)->generate(url('/cek_surat_dong').'/'.base64_encode($surat->surat_id) ) !!}
         <br>
-        <em>ID : {{ base64_encode($surat->surat_id) }}</em>
+        {{-- <em>ID : {{ base64_encode($surat->surat_id) }}</em> --}}
         <br>
-        <p>NOMOR SURAT</p>
+        {{-- <p>NOMOR SURAT</p> --}}
         <h2>{{ $surat->no_surat }}</h2>
     </center>
 

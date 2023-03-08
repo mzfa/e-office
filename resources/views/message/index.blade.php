@@ -21,23 +21,26 @@
                         <ul class="nav nav-pills flex-column">
                             <li class="nav-item" onclick="inboxOpen()">
                                 <a href="#" class="nav-link">
-                                    <i class="fas fa-inbox"></i> Inbox
-                                    {{-- <span class="badge bg-primary float-right">12</span> --}}
+                                    <i class="fas fa-inbox"></i> Surat Masuk
+                                    <span class="badge bg-danger float-right">{{ $inbox }}</span>
                                 </a>
                             </li>
                             <li onclick="sentOpen()" class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <i class="far fa-envelope"></i> Sent
+                                    <i class="far fa-envelope"></i> Surat Terkirim
+                                    <span class="badge bg-primary float-right">{{ $terkirim }}</span>
                                 </a>
                             </li>
                             <li onclick="draftOpen()" class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <i class="far fa-file-alt"></i> Drafts
+                                    <i class="far fa-file-alt"></i> Draf
+                                    <span class="badge bg-primary float-right">{{ $draft }}</span>
                                 </a>
                             </li>
                             <li onclick="arsipOpen()" class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="far fa-folder-open"></i> Arsip
+                                    <span class="badge bg-primary float-right">{{ $arsip }}</span>
                                 </a>
                             </li>
                         </ul>

@@ -14,11 +14,30 @@ class MessageController extends Controller
     public function index()
     {
         $user_id = Auth::user()->id;
-        $listInbox = DB::table('surat')
-        ->where(['surat.penerima_id' => $user_id])
+        $inbox = DB::table('surat')
+        ->leftJoin('surat_balasan', 'surat.surat_id', '=', 'surat_balasan.surat_id')
+        ->where('surat.penerima_id', 'like', '%|'. $user_id .'|')
+        // ->where('surat.penerima_balasan_id',  )
+        // ->whereNotIn('surat_balasan.penerima_balasan_id', [$user_id])
+        ->whereNull('surat.status')
+        ->orderByDesc('surat.created_at')
+        ->count();
+        $arsip = DB::table('surat')
+        ->where(['surat.user_id' => $user_id])
+        ->where(['surat.status' => "arsip"])
+        ->count();
+        $terkirim = DB::table('surat')
+        ->where(['surat.user_id' => $user_id])
+        // ->where(['surat.status' => "arsip"])
+        ->orderByDesc('surat.created_at')
+        ->count();
+        $draft = DB::table('surat')
+        ->where(['surat.user_id' => $user_id])
+        ->whereNull('surat.created_by')
         ->whereNull('surat.deleted_at')
-        ->get();
-        return view('message.index', compact('listInbox'));
+        ->count();
+        // dd($list_surat);
+        return view('message.index', compact('inbox','arsip','terkirim','draft'));
     }
 
     public function tulis(){
