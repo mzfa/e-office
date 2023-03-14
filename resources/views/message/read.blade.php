@@ -173,7 +173,8 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <input type="hidden" name="bagian" value="{{ $list_bagian->seri_bagian }}">
+                            {{-- <input type="hidden" name="bagian" value="{{ $list_bagian->seri_bagian }}"> --}}
+                            <input type="hidden" name="bagian" value="{{ $list_bagian->akronim }}">
                             <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
                             <input type="hidden" required name="penerima_sebelumnya"
                                 value="{{ Crypt::encrypt($surat->penerima_id) }}">
@@ -195,8 +196,8 @@
                                 </div>
                             </div> --}}
                             <div class="form-group">
-                                <select class="form-control select2bs4" data-dropdown-css-class="select2-danger"
-                                    data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required>
+                                <select class="form-control select2bs4" data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required>
+                                    <option value=""></option>
                                     @foreach ($list_penerima as $penerima)
                                         @if ($penerima->id != Auth::user()->id)
                                             <option value="{{ $penerima->id }}">

@@ -7,9 +7,9 @@
         <!-- small box -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h3>Selamat Datang, {{ Auth::user()->name }}</h3>
+                <h3>Selamat Datang, {{ $user_akses->name }}</h3>
 
-                <p>Pada Aplikasi E-Office Rumah Sakit Umum Pekerja</p>
+                <p>Sebagai, {{ $user_akses->nama_hakakses }} Pada bagian {{ $user_akses->nama_struktur }}. Pada Aplikasi E-Office Rumah Sakit Umum Pekerja</p>
             </div>
             <div class="icon">
                 <i class="ion ion-hospital-o"></i>

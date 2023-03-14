@@ -49,23 +49,45 @@ class MessageController extends Controller
         ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
         ->where(['users.id' => $user_id])
         ->first();
-        $pecah_array = explode('|', $user_akses->akses_bagian);
+        
         // $gabung_array = [];
         // foreach($pecah_array as $gabung){
         //     array_push($gabung_array,$gabung);
         // }
         // dd($pecah_array, $gabung_array);
         // $gabung_array = implode(',', $pecah_array);
-        
+        $list_bagian = DB::table('users')
+        ->select([
+            'users.name',
+            'users.username',
+            'struktur.nama_struktur',
+            'struktur.akronim',
+            'struktur.parent_id',
+        ])
+        // ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
+        // ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
+        // ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
+        ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
+        ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
+        ->where(['users.id' => $user_id])
+        ->first();
+        $pecah_array = explode('|', $user_akses->akses_bagian);
+        $parent_id = $list_bagian->parent_id;
         $list_penerima = DB::table('users')
         ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
         ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
+        ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
+        ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
         ->whereIn('hakakses.hakakses_id', $pecah_array)
+        ->orWhere('struktur.struktur_id', $parent_id)
         ->get();
         // ->whereNotNull('user_akses.hakakses_id')
         // ->whereNull('users.deleted_at')
+        // dd($list_penerima);
 
-        $list_bagian = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->leftJoin('bagian', 'pegawai.bagian_id', '=', 'bagian.bagian_id')->where(['users.id' => $user_id])->first();
+        
+        // dd($list_bagian);
+        // $list_bagian = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->leftJoin('bagian', 'pegawai.bagian_id', '=', 'bagian.bagian_id')->where(['users.id' => $user_id])->first();
         // dd($list_bagian);
         return view('message.tulis',compact('list_penerima','list_bagian'));
     }
@@ -122,12 +144,8 @@ class MessageController extends Controller
         return view('message.sent', compact('list_surat'));
     }
     public function read($id){
-        $list_penerima = DB::table('users')
-        ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
-        ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
-        ->whereNotNull('user_akses.hakakses_id')
-        ->whereNull('users.deleted_at')
-        ->get();
+        
+        
         $user_id = Auth::user()->id;
         $surat = DB::table('surat')
         ->select([
@@ -154,15 +172,44 @@ class MessageController extends Controller
         ->whereNull('surat_balasan.deleted_at')
         ->get();
 
-        $list_bagian = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->leftJoin('bagian', 'pegawai.bagian_id', '=', 'bagian.bagian_id')->where(['users.id' => $user_id])->first();
+        // $list_bagian = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->leftJoin('bagian', 'pegawai.bagian_id', '=', 'bagian.bagian_id')->where(['users.id' => $user_id])->first();
+        $list_bagian = DB::table('users')
+        ->select([
+            'users.name',
+            'users.username',
+            'struktur.nama_struktur',
+            'struktur.akronim',
+            'struktur.parent_id',
+        ])
+        ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
+        ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
+        ->where(['users.id' => $user_id])
+        ->first();
+
+        $user_akses = DB::table('users')
+        ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
+        ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
+        ->where(['users.id' => $user_id])
+        ->first();
+
+        $pecah_array = explode('|', $user_akses->akses_bagian);
+        $parent_id = $list_bagian->parent_id;
+        $list_penerima = DB::table('users')
+        ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
+        ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
+        ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
+        ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
+        ->whereIn('hakakses.hakakses_id', $pecah_array)
+        ->orWhere('struktur.struktur_id', $parent_id)
+        ->get();
 
         $lampiran = DB::table('file')
         ->where(['surat_id' => $id])
         ->get();
         
-        $lampiran = DB::table('file')
-        ->where(['surat_id' => $id])
-        ->get();
+        // $lampiran = DB::table('file')
+        // ->where(['surat_id' => $id])
+        // ->get();
         // dd($surat);
         return view('message.read', compact('surat','list_penerima','surat_balasan','cek_balasan','lampiran','list_bagian'));
     }
@@ -316,7 +363,7 @@ class MessageController extends Controller
                 $semua_file = "";
                 foreach($request->file as $file){
                     // dd($file->getClientMimeType());
-                    if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf'])){
+                    if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/docx','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf'])){
                         $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
                         // $name = Auth::user()->pegawai_id;
                         $file->move(public_path('document/lampiran/'), $file_name);

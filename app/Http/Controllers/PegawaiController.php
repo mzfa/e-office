@@ -72,6 +72,31 @@ class PegawaiController extends Controller
 
         DB::table('pegawai')->truncate();
         DB::table('pegawai')->insert($datanya);
+
+        $pegawai_detail_hcm = DB::connection('HCM')
+        ->table('pegawai_detail')
+        ->get();
+        
+        foreach ($pegawai_detail_hcm as $detail) {
+            $datanya2[] = [
+                'pegawai_detail_id' => $detail->pegawai_detail_id,
+                'pegawai_id' => $detail->pegawai_id,
+                'email' => $detail->email,
+                'foto_profile' => $detail->foto_profile,
+                'telp_pribadi' => $detail->telp_pribadi,
+                'telp_keluarga' => $detail->telp_keluarga,
+                'alamat_lengkap' => $detail->alamat_lengkap,
+                'provinsi' => $detail->provinsi,
+                'kabupaten' => $detail->kabupaten,
+                'kelurahan' => $detail->kelurahan,
+                'kode_pos' => $detail->kode_pos,
+                'struktur_id' => $detail->struktur_id,
+            ];
+        }
+        // dd($datanya2);
+        DB::table('pegawai_detail')->truncate();
+        DB::table('pegawai_detail')->insert($datanya2);
+
         return Redirect::back()->with(['success' => 'Data Berhasil Di Perbarui!']);
 
         // return redirect()->back()->with('status', ['success', 'Data berhasil disimpan']);

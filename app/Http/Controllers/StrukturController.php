@@ -21,6 +21,7 @@ class StrukturController extends Controller
                 'struktur_id' => $item->struktur_id,
                 'nama_struktur' => $item->nama_struktur,
                 'parent_id' => $item->parent_id,
+                'akronim' => $item->akronim,
                 'substruktur' => []
             ]);
             $struktur_id = $item->struktur_id;
@@ -31,6 +32,7 @@ class StrukturController extends Controller
                 array_push($struktur[$key]["substruktur"], [
                     "struktur_id" => $sub1->struktur_id,
                     "nama_struktur" => $sub1->nama_struktur,
+                    "akronim" => $sub1->akronim,
                     'substruktur1' => [],
                 ]);
 
@@ -43,6 +45,7 @@ class StrukturController extends Controller
                     array_push($struktur[$key]["substruktur"][$key1]["substruktur1"], [
                         "struktur_id" => $sub2->struktur_id,
                         "nama_struktur" => $sub2->nama_struktur,
+                        "akronim" => $sub2->akronim,
                         'substruktur2' => [],
                     ]);
 
@@ -54,6 +57,7 @@ class StrukturController extends Controller
                         array_push($struktur[$key]["substruktur"][$key1]["substruktur1"][$key2]["substruktur2"], [
                             "struktur_id" => $sub3->struktur_id,
                             "nama_struktur" => $sub3->nama_struktur,
+                            "akronim" => $sub3->akronim,
                             'substruktur3' => [],
                         ]);
 
@@ -65,6 +69,7 @@ class StrukturController extends Controller
                             array_push($struktur[$key]["substruktur"][$key1]["substruktur1"][$key2]["substruktur2"][$key3]["substruktur3"], [
                                 "struktur_id" => $sub4->struktur_id,
                                 "nama_struktur" => $sub4->nama_struktur,
+                                "akronim" => $sub4->akronim,
                                 'substruktur' => [],
                             ]);
 
@@ -83,50 +88,28 @@ class StrukturController extends Controller
     public function sync()
     {
         // dd("ok");
-        $list_pegawai_hcm = DB::connection('HCM')
+        $list_struktur_hcm = DB::connection('HCM')
         ->table('struktur')
-        // ->select([
-        //     'pegawai_id',
-        //     'input_time',
-        //     'input_user_id',
-        //     'mod_time',
-        //     'mod_user_id',
-        //     'status_batal',
-        //     'nama_pegawai',
-        //     'nip',
-        //     'bagian_id',
-        //     'profesi_id'
-        // ])
-        // ->orderBy('pegawai_id')
         ->get();
-        dd($list_pegawai_hcm);
-        // dd($list_pegawai_phis);
-
-        foreach ($list_pegawai_hcm as $pegawai) {
-            if ($pegawai->status_batal) {
-                $deleted_at = $pegawai->mod_time ?? now();
-                $deleted_by = $pegawai->mod_user_id ?? 1;
-            } else {
-                $deleted_at = null;
-                $deleted_by = null;
-            }
+        // dd($list_struktur_hcm);
+        // dd($list_struktur_phis);
+        foreach ($list_struktur_hcm as $struktur) {
             $datanya[] = [
-                'pegawai_id' => $pegawai->pegawai_id,
-                'created_at' => $pegawai->input_time,
-                'created_by' => $pegawai->input_user_id,
-                'updated_at' => $pegawai->mod_time,
-                'updated_by' => $pegawai->mod_user_id,
-                'deleted_at' => $deleted_at,
-                'deleted_by' => $deleted_by,
-                'nama_pegawai' => $pegawai->nama_pegawai,
-                'nip' => $pegawai->nip,
-                'bagian_id' => $pegawai->bagian_id,
-                'profesi_id' => $pegawai->profesi_id
+                'struktur_id' => $struktur->struktur_id,
+                'created_at' => $struktur->created_at,
+                'created_by' => $struktur->created_by,
+                'updated_at' => $struktur->updated_at,
+                'updated_by' => $struktur->updated_by,
+                'deleted_at' => $struktur->deleted_at,
+                'deleted_by' => $struktur->deleted_by,
+                'nama_struktur' => $struktur->nama_struktur,
+                'parent_id' => $struktur->parent_id,
+                'akronim' => $struktur->akronim,
             ];
         }
 
-        DB::table('pegawai')->truncate();
-        DB::table('pegawai')->insert($datanya);
+        DB::table('struktur')->truncate();
+        DB::table('struktur')->insert($datanya);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Perbarui!']);
 
         // return redirect()->back()->with('status', ['success', 'Data berhasil disimpan']);

@@ -6,8 +6,8 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Data Pegawai &nbsp;
-                            <a tooltip="Sync Data pegawai" href="{{ url('pegawai/sync') }}" id="create_record" class="btn btn-danger text-white shadow-sm">
+                        <h3 class="card-title">Data Struktur &nbsp;
+                            <a tooltip="Sync Data Struktur" href="{{ url('struktur/sync') }}" id="create_record" class="btn btn-danger text-white shadow-sm">
                                 <i class="bi bi-sync"></i> Sync
                             </a>
                         </h3>

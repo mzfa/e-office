@@ -18,7 +18,7 @@
                         @endforeach
                     </select>
                   </div>
-                  <input type="hidden" name="bagian" value="{{ $list_bagian->seri_bagian }}">
+                  <input type="hidden" name="bagian" value="{{ $list_bagian->akronim }}">
                 {{-- <div class="form-group">
                     <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="profesi" required>
                         @foreach ($list_profesi as $profesi)
