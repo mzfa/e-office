@@ -130,6 +130,11 @@ class MessageController extends Controller
         ->get();
         $user_id = Auth::user()->id;
         $surat = DB::table('surat')
+        ->select([
+            'surat.*',
+            'pegawai.nama_pegawai',
+            'users.username',
+        ])
         ->leftJoin('users', 'users.id', '=', 'surat.user_id')
         ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
         ->where(['surat.surat_id' => $id])

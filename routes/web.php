@@ -7,6 +7,7 @@ use App\Http\Controllers\BagianController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\ProfesiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StrukturController;
 use App\Http\Controllers\HakAksesController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Admin\UserController;
@@ -79,6 +80,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::controller(ProfesiController::class)->middleware('cek_login:profesi.index')->group(function () {
         Route::get('/profesi', 'index')->name('profesi.index');
         Route::get('/profesi/sync', 'sync');
+    });
+    Route::controller(StrukturController::class)->middleware('cek_login:struktur.index')->group(function () {
+        Route::get('/struktur', 'index')->name('struktur.index');
+        Route::get('/struktur/sync', 'sync');
     });
     Route::controller(PegawaiController::class)->middleware('cek_login:pegawai.index')->group(function () {
         Route::get('/pegawai', 'index')->name('pegawai.index');
