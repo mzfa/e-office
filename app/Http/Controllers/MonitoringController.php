@@ -26,11 +26,12 @@ class MonitoringController extends Controller
         // ->whereIn('hakakses.hakakses_id', $pecah_array)
         ->whereNotNull('user_akses.hakakses_id')
         ->count();
+        // dd(Carbon::now());
         $today = DB::table('surat')
-        ->where(['surat.created_at' => Carbon::now()])
+        // ->where(['surat.created_at','=', Carbon::now()])
+        ->whereDate('created_at', Carbon::today())
         ->whereNotNull('surat.created_by')
         ->whereNull('surat.deleted_at')
-        ->orderByDesc('surat.created_at')
         ->count();
         $pending = DB::table('surat')
         ->where( 'surat.created_at', '<', Carbon::now()->subDays(3))
