@@ -116,6 +116,7 @@ class MessageController extends Controller
         ->where('surat.penerima_id', 'like', '%|'. $user_id .'|%')
         ->where('surat.judul_surat', 'like', '%'. $pencarian .'%')
         ->whereNull('surat.status')
+        ->whereNull('surat.deleted_at')
         ->orderByDesc('surat.created_at')
         ->get();
         return view('message.inbox', compact('list_surat'));
@@ -137,15 +138,13 @@ class MessageController extends Controller
         $list_surat = DB::table('surat')
         ->where(['surat.user_id' => $user_id])
         ->whereNotNull('surat.created_by')
-        ->whereNull('surat.deleted_at')
+        // ->whereNull('surat.deleted_at')
         ->orderByDesc('surat.created_at')
         ->where('surat.judul_surat', 'like', '%'. $pencarian .'%')
         ->get();
         return view('message.sent', compact('list_surat'));
     }
     public function read($id){
-        
-        
         $user_id = Auth::user()->id;
         $surat = DB::table('surat')
         ->select([

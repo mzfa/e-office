@@ -38,7 +38,7 @@
                                             <label for="check1"></label>
                                         </div>
                                     </td> --}}
-                                    <td class="mailbox-name"><a onclick="lihatSurat('{{ $surat->surat_id }}')">{{ $surat->no_surat }}</a></td>
+                                    <td class="mailbox-name"><a onclick="lihatSurat('{{ $surat->surat_id }}')">{{ $surat->no_surat }}@if($surat->deleted_at !=  null) <sup class="badge badge-danger">Surat Dibatalkan</sup>@endif</a></td>
                                     <td class="mailbox-subject"><b>{{ $surat->judul_surat }}</b></td>
                                     <td class="mailbox-attachment">
                                         @php
