@@ -27,7 +27,7 @@
                                             <td>{{ $item->nama_hakakses }}</td>
                                             <td>
                                                 <a href="{{ url('hakakses/modul_akses/' . Crypt::encrypt($item->hakakses_id)) }}" class="btn text-white btn-primary">Modul</a>
-                                                <a onclick="return edit({{ $item->hakakses_id }})" class="btn text-white btn-info">Ubah</a>
+                                                <!-- <a onclick="return edit({{ $item->hakakses_id }})" class="btn text-white btn-info">Ubah</a> -->
                                                 <a href="{{ url('hakakses/delete/' . Crypt::encrypt($item->hakakses_id)) }}" class="btn text-white btn-danger">Hapus</a>
                                             </td>
                                         </tr>

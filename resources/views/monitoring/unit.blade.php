@@ -11,10 +11,10 @@
                     <div class="card-body">
                         <div class="form-group">
                             <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="penerima_id" id="penerima_id" required>
-                                @foreach ($list_penerima as $penerima)
-                                    @if($penerima->id != Auth::user()->id)
-                                        <option value="{{ $penerima->seri_bagian }}">{{ $penerima->nama_hakakses ." | ".$penerima->seri_bagian." | ".$penerima->name }}</option>
-                                    @endif
+                                @foreach ($struktur as $item)
+                                    {{-- @if($item->struktur_id != Auth::user()->id) --}}
+                                    <option value="{{ $item->akronim }}">{{ Str::upper($item->nama_struktur) ." | ".$item->akronim }}</option>
+                                    {{-- @endif --}}
                                 @endforeach
                             </select>
                         </div>
@@ -45,6 +45,11 @@
         //         }
         //     })
         // }
+        $('.select2').select2()
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
         function perunit() {
             var id = $('#penerima_id').val();
             $.ajax({

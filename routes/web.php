@@ -171,6 +171,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/monitoring/today/', 'today');
         Route::get('/monitoring/unit/', 'unit');
         Route::get('/monitoring/perunit/{id}', 'perunit');
+        Route::get('/monitoring/semuasurat/', 'semuasurat');
+        Route::get('/monitoring/pencarian/', 'pencarian');
+        Route::get('/monitoring/semuaarsipsurat/', 'semuaarsipsurat');
+        Route::get('/monitoring/pencarianarsip/', 'pencarianarsip');
         Route::get('/monitoring/arsip/', 'arsip');
         Route::get('/monitoring/arsip_detail/{id}', 'arsip_detail');
         Route::get('/monitoring/status/{id}', 'status');
