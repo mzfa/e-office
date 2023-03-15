@@ -12,7 +12,7 @@
         <h1>QR Code</h1>
         <p>{{ $surat->judul_surat }} Diajukan oleh {{ $surat->nama_pegawai }}</p>
     
-        {!! QrCode::size(300)->generate(url('/cek_surat_dong').'/'.base64_encode($surat->surat_id) ) !!}
+        {!! QrCode::size(300)->generate('http://101.255.123.196/e-office/public/cek_surat_dong').'/'.base64_encode($surat->surat_id) ) !!}
         <br>
         {{-- <em>ID : {{ base64_encode($surat->surat_id) }}</em> --}}
         <br>
