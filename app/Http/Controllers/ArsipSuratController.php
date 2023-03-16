@@ -14,6 +14,9 @@ class ArsipSuratController extends Controller
     public function index()
     {
         $user_id = Auth::user()->id;
+        if($user_id == 192){
+            $user_id = 205;
+        }
         $list_surat = DB::table('surat')
         ->whereNotNull('surat.created_by')
         ->whereNull('surat.deleted_at')
