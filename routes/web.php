@@ -20,6 +20,7 @@ use App\Http\Controllers\PelatihanController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\SPBController;
+use App\Http\Controllers\ArsipSuratController;
 
 /*
 |--------------------------------------------------------------------------
@@ -174,6 +175,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/monitoring/semuasurat/', 'semuasurat');
         Route::get('/monitoring/pencarian/', 'pencarian');
         Route::get('/monitoring/semuaarsipsurat/', 'semuaarsipsurat');
+        Route::get('/monitoring/suratdibatalkan/', 'suratdibatalkan');
         Route::get('/monitoring/pencarianarsip/', 'pencarianarsip');
         Route::get('/monitoring/arsip/', 'arsip');
         Route::get('/monitoring/arsip_detail/{id}', 'arsip_detail');
@@ -185,6 +187,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::controller(SPBController::class)->middleware('cek_login:spb.index')->group(function () {
         Route::get('/spb', 'index')->name('spb.index');
         Route::post('/spb/store', 'store');
+    });
+    Route::controller(ArsipSuratController::class)->middleware('cek_login:arsipsurat.index')->group(function () {
+        Route::get('/arsipsurat', 'index')->name('arsipsurat.index');
+        // Route::post('/arsipsurat/store', 'store');
     });
 
 

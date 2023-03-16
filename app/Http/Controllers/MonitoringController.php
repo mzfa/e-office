@@ -40,6 +40,12 @@ class MonitoringController extends Controller
         ->orderByDesc('surat.created_at')
         ->whereNull('surat.status')
         ->count();
+        $batal = DB::table('surat')
+        ->whereNotNull('surat.created_by')
+        ->whereNotNull('surat.deleted_at')
+        ->orderByDesc('surat.created_at')
+        ->whereNull('surat.status')
+        ->count();
 
         $pending = DB::table('surat')
         ->where( 'surat.created_at', '<', Carbon::now()->subDays(3))
@@ -79,7 +85,7 @@ class MonitoringController extends Controller
         //     }
         // }
         // dd($menu);
-        return view('monitoring.index', compact('menu','unit','today','arsip','pending','all'));
+        return view('monitoring.index', compact('menu','unit','today','arsip','pending','all','batal'));
     }
 
     public function unit()
@@ -124,6 +130,19 @@ class MonitoringController extends Controller
         // dd($list_surat);
         return view('monitoring.detail', compact('list_surat','surat'));
     }
+    public function suratdibatalkan(){
+        // $bagian = Auth::user()->id;
+        // dd($bagian);
+        $list_surat = DB::table('surat')
+        ->whereNotNull('surat.created_by')
+        ->whereNotNull('surat.deleted_at')
+        ->orderByDesc('surat.created_at')
+        ->whereNull('surat.status')
+        ->get();
+        $surat = 'allbatal';
+        // dd($list_surat);
+        return view('monitoring.detail', compact('list_surat','surat'));
+    }
     public function pencarian(Request $request){
         // $bagian = Auth::user()->id;
         // dd($bagian);
@@ -134,6 +153,25 @@ class MonitoringController extends Controller
             $list_surat = DB::table('surat')
             ->whereNotNull('surat.created_by')
             ->whereNull('surat.deleted_at')
+            ->orderByDesc('surat.created_at')
+            ->whereNull('surat.status')
+            ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
+            ->get();
+        }elseif($surat == 'arsipsurat'){
+            $user_id = Auth::user()->id;
+            $list_surat = DB::table('surat')
+            ->whereNotNull('surat.created_by')
+            ->whereNull('surat.deleted_at')
+            ->orderByDesc('surat.created_at')
+            ->whereNull('surat.status')
+            ->where(['surat.updated_by' => $user_id])
+            ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
+            ->get();
+        }elseif($surat == 'allbatal'){
+            $user_id = Auth::user()->id;
+            $list_surat = DB::table('surat')
+            ->whereNotNull('surat.created_by')
+            ->whereNotNull('surat.deleted_at')
             ->orderByDesc('surat.created_at')
             ->whereNull('surat.status')
             ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
