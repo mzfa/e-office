@@ -44,7 +44,6 @@ class MonitoringController extends Controller
         ->whereNotNull('surat.created_by')
         ->whereNotNull('surat.deleted_at')
         ->orderByDesc('surat.created_at')
-        ->whereNull('surat.status')
         ->count();
 
         $pending = DB::table('surat')
@@ -137,7 +136,6 @@ class MonitoringController extends Controller
         ->whereNotNull('surat.created_by')
         ->whereNotNull('surat.deleted_at')
         ->orderByDesc('surat.created_at')
-        ->whereNull('surat.status')
         ->get();
         $surat = 'allbatal';
         // dd($list_surat);
