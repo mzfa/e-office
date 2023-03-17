@@ -24,6 +24,11 @@ class LoginController extends Controller
         ->whereNull('users.deleted_at')
         ->get();
         $surat = DB::table('surat')
+        ->select([
+            'surat.*',
+            'pegawai.nama_pegawai',
+            'users.username',
+        ])
         ->leftJoin('users', 'users.id', '=', 'surat.user_id')
         ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
         ->where(['surat.surat_id' => $id])

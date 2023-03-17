@@ -31,7 +31,7 @@
                         <tbody>
                             <div id="tableData">
                                 @foreach($list_surat as $surat)
-                                <tr @if($surat->status == "arsip") class="bg-success" @elseif($surat->status == "batal") class="bg-danger" @endif>
+                                <tr @if($surat->status == "arsip") class="bg-success" @endif>
                                     {{-- <td>
                                         <div class="icheck-primary">
                                             <input type="checkbox" value="" id="check1">
@@ -46,9 +46,11 @@
                                         @endphp
                                     </td>
                                     <td class="mailbox-date">{{ \Carbon\Carbon::parse($surat->created_at)->diffForHumans() }}</td>
-                                    {{-- <td class="mailbox-date">
-                                        <a onclick="return confirm('Apakah kamu yakin pesan ini ingin dibatalkan')"  href="{{ url('message/batal/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-danger">Batal</a>
-                                    </td> --}}
+                                    <td class="mailbox-date">
+                                        @if($surat->status == null && $surat->deleted_at == null && $surat->updated_at == null)
+                                            <a onclick="return confirm('Apakah kamu yakin pesan ini ingin dibatalkan')"  href="{{ url('message/batal/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-danger">Batal</a>
+                                        @endif
+                                    </td>
                                 </tr>
                                 @endforeach
                             </div>

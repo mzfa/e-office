@@ -38,7 +38,13 @@
                                         </div>
                                     </td> --}}
                                     
-                                    <td class="mailbox-name" onclick="lihatSurat('{{ $surat->surat_id }}')"><a href="#">{{ $surat->no_surat }}</a>@if($id_user == Auth::user()->id) <sup class="badge badge-warning">Belum Dibalas</sup> @endif</td>
+                                    <td class="mailbox-name" onclick="lihatSurat('{{ $surat->surat_id }}')"><a href="#">{{ $surat->no_surat }}</a>
+                                        @if($id_user == Auth::user()->id && $surat->deleted_by == null) 
+                                            <sup class="badge badge-warning">Belum Dibalas</sup> 
+                                        @elseif($surat->deleted_by != null) 
+                                            <sup class="badge badge-danger">Surat dihapus pemilik</sup>  
+                                        @endif
+                                    </td>
                                     <td class="mailbox-subject"><b>{{ $surat->judul_surat }}</b></td>
                                     <td class="mailbox-attachment">
                                         @php

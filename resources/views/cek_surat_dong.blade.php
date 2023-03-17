@@ -183,7 +183,7 @@
                                     <em>No Disposisi : {{ $balas->nomor_disposisi }}</em>
                                 </u><br>
                                 {{-- <u><h5>Diteruskan : {{ $balas->nama_pegawai }}</h5></u> --}}
-                                <em>{{ \Carbon\Carbon::parse($balas->created_at)->diffForHumans() }}</em><br><br>
+                                <em>{{ $balas->created_at }}</em><br><br>
                                 {!! $balas->isi_balasan !!}
                                 @php
                                     $id_balasan = $balas->surat_balasan_id;
@@ -213,6 +213,9 @@
                             </div>
                         @endforeach
                         <!-- /.mailbox-read-message -->
+                    </div>
+                    <div class="card-footer">
+                        Surat Mulai : {{ $surat->created_at }}, Surat Selesai : {{ $surat->updated_at }}
                     </div>
                     <!-- /.card-body -->
 

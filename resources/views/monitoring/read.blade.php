@@ -19,6 +19,8 @@
                 @endif
                 <div class="row">
                     <div class="col-12 text-center">
+                        
+                        
                     </div>
                 </div>
                 <table>
@@ -115,7 +117,7 @@
                         <em>No Disposisi : {{ $balas->nomor_disposisi }}</em>
                     </u><br>
                     {{-- <u><h5>Diteruskan : {{ $balas->nama_pegawai }}</h5></u> --}}
-                    <em>{{ \Carbon\Carbon::parse($balas->created_at)->diffForHumans() }}</em><br><br>
+                    <em>{{ $balas->created_at }}</em><br><br>
                     {!! $balas->isi_balasan !!}
                     @php
                     $id_balasan = $balas->surat_balasan_id;
@@ -146,7 +148,7 @@
         <div class="card-footer">
             <div class="float-right">
                 {{-- <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> Reply</button> --}}
-                @if($datapenerima[$hitung] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
+                @if ($datapenerima[$hitung] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
                     <a onclick="return confirm('Apakah anda yakin surat ini ingin mengarsipkan surat ini?')" href="{{ url('message/arsip/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-check-circle"></i> Arsip</a>
                     <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i class="fas fa-reply"></i> Teruskan</button>
                 @endif

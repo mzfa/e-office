@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -15,12 +16,10 @@ class MessageController extends Controller
     {
         $user_id = Auth::user()->id;
         $inbox = DB::table('surat')
-        ->leftJoin('surat_balasan', 'surat.surat_id', '=', 'surat_balasan.surat_id')
-        ->where('surat.penerima_id', 'like', '%|'. $user_id .'|')
-        // ->where('surat.penerima_balasan_id',  )
-        // ->whereNotIn('surat_balasan.penerima_balasan_id', [$user_id])
+        ->whereNull('surat.deleted_at')
         ->whereNull('surat.status')
-        ->orderByDesc('surat.created_at')
+        // ->where(['surat.user_id' => $user_id])
+        ->where('surat.penerima_id', 'like', '%|'. $user_id .'|')
         ->count();
         $arsip = DB::table('surat')
         ->where(['surat.user_id' => $user_id])
@@ -108,7 +107,6 @@ class MessageController extends Controller
         return view('message.edit',compact('list_penerima','surat','list_bagian'));
     }
     public function inbox(Request $request){
-        // dd($request->pencarian);
         $pencarian = $request->pencarian;
         // dd($pencarian)
         $user_id = Auth::user()->id;
@@ -116,9 +114,19 @@ class MessageController extends Controller
         ->where('surat.penerima_id', 'like', '%|'. $user_id .'|%')
         ->where('surat.judul_surat', 'like', '%'. $pencarian .'%')
         ->whereNull('surat.status')
-        ->whereNull('surat.deleted_at')
+        ->where(function ($query) {
+            $query->where('surat.deleted_at', '>', Carbon::now()->subDays(7)->toDateTimeString())
+                ->orWhereNull('deleted_at');
+        })
+        // ->whereDate('created_at','<', Carbon::now()->subDays(1))
+        // ->whereNull('surat.deleted_by')
+        // ->orWhere('surat.deleted_at', '>', Carbon::now()->subDays(30)->toDateTimeString())
+        // ->where('surat.deleted_at', '<=', Carbon::now()->subDays(1)->toDateTimeString())
         ->orderByDesc('surat.created_at')
         ->get();
+
+        // dd($list_surat,Carbon::now()->subDays(1)->toDateTimeString());
+        // dd($list_surat);
         return view('message.inbox', compact('list_surat'));
     }
     public function cetak_barcode($id)

@@ -112,7 +112,7 @@
         function lihatSurat(id) {
             $.ajax({
                 type: 'get',
-                url: "{{ url('message/read') }}/"+id,
+                url: "{{ url('monitoring/read') }}/"+id,
                 // data:{'id':id}, 
                 beforeSend: function() {
                     var url = "{{ url('assets/dist/img/Loading_2.gif') }}";

@@ -182,7 +182,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/monitoring/status/{id}', 'status');
         Route::get('/monitoring/delete/{id}', 'delete');
         Route::post('/monitoring/store', 'store');
-        Route::post('/monitoring/update', 'update');
+        Route::get('/monitoring/read/{id}', 'read');
     });
     Route::controller(SPBController::class)->middleware('cek_login:spb.index')->group(function () {
         Route::get('/spb', 'index')->name('spb.index');
