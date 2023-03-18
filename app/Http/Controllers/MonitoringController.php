@@ -158,17 +158,7 @@ class MonitoringController extends Controller
     public function unit()
     {
         $user_id = Auth::user()->id;
-
         $struktur = DB::table('struktur')->select(['akronim','nama_struktur'])->distinct()->get(['akronim']);
-        // dd($struktur);
-        // $list_penerima = DB::table('users')
-        // ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
-        // ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
-        // ->leftJoin('pegawai', 'pegawai.pegawai_id', '=', 'users.pegawai_id')
-        // ->leftJoin('bagian', 'bagian.bagian_id', '=', 'pegawai.bagian_id')
-        // // ->whereIn('hakakses.hakakses_id', $pecah_array)
-        // ->whereNotNull('user_akses.hakakses_id')
-        // ->get();
         return view('monitoring.unit', compact('struktur'));
     }   
     public function perunit($bagian){
@@ -179,14 +169,10 @@ class MonitoringController extends Controller
         ->whereNotNull('surat.created_by')
         ->whereNull('surat.deleted_at')
         ->orderByDesc('surat.created_at')
-        // ->where('surat.judul_surat', 'like', '%'. $pencarian .'%')
         ->get();
-        // dd($list_surat);
         return view('message.sent', compact('list_surat'));
     }
     public function semuasurat(){
-        // $bagian = Auth::user()->id;
-        // dd($bagian);
         $list_surat = DB::table('surat')
         ->whereNotNull('surat.created_by')
         ->whereNull('surat.deleted_at')
@@ -312,16 +298,7 @@ class MonitoringController extends Controller
     public function arsip()
     {
         $user_id = Auth::user()->id;
-        // $list_penerima = DB::table('users')
-        // ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
-        // ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
-        // ->leftJoin('pegawai', 'pegawai.pegawai_id', '=', 'users.pegawai_id')
-        // ->leftJoin('bagian', 'bagian.bagian_id', '=', 'pegawai.bagian_id')
-        // // ->whereIn('hakakses.hakakses_id', $pecah_array)
-        // ->whereNotNull('user_akses.hakakses_id')
-        // ->get();
         $struktur = DB::table('struktur')->select(['akronim','nama_struktur'])->distinct()->get(['akronim']);
-        // dd($list_penerima);
         return view('monitoring.arsip', compact('struktur'));
     }   
     public function arsip_detail($bagian){
@@ -333,9 +310,7 @@ class MonitoringController extends Controller
         ->whereNotNull('surat.created_by')
         ->whereNull('surat.deleted_at')
         ->orderByDesc('surat.created_at')
-        // ->where('surat.judul_surat', 'like', '%'. $pencarian .'%')
         ->get();
-        // dd($list_surat);
         return view('message.sent', compact('list_surat'));
     }
 

@@ -192,29 +192,16 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/arsipsurat', 'index')->name('arsipsurat.index');
         // Route::post('/arsipsurat/store', 'store');
     });
+    Route::get('/monitoring/read/{id}', [MonitoringController::class, 'read']);
+    // Route::get('/monitoring/pencarianarsip/', [MonitoringController::class, 'pencarianarsip']);
 
-
-    // Route::group(['middleware' => ['cek_login:Admin']], function () {
-    //     Route::get('/admin/home', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('homeadmin');
-    //     Route::get('/admin/user', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('useradmin');
-    //     Route::get('/admin/karyawan', [\App\Http\Controllers\Admin\KaryawanController::class, 'index'])->name('karyawanadmin');
-    //     Route::get('/admin/bidang', [\App\Http\Controllers\Admin\BidangController::class, 'index'])->name('bidangadmin');
-    //     Route::get('/admin/pendidikan', [\App\Http\Controllers\Admin\PendidikanController::class, 'index'])->name('pendidikanadmin');
-    //     Route::get('/admin/pendidikan/status/{id}', [\App\Http\Controllers\Admin\PendidikanController::class, 'status'])->name('pendidikanadmin');
-    //     Route::get('/admin/pendidikan/edit/{id}', [\App\Http\Controllers\Admin\PendidikanController::class, 'edit'])->name('pendidikanadmin');
-    //     Route::get('/admin/pendidikan/delete/{id}', [\App\Http\Controllers\Admin\PendidikanController::class, 'delete'])->name('pendidikanadmin');
-    //     Route::post('/admin/pendidikan/store', [\App\Http\Controllers\Admin\PendidikanController::class, 'store']);
-    //     Route::post('/admin/pendidikan/update', [\App\Http\Controllers\Admin\PendidikanController::class, 'update']);
-    // });
-    Route::group(['middleware' => ['cek_login:User']], function () {
+    // Route::group(['middleware' => ['cek_login:User']], function () {
         // Route::get('/profile', [\App\Http\Controllers\User\ProfileController::class, 'index'])->name('profile');
         // Route::get('/profesi', [\App\Http\Controllers\User\ProfesiController::class, 'index'])->name('profesi');
         // Route::get('/pekerjaan', [\App\Http\Controllers\User\PekerjaanController::class, 'index'])->name('pekerjaan');
         // Route::get('/pelatihan', [\App\Http\Controllers\User\PelatihanController::class, 'index'])->name('pelatihan');
         // Route::get('/kinerja', [\App\Http\Controllers\User\KinerjaController::class, 'index'])->name('kinerja');
         // Route::get('/kompetensi', [\App\Http\Controllers\User\KompetensiController::class, 'index'])->name('kompetensi');
-    });
-    // Route::get('/notification', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
-
+    // });
 });
 

@@ -44,7 +44,7 @@ class UserController extends Controller
             'created_by' => $userid,
             'created_at' => now(),
             'username' => 'mzfa',
-            'password' => 'mzfa',
+            'password' => 'mzfa123',
             'name' => 'mzfa',
             'pegawai_id' => 0,
         ];
