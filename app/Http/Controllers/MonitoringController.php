@@ -172,6 +172,24 @@ class MonitoringController extends Controller
         ->get();
         return view('message.sent', compact('list_surat'));
     }
+    public function disposisi()
+    {
+        $user_id = Auth::user()->id;
+        $struktur = DB::table('struktur')->select(['akronim','nama_struktur'])->distinct()->get(['akronim']);
+        return view('monitoring.disposisi', compact('struktur'));
+    }   
+    public function perdisposisi($bagian){
+        // $bagian = Auth::user()->id;
+        // dd($bagian);
+        $list_surat = DB::table('surat_balasan')
+        ->where(['surat_balasan.disposisi_bagian' => $bagian])
+        ->whereNotNull('surat_balasan.created_by')
+        ->whereNull('surat_balasan.deleted_at')
+        ->orderByDesc('surat_balasan.created_at')
+        ->get();
+        // dd($list_surat);
+        return view('monitoring.list_disposisi', compact('list_surat'));
+    }
     public function semuasurat(){
         $list_surat = DB::table('surat')
         ->whereNotNull('surat.created_by')
