@@ -122,6 +122,7 @@ class MessageController extends Controller
         // ->whereNull('surat.deleted_by')
         // ->orWhere('surat.deleted_at', '>', Carbon::now()->subDays(30)->toDateTimeString())
         // ->where('surat.deleted_at', '<=', Carbon::now()->subDays(1)->toDateTimeString())
+        ->whereNotNull('surat.created_by')
         ->orderByDesc('surat.created_at')
         ->get();
 
