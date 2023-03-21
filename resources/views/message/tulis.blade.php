@@ -10,7 +10,7 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="form-group">
-                    <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required>
+                    <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required autofocus>
                         @foreach ($list_penerima as $penerima)
                             @if($penerima->id != Auth::user()->id)
                                 <option value="{{ $penerima->id }}">{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
@@ -73,11 +73,14 @@
 
 @push('scripts')
     <script>
-        $('.select2').select2()
+        $('.select2').select2();
         //Initialize Select2 Elements
         $('.select2bs4').select2({
             theme: 'bootstrap4'
-        })
+        });
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
         // Dropzone.options.dropzoneFrom = {
         //     autoProcessQueue: false,
         //     acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
