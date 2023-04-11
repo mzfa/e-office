@@ -35,8 +35,14 @@ class MessageController extends Controller
         ->whereNull('surat.created_by')
         ->whereNull('surat.deleted_at')
         ->count();
+        $pencarian = "|".Auth::user()->id."|";
+        $terusan = DB::table('surat')
+        ->whereNull('surat.deleted_at')
+        ->orderByDesc('surat.created_at')
+        ->where('cc', 'like', '%'. $pencarian .'%')
+        ->count();
         // dd($list_surat);
-        return view('message.index', compact('inbox','arsip','terkirim','draft'));
+        return view('message.index', compact('inbox','arsip','terkirim','draft','terusan'));
     }
 
     public function tulis(){
@@ -233,6 +239,17 @@ class MessageController extends Controller
         ->get();
         return view('message.draft',compact('list_surat'));
     }
+    public function terusan(Request $request){
+        $pencarian = "|".Auth::user()->id."|";
+        $list_surat = DB::table('surat')
+        // ->whereNull('surat.created_by')
+        ->whereNull('surat.deleted_at')
+        ->orderByDesc('surat.created_at')
+        ->where('cc', 'like', '%'. $pencarian .'%')
+        ->get();
+        // dd($list_surat);
+        return view('message.terusan',compact('list_surat'));
+    }
     public function arsipOpen(){
         $user_id = Auth::user()->id;
         $list_surat = DB::table('surat')
@@ -360,6 +377,11 @@ class MessageController extends Controller
             'judul' => ['required'],
             'pesan' => 'required',
         ]);
+        $cc = "|";
+        foreach($request->cc as $itemcc){
+            $cc .= $itemcc."|";
+        }
+        // dd($cc);
         // dd($request->bagian);
         $no_surat = app('App\Http\Controllers\MessageController')->nomorotomatis($request->bagian);
         $no = explode('/', $no_surat);
@@ -400,6 +422,7 @@ class MessageController extends Controller
                 'bagian' => $request->bagian,
                 'no_surat' => $no_surat,
                 'no' => $no[0],
+                'cc' => $cc,
             ];
             $store_surat = DB::table('surat')->insertGetId($data);
             
@@ -410,6 +433,13 @@ class MessageController extends Controller
                 ];
                 DB::table('file')->insert($data1);
             }
+
+            $datanotif = [
+                'user_id' => $request->penerima_id,
+                'status' => 0,
+                'surat_id' => $store_surat,
+            ];
+            DB::table('notif')->insert($datanotif);
             return Redirect::back()->with(['success' => 'Surat Berhasil di kirim!']);
         }else{
             // $penerima = "|";
@@ -436,6 +466,10 @@ class MessageController extends Controller
             'judul' => ['required'],
             'pesan' => 'required'
         ]);
+        $cc = "|";
+        foreach($request->cc as $itemcc){
+            $cc .= $itemcc."|";
+        }
         // dd($request);
         $id = $request->surat_id;
         $no_surat = app('App\Http\Controllers\MessageController')->nomorotomatis($request->bagian);
@@ -477,6 +511,7 @@ class MessageController extends Controller
                 'bagian' => $request->bagian,
                 'no_surat' => $no_surat,
                 'no' => $no[0],
+                'cc' => $cc,
             ];
             DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
             

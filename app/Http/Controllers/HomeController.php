@@ -29,4 +29,19 @@ class HomeController extends Controller
         // dd($user_akses);
         return view('home',compact('user_akses'));
     }
+
+    public function notifikasi()
+    {
+        $user_id = Auth::user()->id;
+        $notif = DB::table('notif')->where(['notif.user_id' => $user_id, 'notif.status' => 0])->first();
+        if(isset($notif)){
+            $data = [
+                'status' => 1,
+            ];
+            $id = $notif->notif_id;
+            DB::table('notif')->where(['notif_id' => $id])->update($data);
+            return "berhasil";
+        }
+
+    }
 }

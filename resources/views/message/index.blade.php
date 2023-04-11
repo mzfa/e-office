@@ -43,6 +43,12 @@
                                     <span class="badge bg-primary float-right">{{ $arsip }}</span>
                                 </a>
                             </li>
+                            <li onclick="terusanOpen()" class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-folder-open"></i> Terusan
+                                    <span class="badge bg-primary float-right">{{ $terusan }}</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <!-- /.card-body -->
@@ -254,6 +260,22 @@
             $.ajax({
                 type: 'get',
                 url: "{{ url('message/draft') }}/",
+                // data:{'id':id}, 
+                beforeSend: function() {
+                    var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                    $('#message-content').html('<center><img src="'+url+'"></center>');
+                },
+                success: function(tampil) {
+                    $('#message-content').html(tampil);
+                }
+            })
+        }
+        function terusanOpen() {
+            // var url = "{{ url('assets/dist/img/cs.jpg') }}";
+            // $('#message-content').html('<center><img src="'+url+'" width="100%"></center>');
+            $.ajax({
+                type: 'get',
+                url: "{{ url('message/terusan') }}/",
                 // data:{'id':id}, 
                 beforeSend: function() {
                     var url = "{{ url('assets/dist/img/Loading_2.gif') }}";

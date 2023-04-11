@@ -31,14 +31,20 @@
                             @endif
                         @endforeach
                     </select>
-                  </div>
-                {{-- <div class="form-group">
-                    <select class="form-control select2bs4" data-dropdown-css-class="select2-danger" data-placeholder="Penerima" style="width: 100%;" name="profesi" required>
-                        @foreach ($list_profesi as $profesi)
-                            <option value="{{ $profesi->nama_profesi }}" @if($profesi->nama_profesi == $surat->bagian) selected @endif>{{ $profesi->nama_profesi }}</option>
-                        @endforeach
-                    </select>
-                  </div> --}}
+                </div>
+                <div class="form-group">
+                    <div class="select2-purple">
+                        <select class="select2" name="cc[]" multiple="multiple" data-placeholder="CC (Tidak harus dipilih)"
+                            data-dropdown-css-class="select2-purple" style="width: 100%;" required> 
+                            @foreach ($list_penerima as $penerima)
+                                @if($penerima->id != Auth::user()->id)
+                                    <option value="{{ $penerima->id }}">{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
+                                @endif
+                            @endforeach
+
+                        </select>
+                    </div>
+                </div>
                 <input class="form-control" type="hidden" required name="surat_id" value="{{ $surat->surat_id }}">
                 <div class="form-group">
                     <input class="form-control" type="text" required name="judul" value="{{ $surat->judul_surat }}" placeholder="Judul Surat">
@@ -70,10 +76,36 @@
             <!-- /.card-footer -->
         </div>
     </form>
+    <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">INFORMASI</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h2 class="text-danger">NEW UPDATE!!!</h2>
+                    <ul>
+                        <li>CC (Berfungsi agar Anda dapat mengirimkan surat ke beberapa penerima lain sekaligus secara bersamaan.)</li>
+                        <li>Untuk melihat surat terusan dapat memilih menu terusan di bawah pesan arsip.</li>
+                        <li>Pesan terusan hanya dapat dilihat tidak dapat di balas.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
     <script>
+        $('#editModal').modal('show');
         $('.select2').select2()
         //Initialize Select2 Elements
         $('.select2bs4').select2({

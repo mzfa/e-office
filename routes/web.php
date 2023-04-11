@@ -50,6 +50,7 @@ Route::post('/logout', function () {
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/notifikasi', [\App\Http\Controllers\HomeController::class, 'notifikasi'])->name('notifikasi');
     // route::group()->middleware();
     Route::controller(HakAksesController::class)->middleware('cek_login:hakakses.index')->group(function () {
         Route::get('/hakakses', 'index')->name('hakakses.index');
@@ -154,6 +155,7 @@ Route::group(['middleware' => ['auth']], function () {
         // Route::get('/message/inbox/{text}', 'inbox');
         Route::get('/message/sent', 'sent');
         Route::get('/message/draft', 'draft');
+        Route::get('/message/terusan', 'terusan');
         Route::get('/message/arsipOpen', 'arsipOpen');
         Route::post('/message/store', 'store');
         Route::post('/message/update', 'update');

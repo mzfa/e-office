@@ -54,6 +54,27 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>Diteruskan ke</th>
+                        <td>&nbsp;</td>
+                        <td>:</td>
+                        <td>
+                            @php
+                                $cc = explode('|', $surat->cc);
+                                // dump($penerima_id);
+                                for ($i = 0; $i < count($cc); $i++) {
+                                    $id = $cc[$i];
+                                    if ($cc[$i] > 0) {
+                                        $user = DB::table('users')
+                                            ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
+                                            ->where(['users.id' => $id])
+                                            ->first();
+                                        echo $user->nama_pegawai . ' , ';
+                                    }
+                                }
+                            @endphp
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Dari</th>
                         <td>&nbsp;</td>
                         <td>:</td>

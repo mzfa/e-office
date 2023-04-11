@@ -125,6 +125,14 @@
                 height: 200,
             })
         })
+
+        function alert(){
+            $(document).Toasts('create', {
+                class: 'bg-info',
+                title: 'Notifikasi',
+                body: 'Ada Pesan masuk'
+            })
+        }
     </script>
     @if (Session::has('success'))
         <script>
@@ -136,6 +144,7 @@
             })
         </script>
     @endif
+    
 </body>
 
 </html>

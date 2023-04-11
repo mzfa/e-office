@@ -186,7 +186,9 @@
                 "autoWidth": false,
                 "responsive": true,
             });
+            setTimeout(playAudio, 10000)
         });
+        
 
         
     </script>
@@ -200,6 +202,39 @@
             })
         </script>
     @endif
+
+    <script>
+        function alert(){
+            $(document).Toasts('create', {
+                class: 'bg-info',
+                title: 'Notifikasi',
+                body: 'Ada Pesan masuk'
+            })
+        }
+        // var notifikasi = new Audio("{{ asset('assets/music/notif_masuk.mp3') }}");
+        function playAudio() {
+            // var audio = document.createElement("AUDIO")
+            // document.body.appendChild(audio);
+            // audio.src = "{{ asset('assets/music/notif_masuk.mp3') }}";
+            var audio = new Audio("{{ asset('assets/music/notif_2.mp3') }}");
+            $.ajax({
+                type: 'get',
+                url: "{{ url('notifikasi') }}/",
+                // data:{'id':id}, 
+                success: function(tampil) {
+                    if(tampil == 'berhasil'){
+                        // console.log(notifikasi)
+                        audio.play();
+                        // alert();
+                        setTimeout(playAudio, 10000)
+                    }
+                },
+                // error: function(){
+                //     playAudio()
+                // }
+            })
+        }
+    </script>
 </body>
 
 </html>
