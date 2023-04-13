@@ -469,8 +469,10 @@ class MessageController extends Controller
             'pesan' => 'required'
         ]);
         $cc = "|";
-        foreach($request->cc as $itemcc){
-            $cc .= $itemcc."|";
+        if(isset($request->cc)){
+            foreach($request->cc as $itemcc){
+                $cc .= $itemcc."|";
+            }
         }
         // dd($request);
         $id = $request->surat_id;
