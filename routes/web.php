@@ -185,6 +185,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/monitoring/arsip_detail/{id}', 'arsip_detail');
         Route::get('/monitoring/status/{id}', 'status');
         Route::get('/monitoring/delete/{id}', 'delete');
+        Route::get('/monitoring/batal_arsip/{id}', 'batal_arsip');
         Route::post('/monitoring/store', 'store');
         Route::get('/monitoring/read/{id}', 'read');
     });

@@ -296,7 +296,7 @@ class MonitoringController extends Controller
         ->get();
         $surat = 'arsip';
         // dd($list_surat);
-        return view('monitoring.detail', compact('list_surat','surat'));
+        return view('monitoring.detailarsip', compact('list_surat','surat'));
     }
     public function pencarianarsip(Request $request){
         // $bagian = Auth::user()->id;
@@ -313,12 +313,24 @@ class MonitoringController extends Controller
         // dd($list_surat);
         return view('monitoring.pencarian', compact('list_surat'));
     }
+    public function batal_arsip($id){
+        $id = Crypt::decrypt($id);
+        $user_id = Auth::user()->id;
+        $data = [
+            'status' => null,
+            'change_status_id' => $user_id,
+        ];
+        DB::table('surat')->where(['surat_id' => $id])->update($data);
+        return Redirect::back()->with(['success' => 'Data Berhasil Di Batalkan arisp!']);
+    }
+
     public function arsip()
     {
         $user_id = Auth::user()->id;
         $struktur = DB::table('struktur')->select(['akronim','nama_struktur'])->distinct()->get(['akronim']);
         return view('monitoring.arsip', compact('struktur'));
-    }   
+    }
+
     public function arsip_detail($bagian){
         // $bagian = Auth::user()->id;
         // dd($bagian);
