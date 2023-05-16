@@ -291,7 +291,7 @@ class MonitoringController extends Controller
         $list_surat = DB::table('surat')
         ->whereNotNull('surat.created_by')
         ->whereNull('surat.deleted_at')
-        ->orderByDesc('surat.created_at')
+        ->orderByDesc('surat.updated_at')
         ->where(['surat.status' => "arsip"])
         ->get();
         $surat = 'arsip';
