@@ -54,7 +54,8 @@
                                                                 
                                                             @endphp
                                                         </td>
-                                                        <td class="mailbox-date">{{ $surat->created_at }}</td>
+                                                        <td class="mailbox-date">Dibuat : {{ $surat->created_at }}</td>
+                                                        <td class="mailbox-date">Di Arsipkan : {{ $surat->updated_at }}</td>
                                                         <td class="mailbox-date">
                                                             <a onclick="return confirm('Apakah kamu yakin pesan ini ingin mengaktifkan kembali surat ini')"  href="{{ url('monitoring/batal_arsip/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-danger">Batal Arsip</a>
                                                         </td>

@@ -49,7 +49,7 @@ class PegawaiController extends Controller
         ->table('pegawai')
         ->get();
         // dd($list_pegawai_phis);
-
+        $no = 1;
         foreach ($list_pegawai_hcm as $pegawai) {
             
             $datanya[] = [
@@ -65,22 +65,27 @@ class PegawaiController extends Controller
                 'bagian_id' => $pegawai->bagian_id,
                 'profesi_id' => $pegawai->profesi_id
             ];
+            $datanya2[] = [
+                'pegawai_detail_id' => $no++,
+                'pegawai_id' => $pegawai->pegawai_id,
+                'struktur_id' => $pegawai->struktur_id,
+            ];
         }
 
         DB::table('pegawai')->truncate();
         DB::table('pegawai')->insert($datanya);
 
-        $pegawai_detail_hcm = DB::connection('HCM')
-        ->table('pegawai_detail')
-        ->get();
+        // $pegawai_detail_hcm = DB::connection('HCM')
+        // ->table('')
+        // ->get();
         
-        foreach ($pegawai_detail_hcm as $detail) {
-            $datanya2[] = [
-                'pegawai_detail_id' => $detail->pegawai_detail_id,
-                'pegawai_id' => $detail->pegawai_id,
-                'struktur_id' => $detail->struktur_id,
-            ];
-        }
+        // foreach ($pegawai_detail_hcm as $detail) {
+        //     $datanya2[] = [
+        //         'pegawai_detail_id' => $detail->pegawai_detail_id,
+        //         'pegawai_id' => $detail->pegawai_id,
+        //         'struktur_id' => $detail->struktur_id,
+        //     ];
+        // }
         // dd($datanya2);
         DB::table('pegawai_detail')->truncate();
         DB::table('pegawai_detail')->insert($datanya2);
