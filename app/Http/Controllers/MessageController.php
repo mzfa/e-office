@@ -88,7 +88,7 @@ class MessageController extends Controller
         ->get();
         // ->whereNotNull('user_akses.hakakses_id')
         // ->whereNull('users.deleted_at')
-        dd($list_penerima);
+        // dd($list_penerima);
 
         
         // dd($list_bagian);
