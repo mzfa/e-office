@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <div class="select2-purple">
                         <select class="select2" name="cc[]" multiple="multiple" data-placeholder="CC (Tidak harus dipilih)"
-                            data-dropdown-css-class="select2-purple" style="width: 100%;" required> 
+                            data-dropdown-css-class="select2-purple" style="width: 100%;"> 
                             @foreach ($list_penerima as $penerima)
                                 @if($penerima->id != Auth::user()->id)
                                     <option value="{{ $penerima->id }}">{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
