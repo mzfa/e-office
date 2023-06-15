@@ -406,8 +406,8 @@ class MessageController extends Controller
                 }
                 // dd($nama_file_surat);
                 if($error !== ""){
-                    dd($file->getClientMimeType());
-                    // return Redirect::back()->with(['error' => $error]);
+                    // dd($file->getClientMimeType());
+                    return Redirect::back()->with(['error' => $error]);
                 }
                 
             }
