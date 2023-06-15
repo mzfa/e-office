@@ -395,7 +395,7 @@ class MessageController extends Controller
                 $semua_file = "";
                 foreach($request->file as $file){
                     // dd($file->getClientMimeType());
-                    if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf'])){
+                    if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf','application/vnd.ms-excel'])){
                         $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
                         // $name = Auth::user()->pegawai_id;
                         $file->move(public_path('document/lampiran/'), $file_name);
@@ -406,7 +406,8 @@ class MessageController extends Controller
                 }
                 // dd($nama_file_surat);
                 if($error !== ""){
-                    return Redirect::back()->with(['error' => $error]);
+                    dd($file->getClientMimeType());
+                    // return Redirect::back()->with(['error' => $error]);
                 }
                 
             }
