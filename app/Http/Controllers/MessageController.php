@@ -213,9 +213,10 @@ class MessageController extends Controller
         ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
         ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
         ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
-        ->whereIn('hakakses.hakakses_id', $pecah_array)
-        ->orWhere('struktur.struktur_id', $parent_id)
+        ->whereNotNull('hakakses.hakakses_id')
+        ->whereNotNull('struktur.struktur_id')
         ->get();
+        
 
         $lampiran = DB::table('file')
         ->where(['surat_id' => $id])
