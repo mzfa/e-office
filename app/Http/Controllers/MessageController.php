@@ -18,9 +18,11 @@ class MessageController extends Controller
         $inbox = DB::table('surat')
         ->whereNull('surat.deleted_at')
         ->whereNull('surat.status')
+        ->whereNotNull('surat.no_surat')
         // ->where(['surat.user_id' => $user_id])
         ->where('surat.penerima_id', 'like', '%|'. $user_id .'|')
         ->count();
+        // dd($inbox);
         $arsip = DB::table('surat')
         ->where(['surat.user_id' => $user_id])
         ->where(['surat.status' => "arsip"])
@@ -29,6 +31,7 @@ class MessageController extends Controller
         ->where(['surat.user_id' => $user_id])
         // ->where(['surat.status' => "arsip"])
         ->orderByDesc('surat.created_at')
+        ->whereNotNull('surat.no_surat')
         ->count();
         $draft = DB::table('surat')
         ->where(['surat.user_id' => $user_id])
