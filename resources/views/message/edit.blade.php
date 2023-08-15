@@ -1,7 +1,7 @@
 @extends('layouts.tamplate')
 
 @section('content')
-    <form action="{{ url('message/update') }}" method="post" enctype="multipart/form-data">
+    {{-- <form action="{{ url('message/update') }}" method="post" enctype="multipart/form-data"> --}}
         @csrf
         <div class="card card-primary card-outline">
             <div class="card-header">

@@ -182,7 +182,7 @@
         <!-- /.card-footer -->
         <div class="modal fade" id="reply-surat">
             <div class="modal-dialog modal-lg">
-                <form action="{{ url('message/reply') }}" method="post" enctype="multipart/form-data">
+                {{-- <form action="{{ url('message/reply') }}" method="post" enctype="multipart/form-data"> --}}
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
@@ -236,7 +236,7 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Reply</button>
+                            {{-- <button type="submit" class="btn btn-primary">Reply</button> --}}
                         </div>
                     </div>
                 </form>

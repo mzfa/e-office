@@ -1,7 +1,7 @@
 @extends('layouts.tamplate')
 
 @section('content')
-    <form action="{{ url('message/store') }}" method="post" enctype="multipart/form-data">
+    {{-- <form action="{{ url('message/store') }}" method="post" enctype="multipart/form-data"> --}}
         @csrf
         <div class="card card-primary card-outline">
             <div class="card-header">
@@ -78,12 +78,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h2 class="text-danger">NEW UPDATE!!!</h2>
-                    <ul>
-                        <li>CC (Berfungsi agar Anda dapat mengirimkan surat ke beberapa penerima lain sekaligus secara bersamaan.)</li>
-                        <li>Untuk melihat surat terusan dapat memilih menu terusan di bawah pesan arsip.</li>
-                        <li>Pesan terusan hanya dapat dilihat tidak dapat di balas.</li>
-                    </ul>
+                    <h2 class="text-danger">Mohon maaf fitur mengirim surat sedang di non aktifkan. Sampai server lebih stabil. Terimakasih atas perhatiannya</h2>
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
