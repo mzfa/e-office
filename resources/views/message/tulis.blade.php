@@ -56,10 +56,10 @@
             <!-- /.card-body -->
             <div class="card-footer">
                 <div class="float-right">
-                    <button type="submit" value="draft" name="draft" class="btn btn-default"><i
+                    {{-- <button type="submit" value="draft" name="draft" class="btn btn-default"><i
                             class="fas fa-pencil-alt"></i> Draft</button>
                     <button type="submit" value="simpan" name="simpan" class="btn btn-primary"><i
-                            class="far fa-envelope"></i> Send</button>
+                            class="far fa-envelope"></i> Send</button> --}}
                 </div>
                 <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Discard</button>
             </div>
@@ -86,8 +86,8 @@
                     </ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button> --}}
                 </div>
             </div>
         </div>
