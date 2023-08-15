@@ -78,7 +78,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h2 class="text-danger">Mohon maaf fitur mengirim surat sedang di non aktifkan. Sampai server lebih stabil. Terimakasih atas perhatiannya</h2>
+                    <h2 class="text-danger">Mohon maaf fitur mengirim surat sedang di non aktifkan. Terimakasih atas perhatiannya</h2>
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
