@@ -9,11 +9,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+
 
 class MessageController extends Controller
 {
     public function index()
-    {
+    {        
         $user_id = Auth::user()->id;
         $inbox = DB::table('surat')
         ->whereNull('surat.deleted_at')
@@ -396,13 +398,14 @@ class MessageController extends Controller
             $error = "";
             $nama_file_surat = [];
             if($request->hasFile('file')){
+
                 $semua_file = "";
                 foreach($request->file as $file){
                     // dd($file->getClientMimeType());
                     if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf','application/vnd.ms-excel'])){
                         $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
                         // $name = Auth::user()->pegawai_id;
-                        $file->move(public_path('document/lampiran/'), $file_name);
+                        // $file->move(public_path('document/lampiran/'), $file_name);
                         array_push($nama_file_surat, $file_name);
                     }else{
                         $error .= $file->getClientOriginalName()."File anda tidak dapat kami simpan cek kembali extensi dan besar filenya"."<br>";
@@ -416,9 +419,6 @@ class MessageController extends Controller
                 
             }
             $penerima = "|".$request->penerima_id."|";
-            // foreach($request->penerima_id as $penerima_id){
-                //     $penerima .= $penerima_id.'|';
-                // }
             $data = [
                 'created_by' => Auth::user()->id,
                 'user_id' => Auth::user()->id,
@@ -497,7 +497,7 @@ class MessageController extends Controller
                     if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf','application/vnd.ms-excel'])){
                         $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
                         // $name = Auth::user()->pegawai_id;
-                        $file->move(public_path('document/lampiran/'), $file_name);
+                        // $file->move(public_path('document/lampiran/'), $file_name);
                         array_push($nama_file_surat, $file_name);
                     }else{
                         $error .= $file->getClientOriginalName()."File anda tidak dapat kami simpan cek kembali extensi dan besar filenya"."<br>";
@@ -534,10 +534,6 @@ class MessageController extends Controller
             
             return Redirect::back()->with(['success' => 'Surat Berhasil di kirim!']);
         }else{
-            // $penerima = "|";
-            // foreach($request->penerima_id as $penerima_id){
-            //     $penerima .= $penerima_id.'|';
-            // }
             $penerima = "|".$request->penerima_id."|";
             $data = [
                 'created_at' => now(),
@@ -549,10 +545,8 @@ class MessageController extends Controller
                 // 'no_surat' => $no_surat,
                 // 'no' => $no,
             ];
-            // dd($data);
             DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
             return Redirect::back()->with(['success' => 'Surat Berhasil di simpan!']);
         }
-        // return view('message.trash');
     }
 }

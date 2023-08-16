@@ -1,7 +1,7 @@
 @extends('layouts.tamplate')
 
 @section('content')
-    {{-- <form action="{{ url('message/store') }}" method="post" enctype="multipart/form-data"> --}}
+    <form action="{{ url('message/store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="card card-primary card-outline">
             <div class="card-header">
@@ -50,16 +50,17 @@
                 </div>
                 <div class="form-group">
                     <label for="">Upload Lampiran (opsional)</label>
-                    <input class="form-control" type="file" multiple name="file[]" placeholder="File">
+                    <input class="form-control" type="file" multiple name="file[]" placeholder="File" disabled>
+                    <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em>
                 </div>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
                 <div class="float-right">
-                    {{-- <button type="submit" value="draft" name="draft" class="btn btn-default"><i
+                    <button type="submit" value="draft" name="draft" class="btn btn-default"><i
                             class="fas fa-pencil-alt"></i> Draft</button>
                     <button type="submit" value="simpan" name="simpan" class="btn btn-primary"><i
-                            class="far fa-envelope"></i> Send</button> --}}
+                            class="far fa-envelope"></i> Send</button>
                 </div>
                 <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Discard</button>
             </div>
@@ -78,7 +79,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h2 class="text-danger">Mohon maaf fitur mengirim surat sedang di non aktifkan. Terimakasih atas perhatiannya</h2>
+                    <h2 class="text-danger">Fitur mengirimkan surat sudah dapat digunakan kembali hanya saja belum bisa upload file selain gambar.</h2>
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

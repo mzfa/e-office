@@ -182,7 +182,7 @@
         <!-- /.card-footer -->
         <div class="modal fade" id="reply-surat">
             <div class="modal-dialog modal-lg">
-                {{-- <form action="{{ url('message/reply') }}" method="post" enctype="multipart/form-data"> --}}
+                <form action="{{ url('message/reply') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
@@ -231,12 +231,13 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Upload Lampiran (opsional)</label>
-                                <input class="form-control" type="file" multiple name="file[]" placeholder="File">
+                                <input class="form-control" type="file" multiple name="file[]" placeholder="File" disabled>
+                                <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em>
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            {{-- <button type="submit" class="btn btn-primary">Reply</button> --}}
+                            <button type="submit" class="btn btn-primary">Reply</button>
                         </div>
                     </div>
                 </form>
