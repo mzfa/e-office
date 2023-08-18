@@ -12,11 +12,6 @@
                             </button>
                         </h3>
                     </div>
-                    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="dvbechuwmv2alqz"></script>
-                    <a 
-                        href="https://www.dropbox.com/s/nYwjJ2p7qGoAAAAAAAAADg/dbx-supporting-distributed-work.gif?dl=0" 
-                        class="dropbox-embed"
-                        ></a>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table" id="example1" style="width: 100%">
@@ -32,8 +27,8 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $item->created_at }}</td>
-                                            <td><a href="{{ url('document/spb/'.$item->nama_file_spb) }}" target="_blank"> {{ $item->nama_file_spb }}</a></td>
-                                            {{-- <td><a href="{{ dd(Dropbox::files()->search('/spb/'.$item->nama_file_spb)) }}" target="_blank"> {{ $item->nama_file_spb }}</a></td> --}}
+                                            {{-- <td><a href="{{ url('document/spb/'.$item->nama_file_spb) }}" target="_blank"> {{ $item->nama_file_spb }}</a></td> --}}
+                                            <td><a href="{{ 'https://e-office-file.rsumumpekerja-kbn.com/'.$item->nama_file_spb }}" target="_blank"> {{ $item->nama_file_spb }}</a></td>
                                             <td>{{ $item->judul_surat }}</td>
                                             <td><a href="{{ url('cek_surat_dong/'.base64_encode($item->surat_id)) }}" target="_blank">{{ $item->no_surat }}</a></td>
                                         </tr>

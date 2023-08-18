@@ -50,8 +50,8 @@
                 </div>
                 <div class="form-group">
                     <label for="">Upload Lampiran (opsional)</label>
-                    <input class="form-control" type="file" multiple name="file[]" placeholder="File" disabled>
-                    <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em>
+                    <input class="form-control" type="file" multiple name="file[]" placeholder="File">
+                    {{-- <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em> --}}
                 </div>
             </div>
             <!-- /.card-body -->

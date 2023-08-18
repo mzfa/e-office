@@ -334,10 +334,18 @@ class MessageController extends Controller
             foreach($request->file as $file){
                 // dd($file->getClientMimeType());
                 if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf','application/vnd.ms-excel'])){
-                    $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
+                    // $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
                     // $name = Auth::user()->pegawai_id;
-                    $file->move(public_path('document/lampiran/'), $file_name);
-                    array_push($nama_file_surat, $file_name);
+                    // $file->move(public_path('document/lampiran/'), $file_name);
+                    $filenamewithextension = $file->getClientOriginalName();
+                    //get filename without extension
+                    $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                    //get file extension
+                    $extension = $file->getClientOriginalExtension();
+                    //filename to store
+                    $filenametostore = round(microtime(true) * 1000).'-'.$filename.'_'.uniqid().'.'.$extension;
+                    Storage::disk('ftp')->put($filenametostore, fopen($file, 'r+'));
+                    array_push($nama_file_surat, $filenametostore);
                 }else{
                     $error .= $file->getClientOriginalName()."File anda tidak dapat kami simpan cek kembali extensi dan besar filenya"."<br>";
                 }
@@ -401,12 +409,20 @@ class MessageController extends Controller
 
                 $semua_file = "";
                 foreach($request->file as $file){
-                    // dd($file->getClientMimeType());
+                    // dd($file);
                     if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf','application/vnd.ms-excel'])){
-                        $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
+                        // $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
                         // $name = Auth::user()->pegawai_id;
                         // $file->move(public_path('document/lampiran/'), $file_name);
-                        array_push($nama_file_surat, $file_name);
+                        $filenamewithextension = $file->getClientOriginalName();
+                        //get filename without extension
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                        //get file extension
+                        $extension = $file->getClientOriginalExtension();
+                        //filename to store
+                        $filenametostore = round(microtime(true) * 1000).'-'.$filename.'_'.uniqid().'.'.$extension;
+                        Storage::disk('ftp')->put($filenametostore, fopen($file, 'r+'));
+                        array_push($nama_file_surat, $filenametostore);
                     }else{
                         $error .= $file->getClientOriginalName()."File anda tidak dapat kami simpan cek kembali extensi dan besar filenya"."<br>";
                     }
@@ -495,10 +511,18 @@ class MessageController extends Controller
                 foreach($request->file as $file){
                     // dd($file->getClientMimeType());
                     if(in_array($file->getClientMimeType(),['image/jpg','image/jpeg','image/png','image/svg','application/zip','application/xls','application/docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/pdf','application/vnd.ms-excel'])){
-                        $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
+                        // $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
                         // $name = Auth::user()->pegawai_id;
                         // $file->move(public_path('document/lampiran/'), $file_name);
-                        array_push($nama_file_surat, $file_name);
+                        $filenamewithextension = $file->getClientOriginalName();
+                        //get filename without extension
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                        //get file extension
+                        $extension = $file->getClientOriginalExtension();
+                        //filename to store
+                        $filenametostore = round(microtime(true) * 1000).'-'.$filename.'_'.uniqid().'.'.$extension;
+                        Storage::disk('ftp')->put($filenametostore, fopen($file, 'r+'));
+                        array_push($nama_file_surat, $filenametostore);
                     }else{
                         $error .= $file->getClientOriginalName()."File anda tidak dapat kami simpan cek kembali extensi dan besar filenya"."<br>";
                     }

@@ -112,7 +112,7 @@
                         <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
 
                         <div class="mailbox-attachment-info">
-                            <a href="{{ asset('document/lampiran/'.$item->nama_file) }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file }}</a>
+                            <a href="{{ 'https://e-office-file.rsumumpekerja-kbn.com/'.$item->nama_file }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file }}</a>
                             {{-- <span class="mailbox-attachment-size clearfix mt-1">
                                 <span>1,245 KB</span>
                                 <a href="#" class="btn btn-default btn-sm float-right"><i
@@ -148,7 +148,7 @@
                         <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
                         
                         <div class="mailbox-attachment-info">
-                            <a href="{{ asset('document/lampiran/'.$item->nama_file_balasan) }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file_balasan }}</a>
+                            <a href="{{ 'https://e-office-file.rsumumpekerja-kbn.com/'.$item->nama_file_balasan }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file_balasan }}</a>
                             {{-- <span class="mailbox-attachment-size clearfix mt-1">
                                 <span>1,245 KB</span>
                                 <a href="#" class="btn btn-default btn-sm float-right"><i
@@ -231,8 +231,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Upload Lampiran (opsional)</label>
-                                <input class="form-control" type="file" multiple name="file[]" placeholder="File" disabled>
-                                <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em>
+                                <input class="form-control" type="file" multiple name="file[]" placeholder="File">
+                                {{-- <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em> --}}
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">

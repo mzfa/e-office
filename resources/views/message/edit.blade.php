@@ -90,9 +90,7 @@
                 <div class="modal-body">
                     <h2 class="text-danger">NEW UPDATE!!!</h2>
                     <ul>
-                        <li>CC (Berfungsi agar Anda dapat mengirimkan surat ke beberapa penerima lain sekaligus secara bersamaan.)</li>
-                        <li>Untuk melihat surat terusan dapat memilih menu terusan di bawah pesan arsip.</li>
-                        <li>Pesan terusan hanya dapat dilihat tidak dapat di balas.</li>
+                        <li></li>
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -106,7 +104,7 @@
 
 @push('scripts')
     <script>
-        $('#editModal').modal('show');
+        // $('#editModal').modal('show');
         $('.select2').select2()
         //Initialize Select2 Elements
         $('.select2bs4').select2({

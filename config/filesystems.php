@@ -58,6 +58,19 @@ return [
             'secret' => env('DROPBOX_APP_SECRET'),
             'authorization_token' => env('DROPBOX_AUTH_TOKEN'),
         ],
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+            'root' => env('FTP_ROOT') // for example: /public_html/images
+
+            // Optional FTP Settings...
+            // 'port' => env('FTP_PORT', 21),
+            // 'passive' => true,
+            // 'ssl' => true,
+            // 'timeout' => 30,
+        ],
 
     ],
 
