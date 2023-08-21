@@ -39,22 +39,6 @@ class SPBController extends Controller
                 //filename to store
                 $filenametostore = round(microtime(true) * 1000).'-'.$filename.'_'.uniqid().'.'.$extension;
                 Storage::disk('ftp')->put($filenametostore, fopen($request->file('file'), 'r+'));
-                //Upload File to external server
-                // $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
-         
-                // dd($hasil);
-                // $name = Auth::user()->pegawai_id;
-                // $file->move(public_path('document/spb/'), $file_name);
-                // $path = '/file_spb';
-                // $file = $request->file('file');
-                // // upload file
-                // $hasil1 = Dropbox::files()->upload($path, $file);
-                // rename
-                // $fromPath = $path . '/' . $file->getFilename();
-                // $toPath = $path . '/' . $file_name;
-                // $hasil = Dropbox::files()->move($fromPath, $toPath);
-                // dd($hasil,$hasil1);
-                // array_push($nama_file_surat, $file_name);
                 $data = [
                     'nama_file_spb' => $filenametostore,
                     'surat_id' => $request->surat_id,
