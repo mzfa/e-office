@@ -167,6 +167,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/message/read/{id}', 'read');
         Route::post('/message/reply', 'reply');
         Route::get('/message/pencarian/{jenis}/{text}', 'pencarian');
+        Route::get('/message/print_all/{id}', 'print_all');
     });
     Route::controller(MonitoringController::class)->middleware('cek_login:monitoring.index')->group(function () {
         Route::get('/monitoring', 'index')->name('monitoring.index');
