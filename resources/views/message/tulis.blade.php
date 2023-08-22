@@ -92,7 +92,7 @@
 
 @push('scripts')
     <script>
-        $('#editModal').modal('show');
+        // $('#editModal').modal('show');
         $('.select2').select2();
         //Initialize Select2 Elements
         $('.select2bs4').select2({
