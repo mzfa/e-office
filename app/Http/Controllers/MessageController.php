@@ -83,7 +83,10 @@ class MessageController extends Controller
         ->first();
         $pecah_array = explode('|', $user_akses->akses_bagian);
         $parent_id = $list_bagian->parent_id;
+ 
+
         $list_penerima = DB::table('users')
+        ->select('users.id','hakakses.nama_hakakses','users.name')
         ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
         ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
         ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
@@ -91,9 +94,11 @@ class MessageController extends Controller
         ->whereIn('hakakses.hakakses_id', $pecah_array)
         ->orWhere('struktur.struktur_id', $parent_id)
         ->get();
+        
+        // SELECT users.id, hakakses.nama_hakakses. users.name FROM users left join user_akses on users.id=user_akses.user_id LEFT JOIN hakakses ON hakakses.hakakses_id=user_akses.hakakses_id LEFT JOIN pegawai_detail ON users.pegawai_id=pegawai_detail.pegawai_id LEFT JOIN struktur ON pegawai_detail.struktur_id=struktur.struktur_id
         // ->whereNotNull('user_akses.hakakses_id')
         // ->whereNull('users.deleted_at')
-        // dd($list_penerima);
+        // dd($parent_id,$pecah_array,$list_penerima);
 
         
         // dd($list_bagian);
