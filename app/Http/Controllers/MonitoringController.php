@@ -219,41 +219,53 @@ class MonitoringController extends Controller
         $pencarian = $request->pencarian;
         $surat = $request->surat;
         $list_surat = '';
+
         if($surat == 'all'){
-            $list_surat = DB::table('surat')
-            ->whereNotNull('surat.created_by')
-            ->whereNull('surat.deleted_at')
-            ->orderByDesc('surat.created_at')
-            ->whereNull('surat.status')
-            ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
-            ->get();
+            $list_surat = DB::select("SELECT * FROM surat WHERE created_by IS NOT NULL AND deleted_at IS NULL AND status IS NULL AND CONCAT(isi_surat,judul_surat,no_surat) LIKE '%$pencarian%'");
+            // $list_surat = DB::table('surat')
+            // ->whereNotNull('surat.created_by')
+            // ->whereNull('surat.deleted_at')
+            // ->orderByDesc('surat.created_at')
+            // ->whereNull('surat.status')
+            // // ->orwhere(function ($query) use ($pencarian) {
+            // //     $query->orwhere('surat.isi_surat', "like", "%" . $pencarian . "%");
+            // //     $query->orWhere('surat.judul_surat', "like", "%" . $pencarian . "%");
+            // //     $query->orWhere('surat.bagian', "like", "%" . $pencarian . "%");
+            // //     $query->orWhere('surat.isi_surat', "like", "%" . $pencarian . "%");
+            // // })
+            // ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
+            // ->get();
+            // dd($list_surat);
         }elseif($surat == 'arsipsurat'){
             $user_id = Auth::user()->id;
-            $list_surat = DB::table('surat')
-            ->whereNotNull('surat.created_by')
-            ->whereNull('surat.deleted_at')
-            ->orderByDesc('surat.created_at')
-            ->whereNull('surat.status')
-            ->where(['surat.updated_by' => $user_id])
-            ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
-            ->get();
+            // $list_surat = DB::table('surat')
+            // ->whereNotNull('surat.created_by')
+            // ->whereNull('surat.deleted_at')
+            // ->orderByDesc('surat.created_at')
+            // ->whereNull('surat.status')
+            // ->where(['surat.updated_by' => $user_id])
+            // ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
+            // ->get();
+            $list_surat = DB::select("SELECT * FROM surat WHERE created_by IS NOT NULL AND updated_by = $user_id AND deleted_at IS NULL AND status IS NULL AND CONCAT(isi_surat,judul_surat,no_surat) LIKE '%$pencarian%'");
         }elseif($surat == 'allbatal'){
             $user_id = Auth::user()->id;
-            $list_surat = DB::table('surat')
-            ->whereNotNull('surat.created_by')
-            ->whereNotNull('surat.deleted_at')
-            ->orderByDesc('surat.created_at')
-            ->whereNull('surat.status')
-            ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
-            ->get();
+            // $list_surat = DB::table('surat')
+            // ->whereNotNull('surat.created_by')
+            // ->whereNotNull('surat.deleted_at')
+            // ->orderByDesc('surat.created_at')
+            // ->whereNull('surat.status')
+            // ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
+            // ->get();
+            $list_surat = DB::select("SELECT * FROM surat WHERE created_by IS NOT NULL AND deleted_at IS NOT NULL AND status IS NULL AND CONCAT(isi_surat,judul_surat,no_surat) LIKE '%$pencarian%'");
         }else{
-            $list_surat = DB::table('surat')
-            ->whereNotNull('surat.created_by')
-            ->whereNull('surat.deleted_at')
-            ->orderByDesc('surat.created_at')
-            ->where(['surat.status' => "arsip"])
-            ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
-            ->get();
+            // $list_surat = DB::table('surat')
+            // ->whereNotNull('surat.created_by')
+            // ->whereNull('surat.deleted_at')
+            // ->orderByDesc('surat.created_at')
+            // ->where(['surat.status' => "arsip"])
+            // ->where('surat.no_surat', 'like', '%'. $pencarian .'%')
+            // ->get();
+            $list_surat = DB::select("SELECT * FROM surat WHERE created_by IS NOT NULL AND deleted_at IS NULL AND status = 'arsip' AND CONCAT(isi_surat,judul_surat,no_surat) LIKE '%$pencarian%'");
         }
         // dd($list_surat);
         return view('monitoring.pencarian', compact('list_surat','surat'));
