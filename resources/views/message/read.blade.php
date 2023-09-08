@@ -126,7 +126,8 @@
             @php
                 $datapenerima = explode('|', $surat->penerima_id);
                 $hitung = count($datapenerima) - 2;
-                // dump($datapenerima[$hitung]);
+                // dump($datapenerima[$hitung2]);
+                $disposisi_terakhir = '';
             @endphp
             @foreach ($surat_balasan as $balas)
                 <hr>
@@ -159,6 +160,9 @@
                         @endforeach
                     </div>
                 </div>
+                @php
+                    $disposisi_terakhir = $id_balasan;
+                @endphp
             @endforeach
             <!-- /.mailbox-read-message -->
         </div>
@@ -170,6 +174,9 @@
                 @if($datapenerima[$hitung] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
                     <a onclick="return confirm('Apakah anda yakin surat ini ingin mengarsipkan surat ini?')" href="{{ url('message/arsip/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-check-circle"></i> Arsip</a>
                     <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i class="fas fa-reply"></i> Teruskan</button>
+                @endif
+                @if($datapenerima[$hitung-1] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
+                    <a onclick="return confirm('Apakah anda yakin ingin di batalkan suratnya?')" href="{{ url('message/batal_disposisi/'.Crypt::encrypt($surat->surat_id).'/'.Crypt::encrypt($disposisi_terakhir)) }}" class="btn btn-danger">BATALKAN PESAN BALASAN</a>
                 @endif
 
                 @if($surat->status == "arsip")

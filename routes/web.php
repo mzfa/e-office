@@ -161,6 +161,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/message/update', 'update');
         Route::get('/message/edit/{id}', 'edit');
         Route::get('/message/batal/{id}', 'batal');
+        Route::get('/message/batal_disposisi/{id}/{disposisi}', 'batal_disposisi');
         Route::get('/message/cetak_barcode/{id}', 'cetak_barcode');
         Route::get('/message/arsip/{id}', 'arsip');
         Route::get('/message/aktifkan/{id}', 'aktifkan');

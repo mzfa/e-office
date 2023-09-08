@@ -87,14 +87,6 @@
             if (event.keyCode === 13) {
                 console.log(text.value);
                 var pencarian = text.value;
-                // $.ajax({
-                //     type: 'get',
-                //     url: "{{ url('message/pencarian') }}/inbox/" + text.value,
-                //     // data:{'id':id}, 
-                //     success: function(tampil) {
-                //         $('#tableData').html(tampil);
-                //     }
-                // })
                 $.ajax({
                     type: 'get',
                     url: "{{ url('monitoring/pencarian') }}/",

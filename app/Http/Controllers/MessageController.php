@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Str;
 
 class MessageController extends Controller
 {
@@ -280,6 +280,33 @@ class MessageController extends Controller
         ];
         // dd($data);
         DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
+        return Redirect::back()->with(['success' => 'Surat Berhasil di batalkan!']);
+    }
+    public function batal_disposisi($id,$disposisi){
+        $id = Crypt::decrypt($id);
+        $disposisi = Crypt::decrypt($disposisi);
+        $data = [
+            'deleted_at' => now(),
+            'deleted_by' => Auth::user()->id,
+        ];
+        DB::table('surat_balasan')->where(['surat_balasan.surat_balasan_id' => $disposisi])->update($data);
+        
+        $surat = DB::table('surat')->where('surat_id',$id)->first();
+        
+        $nomor_terakhir = Str::afterLast($surat->penerima_id, '|'.Auth::user()->id.'|');
+        $penerima_id_update= Str::beforeLast($surat->penerima_id, $nomor_terakhir);
+
+        // dd($penerima_id_update);
+
+
+        
+        $data = [
+            'penerima_id' => $penerima_id_update,
+        ];
+        DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
+
+
+
         return Redirect::back()->with(['success' => 'Surat Berhasil di batalkan!']);
     }
     public function arsip($id){
