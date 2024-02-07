@@ -35,6 +35,27 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 </head>
+<?php
+    $user_id = Auth::user()->id;
+    $list_surat = DB::table('surat')
+    ->select([
+        'surat_id',
+        'bagian',
+        'judul_surat',
+        'no_surat',
+        'created_at',
+        'updated_at',
+    ])
+    ->where('surat.penerima_id', 'like', '%|'. $user_id.'|')
+    ->where('surat.updated_at', '<', Illuminate\Support\Carbon::now()->subDays(3))
+    ->whereNull('surat.status')
+    ->whereNull('surat.deleted_by')
+    ->whereNotNull('surat.created_by')
+    ->orderByDesc('surat.created_at')
+    ->get();
+    // dd($list_surat[0]);
+
+?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -167,6 +188,17 @@
     
     <!-- Select2 -->
     <script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script>
+        .blink_me {
+            animation: blinker 1s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+    </script>
 
     @stack('scripts')
     <script>
@@ -192,6 +224,35 @@
 
         
     </script>
+
+    <div class="modal fade blink_me" id="pengingatModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-danger">ADA PESAN YANG BELUM DIBALAS!!!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @foreach ($list_surat as $item)
+                        <a href="{{ url('') }}/message?id={{ $item->surat_id }}">
+                            <div class="card bg-danger">
+                                <div class="card-body">
+                                    <h5>{{ $item->judul_surat }}</h5>
+                                    <h6>{{ $item->no_surat }}</h6>
+                                    <em>Dari {{ date('l, d F Y', strtotime($item->updated_at)) }}</em>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @if (Session::has('success'))
         <script>
             $(document).Toasts('create', {
@@ -235,6 +296,12 @@
             })
         }
     </script>
+    @if(!empty($list_surat[0]))
+        <script>
+            playAudio();
+            $('#pengingatModal').modal('show');
+        </script>
+    @endif
 </body>
 
 </html>

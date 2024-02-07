@@ -171,19 +171,37 @@
 @push('scripts')
     <script>
         var pencarian = "";
-        $.ajax({
-            type: 'get',
-            url: "{{ url('message/inbox') }}/",
-            data:{'pencarian':pencarian}, 
-            beforeSend: function() {
-                var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
-                $('#message-content').html('<center><img src="'+url+'"></center>');
-            },
-            success: function(tampil) {
-                $('#message-content').html(tampil);
-                // $("#loading-image").hide();
-            }
-        })
+    </script>
+    @isset($_GET['id'])
+        <script>
+            var id = "{{ $_GET['id'] }}";
+            $.ajax({
+                type: 'get',
+                url: "{{ url('message/read') }}/"+ id,
+                // data:{'id':id},
+                success: function(tampil) {
+                    $('#message-content').html(tampil);
+                }
+            })
+        </script>
+    @else
+        <script>
+            $.ajax({
+                type: 'get',
+                url: "{{ url('message/inbox') }}/",
+                data:{'pencarian':pencarian}, 
+                beforeSend: function() {
+                    var url = "{{ url('assets/dist/img/Loading_2.gif') }}";
+                    $('#message-content').html('<center><img src="'+url+'"></center>');
+                },
+                success: function(tampil) {
+                    $('#message-content').html(tampil);
+                    // $("#loading-image").hide();
+                }
+            })
+        </script>
+    @endisset
+    <script>
         function edit(id) {
             $.ajax({
                 type: 'get',
