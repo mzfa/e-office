@@ -167,6 +167,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/message/aktifkan/{id}', 'aktifkan');
         Route::get('/message/read/{id}', 'read');
         Route::post('/message/reply', 'reply');
+        Route::post('/message/lampiran', 'lampiran');
         Route::get('/message/pencarian/{jenis}/{text}', 'pencarian');
         Route::get('/message/print_all/{id}', 'print_all');
     });

@@ -2580,16 +2580,19 @@
   var SELECTOR_CONTAINER_TOP_LEFT = '#toastsContainerTopLeft';
   var SELECTOR_CONTAINER_BOTTOM_RIGHT = '#toastsContainerBottomRight';
   var SELECTOR_CONTAINER_BOTTOM_LEFT = '#toastsContainerBottomLeft';
+  var SELECTOR_CONTAINER_BOTTOM_FULL_WIDTH = '#toastsContainerBottomFullWidth';
   var CLASS_NAME_TOP_RIGHT = 'toasts-top-right';
   var CLASS_NAME_TOP_LEFT = 'toasts-top-left';
   var CLASS_NAME_BOTTOM_RIGHT = 'toasts-bottom-right';
   var CLASS_NAME_BOTTOM_LEFT = 'toasts-bottom-left';
+  var CLASS_NAME_BOTTOM_FULL_WIDTH = 'toast-bottom-full-width';
   var POSITION_TOP_RIGHT = 'topRight';
   var POSITION_TOP_LEFT = 'topLeft';
   var POSITION_BOTTOM_RIGHT = 'bottomRight';
   var POSITION_BOTTOM_LEFT = 'bottomLeft';
+  var POSITION_BOTTOM_FULL_WIDTH = 'bottomFullWitdh';
   var Default$2 = {
-    position: POSITION_TOP_RIGHT,
+    position: POSITION_BOTTOM_FULL_WIDTH,
     fixed: true,
     autohide: false,
     autoremove: true,
@@ -2705,6 +2708,10 @@
       if (this._config.position == POSITION_BOTTOM_LEFT) {
         return SELECTOR_CONTAINER_BOTTOM_LEFT;
       }
+
+      if (this._config.position == POSITION_BOTTOM_FULL_WIDTH) {
+        return SELECTOR_CONTAINER_BOTTOM_FULL_WIDTH;
+      }
     };
 
     _proto._prepareContainer = function _prepareContainer() {
@@ -2719,6 +2726,8 @@
           container.addClass(CLASS_NAME_BOTTOM_RIGHT);
         } else if (this._config.position == POSITION_BOTTOM_LEFT) {
           container.addClass(CLASS_NAME_BOTTOM_LEFT);
+        } else if (this._config.position == POSITION_BOTTOM_LEFT) {
+          container.addClass(CLASS_NAME_BOTTOM_FULL_WIDTH);
         }
 
         $__default["default"]('body').append(container);

@@ -50,7 +50,7 @@
                 </div>
                 <div class="form-group">
                     <label for="">Upload Lampiran (opsional)</label>
-                    <input class="form-control" type="file" multiple name="file[]" placeholder="File">
+                    <input class="form-control" type="file" multiple name="file[]" placeholder="File" accept=".jpg,.jpeg,.png,.svg,.zip,.xls,.docx,.vnd.openxmlformats-officedocument.wordprocessingml.document,.xlsx,.vnd.openxmlformats-officedocument.spreadsheetml.sheet,.pdf,.vnd.ms-excel">
                     {{-- <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em> --}}
                 </div>
             </div>

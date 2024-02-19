@@ -263,6 +263,17 @@
             })
         </script>
     @endif
+    @if (Session::has('error'))
+        <script>
+            $(document).Toasts('create', {
+                class: 'bg-danger',
+                title: 'Berhasil',
+                subtitle: 'Subtitle',
+                positionClass: 'toast-bottom-full-width',
+                body: "{{ Session::get('error') }}"
+            })
+        </script>
+    @endif
 
     <script>
         function alert(){

@@ -177,6 +177,7 @@
                 @endif
                 @if($datapenerima[$hitung-1] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
                     <a onclick="return confirm('Apakah anda yakin ingin di batalkan suratnya?')" href="{{ url('message/batal_disposisi/'.Crypt::encrypt($surat->surat_id).'/'.Crypt::encrypt($disposisi_terakhir)) }}" class="btn btn-danger">BATALKAN PESAN BALASAN</a>
+                    <button type="button" data-toggle="modal" data-target="#tambah-lampiran" class="btn btn-default"><i class="fas fa-paperclip"></i> Tambah Lampiran</button>
                 @endif
 
                 @if($surat->status == "arsip")
@@ -205,23 +206,6 @@
                             <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
                             <input type="hidden" required name="penerima_sebelumnya"
                                 value="{{ Crypt::encrypt($surat->penerima_id) }}">
-                            {{-- <div class="form-group">
-                                <div class="select2-purple">
-                                    <select class="select2" name="penerima_id[]" multiple="multiple" data-placeholder="Penerima"
-                                        data-dropdown-css-class="select2-purple" style="width: 100%;" required>
-                                        @foreach ($list_penerima as $penerima)
-                                            @if ($penerima->id != Auth::user()->id && $penerima->id != $surat->user_id && $penerima->id != 0)
-                                                @php $id_penerima = explode('|',$surat->penerima_id); @endphp
-                                                @if (array_search($penerima->id, $id_penerima))
-
-                                                @else
-                                                    <option value="{{ $penerima->id }}" >{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
-                                                @endif
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div> --}}
                             <div class="form-group">
                                 <select class="form-control select2bs4" data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required>
                                     <option value=""></option>
@@ -239,7 +223,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Upload Lampiran (opsional)</label>
-                                <input class="form-control" type="file" multiple name="file[]" placeholder="File">
+                                <input class="form-control" type="file" multiple name="file[]" placeholder="File" accept=".jpg,.jpeg,.png,.svg,.zip,.xls,.docx,.vnd.openxmlformats-officedocument.wordprocessingml.document,.xlsx,.vnd.openxmlformats-officedocument.spreadsheetml.sheet,.pdf,.vnd.ms-excel">
                                 {{-- <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em> --}}
                             </div>
                         </div>
@@ -253,6 +237,38 @@
             </div>
             <!-- /.modal-dialog -->
         </div>
+        @if($datapenerima[$hitung-1] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
+        <div class="modal fade" id="tambah-lampiran">
+            <div class="modal-dialog modal-lg">
+                <form action="{{ url('message/lampiran') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Balas Surat</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
+                            <input type="hidden" required name="surat_balasan_id" value="{{ Crypt::encrypt($disposisi_terakhir) }}">
+                            <div class="form-group">
+                                <label for="">Upload Lampiran (opsional)</label>
+                                <input class="form-control" type="file" multiple name="file[]" placeholder="File" accept=".jpg,.jpeg,.png,.svg,.zip,.xls,.docx,.vnd.openxmlformats-officedocument.wordprocessingml.document,.xlsx,.vnd.openxmlformats-officedocument.spreadsheetml.sheet,.pdf,.vnd.ms-excel">
+                                {{-- <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em> --}}
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Reply</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        @endif
     </div>
 @endsection
 
