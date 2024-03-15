@@ -180,9 +180,9 @@
                     <button type="button" data-toggle="modal" data-target="#tambah-lampiran" class="btn btn-default"><i class="fas fa-paperclip"></i> Tambah Lampiran</button>
                 @endif
 
-                @if($surat->status == "arsip")
+                @if($surat->status == "arsip" || Auth::user()->id == 192)
                     <a onclick="return confirm('Apakah anda yakin ingin mencetak barcode surat ini?')" target="_blank" href="{{ url('message/cetak_barcode/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-barcode"></i> Print QR Code</a>
-                    <a onclick="return confirm('Apakah anda yakin ingin mencetak barcode surat ini?')" target="_blank" href="{{ url('message/print_all/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-warning"><i class="fas fa-barcode"></i> Print Surat</a>
+                    <a onclick="return confirm('Apakah anda yakin ingin mencetak surat ini?')" target="_blank" href="{{ url('message/print_all/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-warning"><i class="fas fa-barcode"></i> Print Surat</a>
                 @endif
             </div>
             {{-- <button type="button" class="btn btn-default"><i class="far fa-trash-alt"></i> Delete</button> --}}
