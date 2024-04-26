@@ -13,10 +13,13 @@ class ArsipSuratController extends Controller
 {
     public function index()
     {
-        $user_id = [Auth::user()->id];
+        $user_id = Auth::user()->id;
         if($user_id == 192 || $user_id == 459){
             $user_id = [205,192,459];
+        }else{
+            $user_id = [Auth::user()->id];
         }
+        // dd($user_id);
         $list_surat = DB::table('surat')
         ->whereNotNull('surat.created_by')
         ->whereNull('surat.deleted_at')
