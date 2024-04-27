@@ -82,8 +82,10 @@ class MessageController extends Controller
         ->where(['users.id' => $user_id])
         ->first();
         $pecah_array = explode('|', $user_akses->akses_bagian);
-        $parent_id = $list_bagian->parent_id;
- 
+        $parent_id = [$list_bagian->parent_id];
+        if($user_id == 378){
+            $parent_id = [$list_bagian->parent_id,45];
+        }
 
         $list_penerima = DB::table('users')
         ->select('users.id','hakakses.nama_hakakses','users.name')
@@ -92,7 +94,7 @@ class MessageController extends Controller
         ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
         ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
         ->whereIn('hakakses.hakakses_id', $pecah_array)
-        ->orWhere('struktur.struktur_id', $parent_id)
+        ->orWhereIn('struktur.struktur_id', $parent_id)
         ->get();
         
         // SELECT users.id, hakakses.nama_hakakses. users.name FROM users left join user_akses on users.id=user_akses.user_id LEFT JOIN hakakses ON hakakses.hakakses_id=user_akses.hakakses_id LEFT JOIN pegawai_detail ON users.pegawai_id=pegawai_detail.pegawai_id LEFT JOIN struktur ON pegawai_detail.struktur_id=struktur.struktur_id
@@ -718,14 +720,17 @@ class MessageController extends Controller
         ->first();
 
         $pecah_array = explode('|', $user_akses->akses_bagian);
-        $parent_id = $list_bagian->parent_id;
+        $parent_id = [$list_bagian->parent_id];
+        if($user_id == 378){
+            $parent_id = [$list_bagian->parent_id,37];
+        }
         $list_penerima = DB::table('users')
         ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
         ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
         ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
         ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
         ->whereIn('hakakses.hakakses_id', $pecah_array)
-        ->orWhere('struktur.struktur_id', $parent_id)
+        ->orWhereIn('struktur.struktur_id', $parent_id)
         ->get();
 
         $lampiran = DB::table('file')
