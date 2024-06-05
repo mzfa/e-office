@@ -1,4 +1,4 @@
-@extends('layouts.tamplate')
+@extends('layouts.head_read')
 
 @section('content')
     <div class="card card-primary card-outline">
@@ -201,8 +201,8 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            {{-- <input type="hidden" name="bagian" value="{{ $list_bagian->seri_bagian }}"> --}}
-                            <input type="hidden" name="bagian" value="{{ $list_bagian->akronim }}">
+                            {{-- <input type="hidden" name="bagian" value="{{ $surat->seri_bagian }}"> --}}
+                            <input type="hidden" name="bagian" value="{{ $surat->akronim }}">
                             <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
                             <input type="hidden" required name="penerima_sebelumnya"
                                 value="{{ Crypt::encrypt($surat->penerima_id) }}">
