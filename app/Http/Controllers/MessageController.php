@@ -191,6 +191,7 @@ class MessageController extends Controller
         ->where(['surat.surat_id' => $id])
         // ->whereNull('surat.status')
         ->first();
+        // dd($surat);
         // $cek_balasan = DB::table('surat_balasan')->where(['surat_balasan.surat_id' => $id])->where(['surat_balasan.user_id' => $user_id])->first();
         $surat_balasan = DB::table('surat_balasan')
         ->leftJoin('users', 'users.id', '=', 'surat_balasan.user_id')
@@ -203,26 +204,8 @@ class MessageController extends Controller
         ->where(['surat_balasan.surat_id' => $id])
         ->whereNull('surat_balasan.deleted_at')
         ->get();
-
-        // $list_bagian = DB::table('users')->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')->leftJoin('bagian', 'pegawai.bagian_id', '=', 'bagian.bagian_id')->where(['users.id' => $user_id])->first();
-        // $list_bagian = DB::table('users')
-        // ->select([
-        //     'users.name',
-        //     'users.username',
-        //     'struktur.nama_struktur',
-        //     'struktur.akronim',
-        //     'struktur.parent_id',
-        // ])
-        // ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
-        // ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
-        // ->where(['users.id' => $user_id])
-        // ->first();
-
-        // $user_akses = DB::table('users')
-        // ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
-        // ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
-        // ->where(['users.id' => $user_id])
-        // ->first();
+        
+        // dd($surat_balasan);
 
         $pecah_array = explode('|', $surat->akses_bagian);
         $parent_id = $surat->parent_id;
