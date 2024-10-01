@@ -67,7 +67,7 @@ return [
             'ignorePassiveAddress' => true,
             // 'passive' => false,
             // Optional FTP Settings...
-            'port' => 21,
+            // 'port' => 21,
             'passive' => false,
             // 'ssl' => true,
             // 'timeout' => 30,
