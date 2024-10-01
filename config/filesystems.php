@@ -63,11 +63,12 @@ return [
             'host' => env('FTP_HOST'),
             'username' => env('FTP_USERNAME'),
             'password' => env('FTP_PASSWORD'),
-            'root' => env('FTP_ROOT') // for example: /public_html/images
-
+            'root' => env('FTP_ROOT'), // for example: /public_html/images
+            'ignorePassiveAddress' => true,
+            // 'passive' => false,
             // Optional FTP Settings...
-            // 'port' => env('FTP_PORT', 21),
-            // 'passive' => true,
+            'port' => 21,
+            'passive' => false,
             // 'ssl' => true,
             // 'timeout' => 30,
         ],
