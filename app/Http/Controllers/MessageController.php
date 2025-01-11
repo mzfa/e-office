@@ -80,6 +80,7 @@ class MessageController extends Controller
         ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
         ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
         ->where(['users.id' => $user_id])
+        ->whereNull('users.deleted_at')
         ->first();
         $pecah_array = explode('|', $user_akses->akses_bagian);
         $parent_id = [$list_bagian->parent_id];
@@ -94,6 +95,7 @@ class MessageController extends Controller
         ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
         ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
         ->whereIn('hakakses.hakakses_id', $pecah_array)
+        ->whereNull('users.deleted_at')
         ->orWhereIn('struktur.struktur_id', $parent_id)
         ->get();
         
@@ -214,6 +216,7 @@ class MessageController extends Controller
         ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
         ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
         ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
+        ->whereNull('users.deleted_at')
         ->whereNotNull('hakakses.hakakses_id')
         // ->whereNotNull('struktur.struktur_id')
         ->get();
