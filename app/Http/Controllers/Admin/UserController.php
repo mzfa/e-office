@@ -34,25 +34,36 @@ class UserController extends Controller
                 'user_password',
                 'nama_pegawai',
                 'pegawai_id',
+                'status_batal',
             ])
             ->orderBy('user_id')
             ->get();
-    
         $userid = Auth::user()->id;
         $datanya[] = [
             'id' => 0,
             'created_by' => $userid,
             'created_at' => now(),
+            'deleted_by' => null,
+            'deleted_at' => null,
             'username' => 'mzfa',
             'password' => 'mzfa123',
             'name' => 'mzfa',
             'pegawai_id' => 0,
         ];
         foreach ($list_user as $item) {
+            if ($item->status_batal) {
+                $deleted_at = $pegawai->mod_time ?? now();
+                $deleted_by = $pegawai->mod_user_id ?? 1;
+            } else {
+                $deleted_at = null;
+                $deleted_by = null;
+            }
             $datanya[] = [
                 'id' => $item->user_id,
                 'created_by' => $userid,
                 'created_at' => now(),
+                'deleted_by' => $deleted_by,
+                'deleted_at' => $deleted_at,
                 'username' => $item->user_name,
                 'password' => $item->user_password,
                 'name' => $item->nama_pegawai,
