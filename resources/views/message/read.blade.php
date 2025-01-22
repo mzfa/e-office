@@ -277,7 +277,8 @@
         $('.select2').select2()
         //Initialize Select2 Elements
         $('.select2bs4').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            dropdownParent: $("#reply-surat")
         })
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
