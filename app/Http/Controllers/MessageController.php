@@ -214,8 +214,6 @@ class MessageController extends Controller
         $list_penerima = DB::table('users')
         ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
         ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
-        ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
-        ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
         ->whereNull('users.deleted_at')
         ->whereNotNull('hakakses.hakakses_id')
         // ->whereNotNull('struktur.struktur_id')
