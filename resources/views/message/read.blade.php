@@ -137,7 +137,7 @@
                         <em>No Disposisi : {{ $balas->nomor_disposisi }}</em>
                     </u><br>
                     {{-- <u><h5>Diteruskan : {{ $balas->nama_pegawai }}</h5></u> --}}
-                    <em>{{ \Carbon\Carbon::locale('id')->parse($balas->created_at)->format('l, d F Y H:i:s') }}</em><br><br>
+                    <em>{{ \Carbon\Carbon::parse($balas->created_at)->locale('id')->translatedFormat('l, d F Y H:i:s') }}</em><br><br>
                     {!! $balas->isi_balasan !!}
                     @php
                     $id_balasan = $balas->surat_balasan_id;
