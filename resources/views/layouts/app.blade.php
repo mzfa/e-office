@@ -3,58 +3,50 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>{{ env('APP_NAME') }}</title>
-    <link rel="icon" href="{{ asset(env('APP_LOGO')) }}" type="image/png">
+    <link href="{{ asset(env('APP_LOGO')) }}" rel="icon" type="image/png">
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
+    <link href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
     <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+    <link href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet">
     <!-- iCheck -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <link href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}" rel="stylesheet">
     <!-- JQVMap -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/jqvmap/jqvmap.min.css') }}">
+    <link href="{{ asset('assets/plugins/jqvmap/jqvmap.min.css') }}" rel="stylesheet">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
+    <link href="{{ asset('assets/dist/css/adminlte.min.css') }}" rel="stylesheet">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+    <link href="{{ asset('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}" rel="stylesheet">
     <!-- Daterange picker -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/daterangepicker/daterangepicker.css') }}">
+    <link href="{{ asset('assets/plugins/daterangepicker/daterangepicker.css') }}" rel="stylesheet">
     <!-- summernote -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}">
+    <link href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}" rel="stylesheet">
     <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
     <!-- Select2 -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}" rel="stylesheet">
 </head>
 <?php
-    $user_id = Auth::user()->id;
-    $list_surat = DB::table('surat')
-    ->select([
-        'surat_id',
-        'bagian',
-        'judul_surat',
-        'no_surat',
-        'created_at',
-        'updated_at',
-    ])
-    ->where('surat.penerima_id', 'like', '%|'. $user_id.'|')
+$user_id = Auth::user()->id;
+$list_surat = DB::table('surat')
+    ->select(['surat_id', 'bagian', 'judul_surat', 'no_surat', 'created_at', 'updated_at'])
+    ->where('surat.penerima_id', 'like', '%|' . $user_id . '|')
     ->where('surat.updated_at', '<', Illuminate\Support\Carbon::now()->subDays(3))
     ->whereNull('surat.status')
     ->whereNull('surat.deleted_by')
     ->whereNotNull('surat.created_by')
     ->orderByDesc('surat.created_at')
     ->get();
-    // dd($list_surat[0]);
-
+// dd($list_surat[0]);
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -68,14 +60,14 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ url('/home') }}" class="nav-link">Home</a>
+                    <a class="nav-link" href="{{ url('/home') }}">Home</a>
                 </li>
             </ul>
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Navbar Search -->
-                
+
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
@@ -145,7 +137,7 @@
     <!-- Bootstrap 4 -->
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- ChartJS -->
-    <script src="{{ asset('assets/plugins/Chart.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/Chart.min.js') }}"></script> --}}
     <!-- Sparkline -->
     <script src="{{ asset('assets/plugins/sparklines/sparkline.js') }}"></script>
     <!-- JQVMap -->
@@ -185,20 +177,20 @@
 
     <!-- Toastr -->
     <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
-    
+
     <!-- Select2 -->
     <script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
-    <script>
+    <style>
         .blink_me {
-            animation: blinker 1s linear infinite;
+            animation: blinker 1 s linear infinite;
         }
 
         @keyframes blinker {
-            50% {
+            50 % {
                 opacity: 0;
             }
         }
-    </script>
+    </style>
 
     @stack('scripts')
     <script>
@@ -220,9 +212,6 @@
             });
             setTimeout(playAudio, 10000)
         });
-        
-
-        
     </script>
 
     <div class="modal fade blink_me" id="pengingatModal">
@@ -230,7 +219,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title text-danger">ADA PESAN YANG BELUM DIBALAS!!!</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -248,7 +237,7 @@
                     @endforeach
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
                 </div>
             </div>
         </div>
@@ -276,7 +265,7 @@
     @endif
 
     <script>
-        function alert(){
+        function alert() {
             $(document).Toasts('create', {
                 class: 'bg-info',
                 title: 'Notifikasi',
@@ -294,7 +283,7 @@
                 url: "{{ url('notifikasi') }}/",
                 // data:{'id':id}, 
                 success: function(tampil) {
-                    if(tampil == 'berhasil'){
+                    if (tampil == 'berhasil') {
                         // console.log(notifikasi)
                         audio.play();
                         // alert();
@@ -307,7 +296,7 @@
             })
         }
     </script>
-    @if(!empty($list_surat[0]))
+    @if (!empty($list_surat[0]))
         <script>
             playAudio();
             $('#pengingatModal').modal('show');

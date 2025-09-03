@@ -47,11 +47,8 @@
                                         </td>
                                         <td class="mailbox-subject"><b>{{ $surat->judul_surat }}</b></td>
                                         <td class="mailbox-attachment">
-                                            @php
-
-                                            @endphp
                                         </td>
-                                        <td class="mailbox-date">{{ \Carbon\Carbon::parse($surat->created_at)->diffForHumans() }}</td>
+                                        <td class="mailbox-date">{{ \Carbon\Carbon::parse($surat->tanggal_balasan)->diffForHumans() }}</td>
                                     </tr>
                                 @endforeach
                             </div>

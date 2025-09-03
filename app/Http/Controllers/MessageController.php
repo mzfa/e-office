@@ -156,8 +156,6 @@ class MessageController extends Controller
             // ->orWhere('surat.deleted_at', '>', Carbon::now()->subDays(30)->toDateTimeString())
             // ->where('surat.deleted_at', '<=', Carbon::now()->subDays(1)->toDateTimeString())
             ->whereNotNull('surat.created_by')
-            ->orderByDesc('surat_balasan.created_at')
-            ->orderByDesc('surat.created_at')
             ->groupBy(
                 'surat.surat_id',
                 'surat.created_at',
@@ -166,8 +164,9 @@ class MessageController extends Controller
                 'surat.judul_surat',
                 'surat.no_surat'
             )
+            ->orderByDesc('tanggal_balasan')
+            ->orderByDesc('surat.created_at')
             ->get();
-
 
         // dd($list_surat,Carbon::now()->subDays(1)->toDateTimeString());
         // dd($list_surat);
