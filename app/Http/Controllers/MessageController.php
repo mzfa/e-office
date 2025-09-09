@@ -134,7 +134,16 @@ class MessageController extends Controller
         // dd($pencarian)
         $user_id = Auth::user()->id;
         $list_surat = DB::table('surat')
-            ->leftJoin('surat_balasan', 'surat.surat_id', '=', 'surat_balasan.surat_id')
+            ->leftJoinSub(
+                DB::table('surat_balasan')
+                    ->whereNull('surat_balasan.deleted_at')
+                    ->select('surat_balasan.surat_id', DB::raw('max(surat_balasan.created_at) as tanggal_balasan'))
+                    ->groupBy('surat_balasan.surat_id'),
+                'surat_balasan_sub',
+                function ($join) {
+                    $join->on('surat.surat_id', '=', 'surat_balasan_sub.surat_id');
+                }
+            )
             ->select([
                 'surat.surat_id',
                 'surat.created_at',
@@ -142,7 +151,7 @@ class MessageController extends Controller
                 'surat.penerima_id',
                 'surat.judul_surat',
                 'surat.no_surat',
-                DB::raw('max(surat_balasan.created_at) as tanggal_balasan')
+                DB::raw('CASE WHEN surat_balasan_sub.tanggal_balasan IS NOT NULL THEN surat_balasan_sub.tanggal_balasan ELSE surat.created_at END AS tanggal_balasan'),
             ])
             ->where('surat.penerima_id', 'like', '%|' . $user_id . '|%')
             ->where('surat.judul_surat', 'like', '%' . $pencarian . '%')
@@ -156,14 +165,6 @@ class MessageController extends Controller
             // ->orWhere('surat.deleted_at', '>', Carbon::now()->subDays(30)->toDateTimeString())
             // ->where('surat.deleted_at', '<=', Carbon::now()->subDays(1)->toDateTimeString())
             ->whereNotNull('surat.created_by')
-            ->groupBy(
-                'surat.surat_id',
-                'surat.created_at',
-                'surat.deleted_by',
-                'surat.penerima_id',
-                'surat.judul_surat',
-                'surat.no_surat'
-            )
             ->orderByDesc('tanggal_balasan')
             ->orderByDesc('surat.created_at')
             ->get();
