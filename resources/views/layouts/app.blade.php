@@ -242,7 +242,8 @@ $list_surat = DB::table('surat')
             </div>
         </div>
     </div>
-    @if (Session::has('success'))
+    {{-- @if (Session::has('success'))
+        ahay
         <script>
             $(document).Toasts('create', {
                 class: 'bg-success',
@@ -251,8 +252,9 @@ $list_surat = DB::table('surat')
                 body: "Selamat, {{ Session::get('success') }}"
             })
         </script>
-    @endif
+    @endif --}}
     @if (Session::has('error'))
+        uhuy
         <script>
             $(document).Toasts('create', {
                 class: 'bg-danger',
