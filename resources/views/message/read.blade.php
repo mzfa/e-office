@@ -112,7 +112,7 @@
                         <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
 
                         <div class="mailbox-attachment-info">
-                            <a href="{{ 'https://e-office-file.rsumumpekerja-kbn.com/'.$item->nama_file }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file }}</a>
+                            <a href="{{ env('URL_FTP').$item->nama_file }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file }}</a>
                             {{-- <span class="mailbox-attachment-size clearfix mt-1">
                                 <span>1,245 KB</span>
                                 <a href="#" class="btn btn-default btn-sm float-right"><i
@@ -149,7 +149,7 @@
                         <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
                         
                         <div class="mailbox-attachment-info">
-                            <a href="{{ 'https://e-office-file.rsumumpekerja-kbn.com/'.$item->nama_file_balasan }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file_balasan }}</a>
+                            <a href="{{ env('URL_FTP').$item->nama_file_balasan }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file_balasan }}</a>
                             {{-- <span class="mailbox-attachment-size clearfix mt-1">
                                 <span>1,245 KB</span>
                                 <a href="#" class="btn btn-default btn-sm float-right"><i

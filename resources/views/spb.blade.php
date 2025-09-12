@@ -28,7 +28,7 @@
                                         <tr>
                                             <td>{{ $item->created_at }}</td>
                                             {{-- <td><a href="{{ url('document/spb/'.$item->nama_file_spb) }}" target="_blank"> {{ $item->nama_file_spb }}</a></td> --}}
-                                            <td><a href="{{ 'https://e-office-file.rsumumpekerja-kbn.com/'.$item->nama_file_spb }}" target="_blank"> {{ $item->nama_file_spb }}</a></td>
+                                            <td><a href="{{ env('URL_FTP').$item->nama_file_spb }}" target="_blank"> {{ $item->nama_file_spb }}</a></td>
                                             <td>{{ $item->judul_surat }}</td>
                                             <td><a href="{{ url('cek_surat_dong/'.base64_encode($item->surat_id)) }}" target="_blank">{{ $item->no_surat }}</a></td>
                                         </tr>
