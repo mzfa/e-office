@@ -14,3 +14,5 @@ yarn-error.log
 /.idea
 /.vscode
 /public/document
+.DS_Store
+.gitignore
