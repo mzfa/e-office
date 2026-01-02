@@ -248,8 +248,25 @@ class MessageController extends Controller
             ->where(['surat_id' => $id])
             ->get();
 
+        $list_bagian = DB::table('users')
+            ->select([
+                'users.name',
+                'users.username',
+                'struktur.nama_struktur',
+                'struktur.akronim',
+                'struktur.parent_id',
+            ])
+            // ->leftJoin('user_akses', 'users.id', '=', 'user_akses.user_id')
+            // ->leftJoin('hakakses', 'hakakses.hakakses_id', '=', 'user_akses.hakakses_id')
+            // ->leftJoin('pegawai', 'users.pegawai_id', '=', 'pegawai.pegawai_id')
+            ->leftJoin('pegawai_detail', 'users.pegawai_id', '=', 'pegawai_detail.pegawai_id')
+            ->leftJoin('struktur', 'pegawai_detail.struktur_id', '=', 'struktur.struktur_id')
+            ->where(['users.id' => $user_id])
+            ->whereNull('users.deleted_at')
+            ->first();
+
         // dd($surat,$list_penerima,$surat_balasan,$lampiran);
-        return view('message.read', compact('surat', 'list_penerima', 'surat_balasan', 'lampiran'));
+        return view('message.read', compact('surat', 'list_penerima', 'surat_balasan', 'lampiran','list_bagian'));
     }
     public function draft(Request $request)
     {
@@ -353,27 +370,59 @@ class MessageController extends Controller
         DB::table('surat')->where(['surat.surat_id' => $id])->update($data);
         return Redirect::back()->with(['success' => 'Surat Berhasil di Aktifkan!']);
     }
+    // public function nomorotomatis($bagian)
+    // {
+    //     // $user_id = Auth::user()->id;
+    //     $data = DB::select("SELECT max(no) as nourut FROM surat WHERE bagian='$bagian'");
+    //     $notis = 1;
+    //     if (isset($data[0]->nourut)) {
+    //         $notis = $data[0]->nourut + 1;
+    //     }
+    //     $notis .= '/MEMO/' . $bagian . '/' . date('m/Y');
+    //     return $notis;
+    // }
     public function nomorotomatis($bagian)
     {
-        // $user_id = Auth::user()->id;
-        $data = DB::select("SELECT max(no) as nourut FROM surat WHERE bagian='$bagian'");
-        $notis = 1;
-        if (isset($data[0]->nourut)) {
-            $notis = $data[0]->nourut + 1;
-        }
-        $notis .= '/MEMO/' . $bagian . '/' . date('m/Y');
-        return $notis;
+        $tahun = date('Y');
+        $bulan = date('m');
+
+        $data = DB::table('surat')
+            ->where('bagian', $bagian)
+            ->whereYear('created_at', $tahun) // reset tiap tahun
+            ->max('no');
+
+        $nomorUrut = $data ? $data + 1 : 1;
+
+        $format = $nomorUrut . '/MEMO/' . $bagian . '/' . $bulan . '/' . $tahun;
+
+        return $format;
     }
+    // public function nomordisposisi($bagian)
+    // {
+    //     // $user_id = Auth::user()->id;
+    //     $data = DB::select("SELECT max(no) as nourut FROM surat_balasan WHERE disposisi_bagian='$bagian'");
+    //     $notis = 1;
+    //     if (isset($data[0]->nourut)) {
+    //         $notis = $data[0]->nourut + 1;
+    //     }
+    //     $notis .= '/DIS/' . $bagian . '/' . date('m/Y');
+    //     return $notis;
+    // }
     public function nomordisposisi($bagian)
     {
-        // $user_id = Auth::user()->id;
-        $data = DB::select("SELECT max(no) as nourut FROM surat_balasan WHERE disposisi_bagian='$bagian'");
-        $notis = 1;
-        if (isset($data[0]->nourut)) {
-            $notis = $data[0]->nourut + 1;
-        }
-        $notis .= '/DIS/' . $bagian . '/' . date('m/Y');
-        return $notis;
+        $tahun = date('Y');
+        $bulan = date('m');
+
+        $lastNo = DB::table('surat_balasan')
+            ->where('disposisi_bagian', $bagian)
+            ->whereYear('created_at', $tahun) // reset tiap tahun
+            ->max('no');
+
+        $nomorUrut = $lastNo ? $lastNo + 1 : 1;
+
+        $format = $nomorUrut . '/DIS/' . $bagian . '/' . $bulan . '/' . $tahun;
+
+        return $format;
     }
     public function lampiran(Request $request)
     {
