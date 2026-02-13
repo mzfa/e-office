@@ -509,8 +509,21 @@ class MessageController extends Controller
         $no = explode('/', $no_surat);
         $surat_id = Crypt::decrypt($request->surat_id);
         $penerima_id = Crypt::decrypt($request->penerima_sebelumnya) . $penerima . '|';
+        $master_surat = DB::table('surat')->where('surat_id',$surat_id)->first();
+        $cc_master = $master_surat->cc;
+        $cc = $master_surat->cc ?? "|";
+        if (isset($request->cc)) {
+            foreach ($request->cc as $itemcc) {
+                $cc_satuan = "|".$itemcc."|";
+                if (!str_contains($cc_master, $cc_satuan)) {
+                    $cc .= $itemcc . "|";
+                }
+            }
+        }
+        // dd($cc);
         DB::table('surat')->where(['surat.surat_id' => $surat_id])->update([
             'penerima_id' => $penerima_id,
+            'cc' => $cc
         ]);
         $data = [
             'created_by' => Auth::user()->id,
