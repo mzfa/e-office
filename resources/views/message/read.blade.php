@@ -172,7 +172,8 @@
             <div class="float-right">
                 {{-- <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> Reply</button> --}}
                 @if($datapenerima[$hitung] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
-                    <a onclick="return confirm('Apakah anda yakin surat ini ingin mengarsipkan surat ini?')" href="{{ url('message/arsip/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-check-circle"></i> Arsip</a>
+                    {{-- <a onclick="return confirm('Apakah anda yakin surat ini ingin mengarsipkan surat ini?')" href="{{ url('message/arsip/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-check-circle"></i> Arsip</a> --}}
+                    <button type="button" data-toggle="modal" data-target="#arsip-surat" class="btn btn-success"><i class="fas fa-check-circle"></i> Arsip</button>
                     <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i class="fas fa-reply"></i> Teruskan</button>
                 @endif
                 @if($datapenerima[$hitung-1] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
@@ -244,6 +245,38 @@
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Reply</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <div class="modal fade" id="arsip-surat">
+            <div class="modal-dialog modal-lg">
+                <form action="{{ url('message/reply') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Arsip Surat</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{-- <input type="hidden" name="bagian" value="{{ $surat->seri_bagian }}"> --}}
+                            {{-- <input type="hidden" name="bagian" value="{{ $surat->akronim }}"> --}}
+                            <input type="hidden" name="bagian" value="{{ $list_bagian->akronim }}">
+                            <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
+                            <input type="hidden" required name="arsipan" value="arsip">
+                            <input type="hidden" required name="penerima_sebelumnya" value="{{ Crypt::encrypt($surat->penerima_id) }}">
+                            <div class="form-group">
+                                <textarea id="compose-textarea" name="pesan" class="form-control" style="height: 300px" required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Arsipkan</button>
                         </div>
                     </div>
                 </form>

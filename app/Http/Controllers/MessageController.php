@@ -473,82 +473,107 @@ class MessageController extends Controller
     public function reply(Request $request)
     {
         // dd($request);
-        $penerima = $request->penerima_id;
-        // foreach($request->penerima_id as $penerima_id){
-        //     $penerima .= $penerima_id.'|';
-        // }
-        $error = "";
-        $nama_file_surat = [];
-        if ($request->hasFile('file')) {
-            $semua_file = "";
-            foreach ($request->file as $file) {
-                // dd($file->getClientMimeType());
-                if (in_array($file->getClientMimeType(), ['image/jpg', 'image/jpeg', 'image/png', 'image/svg', 'application/zip', 'application/xls', 'application/docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/pdf', 'application/vnd.ms-excel'])) {
-                    // $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
-                    // $name = Auth::user()->pegawai_id;
-                    // $file->move(public_path('document/lampiran/'), $file_name);
-                    $filenamewithextension = $file->getClientOriginalName();
-                    //get filename without extension
-                    $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-                    //get file extension
-                    $extension = $file->getClientOriginalExtension();
-                    //filename to store
-                    $filenametostore = round(microtime(true) * 1000) . '-' . $filename . '_' . uniqid() . '.' . $extension;
-                    Storage::disk('ftp')->put($filenametostore, fopen($file, 'r+'));
-                    array_push($nama_file_surat, $filenametostore);
-                } else {
-                    $error .= $file->getClientOriginalName() . "File anda tidak dapat kami simpan cek kembali extensi dan besar filenya" . "<br>";
+        if(!empty($request->arsipan)){
+            $penerima = $request->penerima_id;
+            $surat_id = Crypt::decrypt($request->surat_id);
+            $data = [
+                'created_by' => Auth::user()->id,
+                'created_at' => now(),
+                'user_id' => Auth::user()->id,
+                'isi_balasan' => $request->pesan,
+                'surat_id' => $surat_id,
+                'penerima_balasan_id' => $penerima,
+                'disposisi_bagian' => $request->bagian,
+                'nomor_disposisi' => null,
+            ];
+            $store_surat = DB::table('surat_balasan')->insertGetId($data);
+            $data = [
+                'updated_at' => now(),
+                'updated_by' => Auth::user()->id,
+                'status' => 'arsip',
+                'change_status_id' => Auth::user()->id,
+            ];
+            // dd($data);
+            DB::table('surat')->where(['surat.surat_id' => $surat_id])->update($data);
+            return Redirect::back()->with(['success' => 'Surat Berhasil di arsipkan!']);
+        }else{
+            $penerima = $request->penerima_id;
+            // foreach($request->penerima_id as $penerima_id){
+            //     $penerima .= $penerima_id.'|';
+            // }
+            $error = "";
+            $nama_file_surat = [];
+            if ($request->hasFile('file')) {
+                $semua_file = "";
+                foreach ($request->file as $file) {
+                    // dd($file->getClientMimeType());
+                    if (in_array($file->getClientMimeType(), ['image/jpg', 'image/jpeg', 'image/png', 'image/svg', 'application/zip', 'application/xls', 'application/docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/pdf', 'application/vnd.ms-excel'])) {
+                        // $file_name = round(microtime(true) * 1000).'-'.str_replace(' ','-',$file->getClientOriginalName());
+                        // $name = Auth::user()->pegawai_id;
+                        // $file->move(public_path('document/lampiran/'), $file_name);
+                        $filenamewithextension = $file->getClientOriginalName();
+                        //get filename without extension
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                        //get file extension
+                        $extension = $file->getClientOriginalExtension();
+                        //filename to store
+                        $filenametostore = round(microtime(true) * 1000) . '-' . $filename . '_' . uniqid() . '.' . $extension;
+                        Storage::disk('ftp')->put($filenametostore, fopen($file, 'r+'));
+                        array_push($nama_file_surat, $filenametostore);
+                    } else {
+                        $error .= $file->getClientOriginalName() . "File anda tidak dapat kami simpan cek kembali extensi dan besar filenya" . "<br>";
+                    }
+                }
+                // dd($nama_file_surat);
+                if ($error !== "") {
+                    // return Redirect::back()->with(['error' => $error]);
                 }
             }
-            // dd($nama_file_surat);
-            if ($error !== "") {
-                // return Redirect::back()->with(['error' => $error]);
-            }
-        }
-        $no_surat = app('App\Http\Controllers\MessageController')->nomordisposisi($request->bagian);
-        $no = explode('/', $no_surat);
-        $surat_id = Crypt::decrypt($request->surat_id);
-        $penerima_id = Crypt::decrypt($request->penerima_sebelumnya) . $penerima . '|';
-        $master_surat = DB::table('surat')->where('surat_id',$surat_id)->first();
-        $cc_master = $master_surat->cc;
-        $cc = $master_surat->cc ?? "|";
-        if (isset($request->cc)) {
-            foreach ($request->cc as $itemcc) {
-                $cc_satuan = "|".$itemcc."|";
-                if (!str_contains($cc_master, $cc_satuan)) {
-                    $cc .= $itemcc . "|";
+            $no_surat = app('App\Http\Controllers\MessageController')->nomordisposisi($request->bagian);
+            $no = explode('/', $no_surat);
+            $surat_id = Crypt::decrypt($request->surat_id);
+            $penerima_id = Crypt::decrypt($request->penerima_sebelumnya) . $penerima . '|';
+            $master_surat = DB::table('surat')->where('surat_id',$surat_id)->first();
+            $cc_master = $master_surat->cc;
+            $cc = $master_surat->cc ?? "|";
+            if (isset($request->cc)) {
+                foreach ($request->cc as $itemcc) {
+                    $cc_satuan = "|".$itemcc."|";
+                    if (!str_contains($cc_master, $cc_satuan)) {
+                        $cc .= $itemcc . "|";
+                    }
                 }
             }
-        }
-        // dd($cc);
-        DB::table('surat')->where(['surat.surat_id' => $surat_id])->update([
-            'penerima_id' => $penerima_id,
-            'cc' => $cc
-        ]);
-        $data = [
-            'created_by' => Auth::user()->id,
-            'created_at' => now(),
-            'user_id' => Auth::user()->id,
-            'isi_balasan' => $request->pesan,
-            'surat_id' => $surat_id,
-            'penerima_balasan_id' => $penerima,
-            'no' => $no[0],
-            'disposisi_bagian' => $request->bagian,
-            'nomor_disposisi' => $no_surat,
-        ];
-        $store_surat = DB::table('surat_balasan')->insertGetId($data);
-        // DB::table('surat_balasan')->insert($data);
-        if ($error == "") {
-            foreach ($nama_file_surat as $file_surat) {
-                $data1 = [
-                    'nama_file_balasan' => $file_surat,
-                    'surat_balasan_id' => $store_surat,
-                ];
-                DB::table('file_balasan')->insert($data1);
+            // dd($cc);
+            DB::table('surat')->where(['surat.surat_id' => $surat_id])->update([
+                'penerima_id' => $penerima_id,
+                'cc' => $cc
+            ]);
+            $data = [
+                'created_by' => Auth::user()->id,
+                'created_at' => now(),
+                'user_id' => Auth::user()->id,
+                'isi_balasan' => $request->pesan,
+                'surat_id' => $surat_id,
+                'penerima_balasan_id' => $penerima,
+                'no' => $no[0],
+                'disposisi_bagian' => $request->bagian,
+                'nomor_disposisi' => $no_surat,
+            ];
+            $store_surat = DB::table('surat_balasan')->insertGetId($data);
+            // DB::table('surat_balasan')->insert($data);
+            if ($error == "") {
+                foreach ($nama_file_surat as $file_surat) {
+                    $data1 = [
+                        'nama_file_balasan' => $file_surat,
+                        'surat_balasan_id' => $store_surat,
+                    ];
+                    DB::table('file_balasan')->insert($data1);
+                }
+                return Redirect::back()->with(['success' => 'Surat Berhasil di kirim!']);
+            } else {
+                return Redirect::back()->with(['error' => "FILE LAMPIRAN GAGAL DI UPLOAD TAPI SURAT BERHASIL DIKIRIM"]);
             }
-            return Redirect::back()->with(['success' => 'Surat Berhasil di kirim!']);
-        } else {
-            return Redirect::back()->with(['error' => "FILE LAMPIRAN GAGAL DI UPLOAD TAPI SURAT BERHASIL DIKIRIM"]);
         }
     }
     public function store(Request $request)
