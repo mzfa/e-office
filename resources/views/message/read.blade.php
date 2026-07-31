@@ -1,5 +1,4 @@
 @extends('layouts.head_read')
-
 @section('content')
     <div class="card card-primary card-outline">
         <div class="card-header">
@@ -8,11 +7,11 @@
         <!-- /.card-header -->
         <div class="card-body p-0">
             <div class="mailbox-read-info">
-                @if($surat->status == "batal")
+                @if ($surat->status == 'batal')
                     <div class="alert alert-danger">
                         <h5><i class="icon fas fa-ban"></i> Mohon Maaf Surat Sudah Di Batalkan!</h5>
                     </div>
-                @elseif($surat->status == "acc")
+                @elseif($surat->status == 'acc')
                     <div class="alert alert-success">
                         <h5><i class="icon fas fa-check"></i> Surat Sudah Di Arsipkan!</h5>
                     </div>
@@ -23,7 +22,7 @@
                 </div>
                 <table>
                     <tr>
-                        <td width="30%"><img src="{{ asset(env('APP_LOGO')) }}" style="width: 90%" alt=""></td>
+                        <td width="30%"><img alt="" src="{{ asset(env('APP_LOGO')) }}" style="width: 90%"></td>
                         <th align="left">
                             <h2>Nota Dinas</h2>
                             <h5>{{ $surat->no_surat }}</h5>
@@ -90,7 +89,13 @@
                         <th>Lampiran</th>
                         <td>&nbsp;</td>
                         <td>:</td>
-                        <td>@if(isset($lampiran[0])) Terlampir @else - @endif</td>
+                        <td>
+                            @if (isset($lampiran[0]))
+                                Terlampir
+                            @else
+                                -
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <th>Tanggal</th>
@@ -107,19 +112,18 @@
             <div class="card-footer bg-white">
                 {{-- <h2>Lampiran</h2> --}}
                 <div class="row">
-                    @foreach($lampiran as $item)
-                    <div class="col-md-3 col-4">
-                        <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
-
-                        <div class="mailbox-attachment-info">
-                            <a href="{{ env('URL_FTP').$item->nama_file }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file }}</a>
-                            {{-- <span class="mailbox-attachment-size clearfix mt-1">
+                    @foreach ($lampiran as $item)
+                        <div class="col-md-3 col-4">
+                            <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
+                            <div class="mailbox-attachment-info">
+                                <a class="mailbox-attachment-name" href="{{ env('URL_FTP') . $item->nama_file }}" target="_blank"><i class="fas fa-paperclip"></i> {{ $item->nama_file }}</a>
+                                {{-- <span class="mailbox-attachment-size clearfix mt-1">
                                 <span>1,245 KB</span>
                                 <a href="#" class="btn btn-default btn-sm float-right"><i
                                         class="fas fa-eye"></i></a>
                             </span> --}}
+                            </div>
                         </div>
-                    </div>
                     @endforeach
                 </div>
             </div>
@@ -140,23 +144,24 @@
                     <em>{{ \Carbon\Carbon::parse($balas->created_at)->locale('id')->translatedFormat('l, d F Y H:i:s') }}</em><br><br>
                     {!! $balas->isi_balasan !!}
                     @php
-                    $id_balasan = $balas->surat_balasan_id;
-                    $lampiran_balasan = DB::table('file_balasan')->where(['surat_balasan_id' => $id_balasan])->get();
+                        $id_balasan = $balas->surat_balasan_id;
+                        $lampiran_balasan = DB::table('file_balasan')
+                            ->where(['surat_balasan_id' => $id_balasan])
+                            ->get();
                     @endphp
                     <div class="row text-right">
-                        @foreach($lampiran_balasan as $item)
-                        <div class="col-md-3 col-4">
-                        <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
-                        
-                        <div class="mailbox-attachment-info">
-                            <a href="{{ env('URL_FTP').$item->nama_file_balasan }}" target="_blank" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> {{ $item->nama_file_balasan }}</a>
-                            {{-- <span class="mailbox-attachment-size clearfix mt-1">
+                        @foreach ($lampiran_balasan as $item)
+                            <div class="col-md-3 col-4">
+                                <span class="mailbox-attachment-icon"><i class="far fa-file"></i></span>
+                                <div class="mailbox-attachment-info">
+                                    <a class="mailbox-attachment-name" href="{{ env('URL_FTP') . $item->nama_file_balasan }}" target="_blank"><i class="fas fa-paperclip"></i> {{ $item->nama_file_balasan }}</a>
+                                    {{-- <span class="mailbox-attachment-size clearfix mt-1">
                                 <span>1,245 KB</span>
                                 <a href="#" class="btn btn-default btn-sm float-right"><i
                                     class="fas fa-eye"></i></a>
                                 </span> --}}
+                                </div>
                             </div>
-                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -171,19 +176,22 @@
         <div class="card-footer">
             <div class="float-right">
                 {{-- <button type="button" class="btn btn-default"><i class="fas fa-reply"></i> Reply</button> --}}
-                @if($datapenerima[$hitung] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
+                @if ($datapenerima[$hitung] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
                     {{-- <a onclick="return confirm('Apakah anda yakin surat ini ingin mengarsipkan surat ini?')" href="{{ url('message/arsip/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-check-circle"></i> Arsip</a> --}}
-                    <button type="button" data-toggle="modal" data-target="#arsip-surat" class="btn btn-success"><i class="fas fa-check-circle"></i> Arsip</button>
-                    <button type="button" data-toggle="modal" data-target="#reply-surat" class="btn btn-default"><i class="fas fa-reply"></i> Teruskan</button>
+                    <button class="btn btn-success" data-target="#arsip-surat" data-toggle="modal" type="button"><i class="fas fa-check-circle"></i> Arsip</button>
+                    <button class="btn btn-default" data-target="#reply-surat" data-toggle="modal" type="button"><i class="fas fa-reply"></i> Teruskan</button>
                 @endif
-                @if($datapenerima[$hitung-1] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
-                    <a onclick="return confirm('Apakah anda yakin ingin di batalkan suratnya?')" href="{{ url('message/batal_disposisi/'.Crypt::encrypt($surat->surat_id).'/'.Crypt::encrypt($disposisi_terakhir)) }}" class="btn btn-danger">BATALKAN PESAN BALASAN</a>
-                    <button type="button" data-toggle="modal" data-target="#tambah-lampiran" class="btn btn-default"><i class="fas fa-paperclip"></i> Tambah Lampiran</button>
+                @if ($datapenerima[$hitung - 1] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
+                    <a class="btn btn-danger" href="{{ url('message/batal_disposisi/' . Crypt::encrypt($surat->surat_id) . '/' . Crypt::encrypt($disposisi_terakhir)) }}" onclick="return confirm('Apakah anda yakin ingin di batalkan suratnya?')">BATALKAN PESAN BALASAN</a>
+                    <button class="btn btn-default" data-target="#tambah-lampiran" data-toggle="modal" type="button"><i class="fas fa-paperclip"></i> Tambah Lampiran</button>
                 @endif
-
-                @if($surat->status == "arsip" || Auth::user()->id == 192 || Auth::user()->id == 459 || Auth::user()->id == 462)
-                    <a onclick="return confirm('Apakah anda yakin ingin mencetak barcode surat ini?')" target="_blank" href="{{ url('message/cetak_barcode/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-success"><i class="fas fa-barcode"></i> Print QR Code</a>
-                    <a onclick="return confirm('Apakah anda yakin ingin mencetak surat ini?')" target="_blank" href="{{ url('message/print_all/'.Crypt::encrypt($surat->surat_id)) }}" class="btn btn-warning"><i class="fas fa-barcode"></i> Print Surat</a>
+                @if ($surat->status == 'arsip' || Auth::user()->id == 192 || Auth::user()->id == 459 || Auth::user()->id == 462)
+                    <a class="btn btn-success" href="{{ url('message/cetak_barcode/' . Crypt::encrypt($surat->surat_id)) }}" onclick="return confirm('Apakah anda yakin ingin mencetak barcode surat ini?')" target="_blank"><i class="fas fa-barcode"></i> Print QR Code</a>
+                    <a class="btn btn-warning" href="{{ url('message/print_all/' . Crypt::encrypt($surat->surat_id)) }}" onclick="return confirm('Apakah anda yakin ingin mencetak surat ini?')" target="_blank"><i class="fas fa-barcode"></i> Print Surat</a>
+                @endif
+                @if (in_array(Auth::user()->id, explode(',', env('USER_ID_PENGADAAN'))))
+                    <a class="btn btn-primary" href="http://192.168.0.14/pemesanan-umum/create?surat_id={{ $surat->surat_id }}" onclick="return confirm('Apakah anda yakin ingin membuat PO atas surat ini?')" target="_blank"><i class="fas fa-warehouse"></i> Buat PO</a>
+                    {{-- <a class="btn btn-primary" href="http://127.0.0.1:9000/pemesanan-umum/create?surat_id={{ $surat->surat_id }}" onclick="return confirm('Apakah anda yakin ingin membuat PO atas surat ini?')" target="_blank"><i class="fas fa-warehouse"></i> Buat PO</a> --}}
                 @endif
             </div>
             {{-- <button type="button" class="btn btn-default"><i class="far fa-trash-alt"></i> Delete</button> --}}
@@ -192,24 +200,23 @@
         <!-- /.card-footer -->
         <div class="modal fade" id="reply-surat">
             <div class="modal-dialog modal-lg">
-                <form action="{{ url('message/reply') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ url('message/reply') }}" enctype="multipart/form-data" method="post">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">Balas Surat</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             {{-- <input type="hidden" name="bagian" value="{{ $surat->seri_bagian }}"> --}}
                             {{-- <input type="hidden" name="bagian" value="{{ $surat->akronim }}"> --}}
-                            <input type="hidden" name="bagian" value="{{ $list_bagian->akronim }}">
-                            <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
-                            <input type="hidden" required name="penerima_sebelumnya"
-                                value="{{ Crypt::encrypt($surat->penerima_id) }}">
+                            <input name="bagian" type="hidden" value="{{ $list_bagian->akronim }}">
+                            <input name="surat_id" required type="hidden" value="{{ Crypt::encrypt($surat->surat_id) }}">
+                            <input name="penerima_sebelumnya" required type="hidden" value="{{ Crypt::encrypt($surat->penerima_id) }}">
                             <div class="form-group">
-                                <select class="form-control select2bs4" data-placeholder="Penerima" style="width: 100%;" name="penerima_id" required>
+                                <select class="form-control select2bs4" data-placeholder="Penerima" name="penerima_id" required style="width: 100%;">
                                     <option value=""></option>
                                     @foreach ($list_penerima as $penerima)
                                         @if ($penerima->id != Auth::user()->id)
@@ -221,30 +228,28 @@
                             </div>
                             <div class="form-group">
                                 <div class="select2-purple">
-                                    <select class="select2" name="cc[]" multiple="multiple" data-placeholder="CC (Tidak harus dipilih)"
-                                        data-dropdown-css-class="select2-purple" style="width: 100%;"> 
+                                    <select class="select2" data-dropdown-css-class="select2-purple" data-placeholder="CC (Tidak harus dipilih)" multiple="multiple" name="cc[]" style="width: 100%;">
                                         @foreach ($list_penerima as $penerima)
-                                            @if($penerima->id != Auth::user()->id)
-                                                <option value="{{ $penerima->id }}">{{ $penerima->nama_hakakses ." | ".$penerima->name }}</option>
+                                            @if ($penerima->id != Auth::user()->id)
+                                                <option value="{{ $penerima->id }}">{{ $penerima->nama_hakakses . ' | ' . $penerima->name }}</option>
                                             @endif
                                         @endforeach
-
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <textarea id="compose-textarea" name="pesan" class="form-control" style="height: 300px" required>
+                                <textarea class="form-control" id="compose-textarea" name="pesan" required style="height: 300px">
                                 </textarea>
                             </div>
                             <div class="form-group">
                                 <label for="">Upload Lampiran (opsional)</label>
-                                <input class="form-control" type="file" multiple name="file[]" placeholder="File" accept=".jpg,.jpeg,.png,.svg,.zip,.xls,.docx,.vnd.openxmlformats-officedocument.wordprocessingml.document,.xlsx,.vnd.openxmlformats-officedocument.spreadsheetml.sheet,.pdf,.vnd.ms-excel">
+                                <input accept=".jpg,.jpeg,.png,.svg,.zip,.xls,.docx,.vnd.openxmlformats-officedocument.wordprocessingml.document,.xlsx,.vnd.openxmlformats-officedocument.spreadsheetml.sheet,.pdf,.vnd.ms-excel" class="form-control" multiple name="file[]" placeholder="File" type="file">
                                 {{-- <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em> --}}
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Reply</button>
+                            <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                            <button class="btn btn-primary" type="submit">Reply</button>
                         </div>
                     </div>
                 </form>
@@ -254,29 +259,29 @@
         </div>
         <div class="modal fade" id="arsip-surat">
             <div class="modal-dialog modal-lg">
-                <form action="{{ url('message/reply') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ url('message/reply') }}" enctype="multipart/form-data" method="post">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">Arsip Surat</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             {{-- <input type="hidden" name="bagian" value="{{ $surat->seri_bagian }}"> --}}
                             {{-- <input type="hidden" name="bagian" value="{{ $surat->akronim }}"> --}}
-                            <input type="hidden" name="bagian" value="{{ $list_bagian->akronim }}">
-                            <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
-                            <input type="hidden" required name="arsipan" value="arsip">
-                            <input type="hidden" required name="penerima_sebelumnya" value="{{ Crypt::encrypt($surat->penerima_id) }}">
+                            <input name="bagian" type="hidden" value="{{ $list_bagian->akronim }}">
+                            <input name="surat_id" required type="hidden" value="{{ Crypt::encrypt($surat->surat_id) }}">
+                            <input name="arsipan" required type="hidden" value="arsip">
+                            <input name="penerima_sebelumnya" required type="hidden" value="{{ Crypt::encrypt($surat->penerima_id) }}">
                             <div class="form-group">
-                                <textarea id="compose-textarea" name="pesan" class="form-control" style="height: 300px" required></textarea>
+                                <textarea class="form-control" id="compose-textarea" name="pesan" required style="height: 300px"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Arsipkan</button>
+                            <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                            <button class="btn btn-primary" type="submit">Arsipkan</button>
                         </div>
                     </div>
                 </form>
@@ -284,41 +289,40 @@
             </div>
             <!-- /.modal-dialog -->
         </div>
-        @if($datapenerima[$hitung-1] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
-        <div class="modal fade" id="tambah-lampiran">
-            <div class="modal-dialog modal-lg">
-                <form action="{{ url('message/lampiran') }}" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Balas Surat</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <input type="hidden" required name="surat_id" value="{{ Crypt::encrypt($surat->surat_id) }}">
-                            <input type="hidden" required name="surat_balasan_id" value="{{ Crypt::encrypt($disposisi_terakhir) }}">
-                            <div class="form-group">
-                                <label for="">Upload Lampiran (opsional)</label>
-                                <input class="form-control" type="file" multiple name="file[]" placeholder="File" accept=".jpg,.jpeg,.png,.svg,.zip,.xls,.docx,.vnd.openxmlformats-officedocument.wordprocessingml.document,.xlsx,.vnd.openxmlformats-officedocument.spreadsheetml.sheet,.pdf,.vnd.ms-excel">
-                                {{-- <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em> --}}
+        @if ($datapenerima[$hitung - 1] == Auth::user()->id && empty($surat->status) && $surat->deleted_at == null)
+            <div class="modal fade" id="tambah-lampiran">
+                <div class="modal-dialog modal-lg">
+                    <form action="{{ url('message/lampiran') }}" enctype="multipart/form-data" method="post">
+                        @csrf
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Balas Surat</h4>
+                                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <input name="surat_id" required type="hidden" value="{{ Crypt::encrypt($surat->surat_id) }}">
+                                <input name="surat_balasan_id" required type="hidden" value="{{ Crypt::encrypt($disposisi_terakhir) }}">
+                                <div class="form-group">
+                                    <label for="">Upload Lampiran (opsional)</label>
+                                    <input accept=".jpg,.jpeg,.png,.svg,.zip,.xls,.docx,.vnd.openxmlformats-officedocument.wordprocessingml.document,.xlsx,.vnd.openxmlformats-officedocument.spreadsheetml.sheet,.pdf,.vnd.ms-excel" class="form-control" multiple name="file[]" placeholder="File" type="file">
+                                    {{-- <em class="text-danger">MOHON MAAF UNTUK SAAT INI FITUR UPLOAD FILE BELUM DAPAT DIGUNAKAN.</em> --}}
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                                <button class="btn btn-primary" type="submit">Reply</button>
                             </div>
                         </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Reply</button>
-                        </div>
-                    </div>
-                </form>
-                <!-- /.modal-content -->
+                    </form>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
             </div>
-            <!-- /.modal-dialog -->
-        </div>
         @endif
     </div>
 @endsection
-
 @push('scripts')
     <script>
         $('.select2').select2()
