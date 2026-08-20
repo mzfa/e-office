@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title>E - OFFICE | RS Umum Pekerja</title>
-
+    <title>@yield('title', 'E - OFFICE | RS Umum Pekerja')</title>
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" rel="stylesheet">
     <!-- Font Awesome -->
@@ -70,7 +69,6 @@
     <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
-
     @stack('scripts')
     <script>
         $(function() {
@@ -98,7 +96,6 @@
             })
         </script>
     @endif
-
 </body>
 
 </html>
