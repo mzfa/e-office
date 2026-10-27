@@ -165,6 +165,10 @@ class MessageController extends Controller
             // ->orWhere('surat.deleted_at', '>', Carbon::now()->subDays(30)->toDateTimeString())
             // ->where('surat.deleted_at', '<=', Carbon::now()->subDays(1)->toDateTimeString())
             ->whereNotNull('surat.created_by')
+            ->orderByRaw(
+                'CASE WHEN surat.penerima_id LIKE ? AND surat.deleted_by IS NULL THEN 0 ELSE 1 END',
+                ['%|' . $user_id . '|']
+            )
             ->orderByDesc('tanggal_balasan')
             ->orderByDesc('surat.created_at')
             ->get();
