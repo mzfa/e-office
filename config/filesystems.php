@@ -38,7 +38,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
@@ -67,9 +67,9 @@ return [
             'ignorePassiveAddress' => true,
             // 'passive' => false,
             // Optional FTP Settings...
-            // 'port' => 21,
-            'passive' => false,
-            // 'ssl' => true,
+            'port' => 21,
+            'passive' => true,
+            'ssl' => true,
             // 'timeout' => 30,
         ],
 
